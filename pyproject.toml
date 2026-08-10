@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "telugu-hcr"
+version = "4.0.0"
+description = "Multi-Head EfficientNetV2 Telugu Handwritten Character Recognizer"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "Mitesh Singh" }
+]
+dependencies = [
+    "tensorflow>=2.16.0",
+    "keras>=3.0.0",
+    "numpy>=1.24.0",
+    "pandas>=2.0.0",
+    "scikit-learn>=1.3.0",
+    "pyyaml>=6.0",
+    "pillow>=10.0.0",
+    "tqdm>=4.65.0",
+    "streamlit>=1.30.0",
+    "streamlit-drawable-canvas>=0.9.3"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]

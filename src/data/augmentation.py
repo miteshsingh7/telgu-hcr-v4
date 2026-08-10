@@ -1,0 +1,123 @@
+"""Single Source of Truth Image Augmentation and Multi-Head CutMix Pipeline.
+
+Augmentation parameters and fill values are defined HERE ONLY.
+All training scripts and data loaders import and use this module.
+"""
+
+from typing import Tuple, Dict, Any, Optional
+import tensorflow as tf
+from tensorflow.keras import layers
+
+from src.data.preprocessing import BACKGROUND_FILL_VALUE, IMAGE_SIZE, NUM_CHANNELS
+
+
+def build_augmentation_pipeline(img_size: int = IMAGE_SIZE, 
+                                rotation_degrees: float = 5.0,
+                                translation_factor: float = 0.05,
+                                zoom_factor: float = 0.05) -> tf.keras.Sequential:
+    """Builds standard spatial augmentation pipeline for Telugu handwritten glyphs.
+    
+    Uses BACKGROUND_FILL_VALUE from preprocessing.py for all edge padding.
+    Explicitly maintains float32 tensor dtype for tf.data pipeline stability.
+    """
+    rot_factor = rotation_degrees / 360.0
+    
+    return tf.keras.Sequential([
+        layers.RandomRotation(
+            factor=(-rot_factor, rot_factor),
+            fill_mode="constant",
+            fill_value=BACKGROUND_FILL_VALUE,
+            dtype="float32",
+            name="aug_rotation"
+        ),
+        layers.RandomTranslation(
+            height_factor=(-translation_factor, translation_factor),
+            width_factor=(-translation_factor, translation_factor),
+            fill_mode="constant",
+            fill_value=BACKGROUND_FILL_VALUE,
+            dtype="float32",
+            name="aug_translation"
+        ),
+        layers.RandomZoom(
+            height_factor=(-zoom_factor, zoom_factor),
+            width_factor=(-zoom_factor, zoom_factor),
+            fill_mode="constant",
+            fill_value=BACKGROUND_FILL_VALUE,
+            dtype="float32",
+            name="aug_zoom"
+        ),
+    ], name="telugu_augmentation_pipeline")
+
+
+def _sample_beta_distribution(alpha: float, shape: tf.TensorShape) -> tf.Tensor:
+    """Samples from Beta(alpha, alpha) using two Gamma distributions."""
+    gamma_1 = tf.random.gamma(shape, alpha=alpha)
+    gamma_2 = tf.random.gamma(shape, alpha=alpha)
+    return gamma_1 / (gamma_1 + gamma_2 + 1e-8)
+
+
+@tf.function
+def apply_cutmix(images: tf.Tensor,
+                 base_labels: tf.Tensor,
+                 mod_labels: tf.Tensor,
+                 vattu_labels: tf.Tensor,
+                 alpha: float = 0.4) -> Tuple[tf.Tensor, tf.Tensor, tf.Tensor, tf.Tensor]:
+    """Applies batch-level CutMix mixing image patches and all 3 multi-head label targets.
+    
+    Dynamically casts masks and interpolation weights to match image and label dtypes.
+    
+    Args:
+        images: (B, H, W, C) float32/float16 image batch.
+        base_labels: (B, num_base) float32 probability/smoothed label vectors.
+        mod_labels: (B, num_mod) float32 probability/smoothed label vectors.
+        vattu_labels: (B, num_vattu) float32 probability/smoothed label vectors.
+        alpha: Beta distribution parameter (default 0.4).
+        
+    Returns:
+        (mixed_images, mixed_base, mixed_mod, mixed_vattu)
+    """
+    batch_size = tf.shape(images)[0]
+    h = tf.cast(tf.shape(images)[1], tf.float32)
+    w = tf.cast(tf.shape(images)[2], tf.float32)
+    
+    lam = _sample_beta_distribution(alpha, [1])[0]
+    
+    cut_ratio = tf.sqrt(1.0 - lam)
+    cut_w = tf.cast(w * cut_ratio, tf.int32)
+    cut_h = tf.cast(h * cut_ratio, tf.int32)
+    
+    cx = tf.random.uniform([], minval=0, maxval=tf.cast(w, tf.int32), dtype=tf.int32)
+    cy = tf.random.uniform([], minval=0, maxval=tf.cast(h, tf.int32), dtype=tf.int32)
+    
+    x1 = tf.clip_by_value(cx - cut_w // 2, 0, tf.cast(w, tf.int32))
+    y1 = tf.clip_by_value(cy - cut_h // 2, 0, tf.cast(h, tf.int32))
+    x2 = tf.clip_by_value(cx + cut_w // 2, 0, tf.cast(w, tf.int32))
+    y2 = tf.clip_by_value(cy + cut_h // 2, 0, tf.cast(h, tf.int32))
+    
+    actual_cut_area = tf.cast((x2 - x1) * (y2 - y1), tf.float32)
+    total_area = h * w
+    lam_adjusted_f32 = 1.0 - (actual_cut_area / (total_area + 1e-8))
+    lam_adjusted = tf.cast(lam_adjusted_f32, base_labels.dtype)
+    
+    indices = tf.random.shuffle(tf.range(batch_size))
+    shuffled_images = tf.gather(images, indices)
+    
+    y_coords = tf.range(tf.cast(h, tf.int32))[:, None]
+    x_coords = tf.range(tf.cast(w, tf.int32))[None, :]
+    in_box = (y_coords >= y1) & (y_coords < y2) & (x_coords >= x1) & (x_coords < x2)
+    mask_2d = tf.cast(~in_box, images.dtype)
+    mask = mask_2d[None, :, :, None]
+    
+    one_img = tf.cast(1.0, images.dtype)
+    mixed_images = images * mask + shuffled_images * (one_img - mask)
+    
+    shuffled_base = tf.gather(base_labels, indices)
+    shuffled_mod = tf.gather(mod_labels, indices)
+    shuffled_vattu = tf.gather(vattu_labels, indices)
+    
+    one_lbl = tf.cast(1.0, base_labels.dtype)
+    mixed_base = lam_adjusted * base_labels + (one_lbl - lam_adjusted) * shuffled_base
+    mixed_mod = lam_adjusted * mod_labels + (one_lbl - lam_adjusted) * shuffled_mod
+    mixed_vattu = lam_adjusted * vattu_labels + (one_lbl - lam_adjusted) * shuffled_vattu
+    
+    return mixed_images, mixed_base, mixed_mod, mixed_vattu

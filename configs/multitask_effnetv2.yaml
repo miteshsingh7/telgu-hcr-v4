@@ -1,0 +1,44 @@
+# Telugu Handwritten Character Recognizer v4 Configuration
+
+model:
+  variant: "B0"               # 'B0' (fast baseline, 5.9M params) or 'S' (scaled, 21.5M params)
+  weights: "imagenet"
+  dropout_rate: 0.3
+  img_size: 128
+
+data:
+  train_csv: "outputs/train.csv"
+  val_csv: "outputs/val.csv"
+  test_csv: "outputs/test.csv"
+  label_maps: "outputs/label_maps.json"
+  batch_size: 128
+  label_smoothing: 0.1
+  use_cutmix: true
+  cutmix_alpha: 0.4
+  cutmix_probability: 0.5
+  use_augmentation: true
+  rotation_degrees: 5.0
+  translation_factor: 0.05
+  zoom_factor: 0.05
+
+training:
+  mixed_precision: true
+  learning_rate: 0.0001       # 1e-4 peak learning rate
+  min_learning_rate: 0.000001 # 1e-6 min learning rate
+  weight_decay: 0.0001        # 1e-4 AdamW weight decay
+  global_clipnorm: 1.0        # Unconditional gradient clipping
+  use_ema: true
+  ema_momentum: 0.999
+  warmup_epochs: 5            # Phase 1: frozen backbone
+  finetune_epochs: 45         # Phase 2: unfrozen fine-tuning
+  early_stopping_patience: 10
+  loss_weights:
+    base_output: 1.0
+    modifier_output: 0.5
+    vattu_output: 0.5
+  checkpoint_dir: "checkpoints"
+  max_checkpoints_to_keep: 3
+
+timing_budget:
+  max_session_hours: 11.5
+  early_timing_epochs: 2
