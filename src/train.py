@@ -21,7 +21,7 @@ import numpy as np
 import tensorflow as tf
 
 from src.data.preprocessing import IMAGE_SIZE
-from src.data.dataset import create_telugu_dataset, load_label_maps
+from src.data.dataset import create_telugu_dataset, load_label_maps, resolve_dataset_root
 from src.models.multitask_effnetv2 import build_multitask_effnetv2
 from src.models.losses import WeightedCategoricalCrossentropy
 from src.checkpointing import FullStateCheckpointManager
@@ -195,6 +195,8 @@ def run_training(config_path: str,
     logger.info(f"Loaded label maps: {num_base} base, {num_mod} modifier, {num_vattu} vattu classes.")
     
     # 3. Create Datasets
+    resolved_root = resolve_dataset_root([effective_data_root] if effective_data_root else None)
+    logger.info(f"Dataset root resolved to: {resolved_root}")
     logger.info(f"Building training dataset from {d_cfg['train_csv']}...")
     train_ds, train_steps, class_weights = create_telugu_dataset(
         csv_path_or_df=d_cfg["train_csv"],

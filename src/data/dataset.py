@@ -47,7 +47,8 @@ def compute_head_weights_from_df(df: pd.DataFrame,
 
 
 def resolve_dataset_root(candidate_paths: Optional[list] = None) -> Optional[Path]:
-    """Finds existing dataset root among standard candidate locations."""
+    """Finds existing dataset root among standard candidate locations or auto-discovers on Kaggle."""
+    import os
     defaults = [
         Path("/kaggle/input/telugu-handwritten-character-dataset/Final Dataset of Telugu Handwritten Chararcters/Test1"),
         Path("/kaggle/input/telugu-hcr/Final Dataset of Telugu Handwritten Chararcters/Test1"),
@@ -59,6 +60,22 @@ def resolve_dataset_root(candidate_paths: Optional[list] = None) -> Optional[Pat
     for p in candidates:
         if p and Path(p).exists():
             return Path(p)
+            
+    # Auto-discover under /kaggle/input (recursive search for Guninthamulu or Achulu folder)
+    kaggle_input = Path("/kaggle/input")
+    if kaggle_input.exists():
+        for root, dirs, _ in os.walk(str(kaggle_input)):
+            dirs_lower = {d.lower(): d for d in dirs}
+            if "guninthamulu" in dirs_lower or "achulu" in dirs_lower:
+                return Path(root)
+                
+    for search_base in (Path("data"), Path("..")):
+        if search_base.exists():
+            for root, dirs, _ in os.walk(str(search_base)):
+                dirs_lower = {d.lower(): d for d in dirs}
+                if "guninthamulu" in dirs_lower or "achulu" in dirs_lower:
+                    return Path(root)
+                    
     return None
 
 
@@ -68,12 +85,12 @@ def remap_file_paths(file_paths: np.ndarray, dataset_root: Optional[Union[str, P
         return file_paths
         
     sample_path = Path(file_paths[0])
-    if sample_path.exists():
+    if sample_path.is_file():
         return file_paths
         
     target_root = Path(dataset_root) if dataset_root else resolve_dataset_root()
     if target_root is None or not target_root.exists():
-        # Path does not exist and no fallback found; return as is (will raise standard error on read)
+        # Path does not exist and no fallback found; return as is
         return file_paths
         
     # Extract relative path starting from known categories or 'Test1'
@@ -84,25 +101,27 @@ def remap_file_paths(file_paths: np.ndarray, dataset_root: Optional[Union[str, P
         p_str = str(fp).replace("\\", "/")
         p_lower = p_str.lower()
         
-        # Find where the category begins
-        idx = -1
+        # Check if already relative starting with a known category
+        starts_with_cat = False
         for cat in known_cats:
-            pos = p_lower.find(f"/{cat}/")
-            if pos != -1:
-                idx = pos + 1
-                break
-            # Check without leading slash
             if p_lower.startswith(f"{cat}/"):
-                idx = 0
+                new_path = str(target_root / p_str)
+                starts_with_cat = True
                 break
                 
-        if idx != -1:
-            rel_part = p_str[idx:]
-            new_path = str(target_root / rel_part)
-        else:
-            # Fallback to filename or original path
-            new_path = str(target_root / Path(p_str).name)
-            
+        if not starts_with_cat:
+            idx = -1
+            for cat in known_cats:
+                pos = p_lower.find(f"/{cat}/")
+                if pos != -1:
+                    idx = pos + 1
+                    break
+            if idx != -1:
+                rel_part = p_str[idx:]
+                new_path = str(target_root / rel_part)
+            else:
+                new_path = str(target_root / p_str)
+                
         remapped.append(new_path)
         
     return np.array(remapped, dtype=object)
