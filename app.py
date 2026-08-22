@@ -383,8 +383,8 @@ def load_system_assets(checkpoint_dir: str = "checkpoints",
     return model, label_maps
 
 
-def crop_to_content(img: Any, pad: int = 35) -> Any:
-    """Tightly crops margins around character strokes while preserving square aspect ratio."""
+def crop_to_content(img: Any, pad: int = 20) -> Any:
+    """Tightly crops margins around the character strokes to match training dataset framing."""
     if isinstance(img, Image.Image):
         img_arr = np.array(img)
     elif isinstance(img, np.ndarray):
@@ -392,8 +392,10 @@ def crop_to_content(img: Any, pad: int = 35) -> Any:
     else:
         return img
         
-    if img_arr.ndim == 3 and img_arr.shape[-1] >= 3:
-        # Detect dark stroke pixels against light/white background
+    if img_arr.ndim == 3 and img_arr.shape[-1] == 4:
+        # Detect dark non-transparent stroke pixels
+        mask = (img_arr[..., 3] > 20) & ((img_arr[..., 0] < 240) | (img_arr[..., 1] < 240) | (img_arr[..., 2] < 240))
+    elif img_arr.ndim == 3 and img_arr.shape[-1] >= 3:
         mask = (img_arr[..., 0] < 240) | (img_arr[..., 1] < 240) | (img_arr[..., 2] < 240)
     elif img_arr.ndim == 2:
         mask = img_arr < 240
@@ -407,20 +409,13 @@ def crop_to_content(img: Any, pad: int = 35) -> Any:
     y_min, y_max = int(np.min(y_indices)), int(np.max(y_indices))
     x_min, x_max = int(np.min(x_indices)), int(np.max(x_indices))
     
-    # Center and preserve square aspect ratio so loops don't distort
-    h_box = y_max - y_min
-    w_box = x_max - x_min
-    max_side = max(h_box, w_box) + pad * 2
-    cy = (y_min + y_max) // 2
-    cx = (x_min + x_max) // 2
+    h, w = img_arr.shape[:2]
+    y_min = max(0, y_min - pad)
+    y_max = min(h, y_max + pad)
+    x_min = max(0, x_min - pad)
+    x_max = min(w, x_max + pad)
     
-    h_img, w_img = img_arr.shape[:2]
-    y1 = max(0, cy - max_side // 2)
-    y2 = min(h_img, cy + max_side // 2)
-    x1 = max(0, cx - max_side // 2)
-    x2 = min(w_img, cx + max_side // 2)
-    
-    return img_arr[y1:y2, x1:x2]
+    return img_arr[y_min:y_max, x_min:x_max]
 
 
 def run_inference(image_input: Any, 
@@ -484,7 +479,7 @@ def main():
             # Tools Bar
             c_slider, c_clear = st.columns([2.5, 1], vertical_alignment="center")
             with c_slider:
-                brush_size = st.slider("Brush Size", min_value=2, max_value=20, value=14, step=1)
+                brush_size = st.slider("Brush Size", min_value=6, max_value=32, value=16, step=2)
             with c_clear:
                 if st.button("Clear", key="btn_clear_left", use_container_width=True):
                     st.session_state.canvas_key += 1
