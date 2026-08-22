@@ -237,8 +237,21 @@ def run_training(config_path: str,
         mode="min"
     )
     
+    # Check if resuming directly into Phase 2
+    resuming_phase2 = False
+    if resume:
+        latest_meta_path = checkpoint_dir / "best_model" / "state.json"
+        if latest_meta_path.exists():
+            try:
+                with open(latest_meta_path, "r", encoding="utf-8") as f:
+                    saved_meta = json.load(f)
+                    if saved_meta.get("epoch", 0) >= warmup_epochs:
+                        resuming_phase2 = True
+            except Exception:
+                pass
+
     # 5. Build Model
-    logger.info(f"Instantiating EfficientNetV2-{variant} multi-head model...")
+    logger.info(f"Instantiating EfficientNetV2-{variant} multi-head model (backbone_trainable={resuming_phase2})...")
     model = build_multitask_effnetv2(
         variant=variant,
         num_base=num_base,
@@ -246,7 +259,7 @@ def run_training(config_path: str,
         num_vattu=num_vattu,
         input_shape=(img_size, img_size, 3),
         weights=m_cfg.get("weights", "imagenet"),
-        backbone_trainable=False,  # Start frozen for Phase 1
+        backbone_trainable=resuming_phase2,  # Start frozen unless resuming Phase 2
         dropout_rate=m_cfg.get("dropout_rate", 0.3)
     )
     
@@ -330,9 +343,23 @@ def run_training(config_path: str,
     for layer in model.layers:
         layer.trainable = True
         
+    # Recreate fresh optimizer instance for the full set of trainable variables (Keras 3 requirement)
+    phase2_optimizer = tf.keras.optimizers.AdamW(
+        learning_rate=lr_schedule,
+        weight_decay=t_cfg.get("weight_decay", 1e-4),
+        global_clipnorm=t_cfg.get("global_clipnorm", 1.0),
+        use_ema=t_cfg.get("use_ema", True),
+        ema_momentum=t_cfg.get("ema_momentum", 0.999)
+    )
+    
+    # Pre-build Phase 2 optimizer on all variables and maintain step progress in lr schedule
+    phase2_optimizer.build(model.trainable_variables)
+    if hasattr(phase2_optimizer, "iterations"):
+        phase2_optimizer.iterations.assign(start_epoch * train_steps)
+        
     # Recompile after modifying layer trainability
     model.compile(
-        optimizer=optimizer,
+        optimizer=phase2_optimizer,
         loss=losses,
         loss_weights=loss_weights,
         metrics={
@@ -353,15 +380,15 @@ def run_training(config_path: str,
     )
     
     # 12. Finalize EMA weights for final model checkpoint
-    if hasattr(optimizer, "finalize_variable_values") and t_cfg.get("use_ema", True):
+    if hasattr(phase2_optimizer, "finalize_variable_values") and t_cfg.get("use_ema", True):
         logger.info("Finalizing EMA shadow weights into model parameters...")
-        optimizer.finalize_variable_values(model.trainable_variables)
+        phase2_optimizer.finalize_variable_values(model.trainable_variables)
         logger.info("Evaluating model with finalized EMA weights on validation set...")
         final_val_eval = model.evaluate(val_ds, steps=val_steps, verbose=0, return_dict=True)
         logger.info(f"Final EMA validation metrics: {final_val_eval}")
         ckpt_manager.save_state(
             model=model,
-            optimizer=optimizer,
+            optimizer=phase2_optimizer,
             epoch=total_epochs,
             metrics=final_val_eval,
             is_best=True,
