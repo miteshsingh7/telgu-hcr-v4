@@ -47,9 +47,12 @@ def compute_head_weights_from_df(df: pd.DataFrame,
 
 
 def resolve_dataset_root(candidate_paths: Optional[list] = None) -> Optional[Path]:
-    """Finds existing dataset root among standard candidate locations or auto-discovers on Kaggle."""
+    """Finds existing dataset root among standard candidate locations or auto-discovers on Kaggle/Local."""
     import os
+    home = Path.home()
     defaults = [
+        home / "Documents/projects/telugu-hcr-v3/data/Final Dataset of Telugu Handwritten Chararcters/Test1",
+        home / "Downloads/telgu_dataset/Test1",
         Path("/kaggle/input/telugu-handwritten-character-dataset/Final Dataset of Telugu Handwritten Chararcters/Test1"),
         Path("/kaggle/input/telugu-hcr/Final Dataset of Telugu Handwritten Chararcters/Test1"),
         Path("/kaggle/input/telugu-dataset/Test1"),
@@ -58,22 +61,18 @@ def resolve_dataset_root(candidate_paths: Optional[list] = None) -> Optional[Pat
     ]
     candidates = (candidate_paths or []) + defaults
     for p in candidates:
-        if p and Path(p).exists():
+        if p and Path(p).exists() and Path(p).is_dir():
             return Path(p)
             
-    # Auto-discover under /kaggle/input (recursive search for Guninthamulu or Achulu folder)
-    kaggle_input = Path("/kaggle/input")
-    if kaggle_input.exists():
-        for root, dirs, _ in os.walk(str(kaggle_input)):
-            dirs_lower = {d.lower(): d for d in dirs}
-            if "guninthamulu" in dirs_lower or "achulu" in dirs_lower:
-                return Path(root)
-                
-    for search_base in (Path("data"), Path("..")):
+    # Auto-discover under /kaggle/input (recursive search for full dataset with Guninthamulu and Achulu)
+    for search_base in (Path("/kaggle/input"), Path("data"), home / "Downloads", home / "Documents/projects"):
         if search_base.exists():
             for root, dirs, _ in os.walk(str(search_base)):
+                # Skip sample folders
+                if "data_samples" in root:
+                    continue
                 dirs_lower = {d.lower(): d for d in dirs}
-                if "guninthamulu" in dirs_lower or "achulu" in dirs_lower:
+                if "guninthamulu" in dirs_lower and "achulu" in dirs_lower:
                     return Path(root)
                     
     return None
