@@ -419,7 +419,7 @@ def run_inference(image_input: Any,
     rec_result = recombine_prediction(
         base_probs=b_probs[0],
         mod_probs=m_probs[0],
-        vattu_probs=vattu_probs[0],
+        vattu_probs=v_probs[0],
         label_maps=label_maps
     )
     
