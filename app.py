@@ -1,6 +1,8 @@
 """Telugu Handwritten Character Recognizer — Streamlit App.
 
-Exact 1-to-1 implementation of the Matte Technical Utility reference design.
+Side-by-Side 2-Column Matte Technical Utility Layout:
+- Left Column: Tools Bar + Square Drawing Canvas + Predict Button
+- Right Column: Top Predictions Heading + 3 Vertical Stacked Prediction Cards
 """
 
 import sys
@@ -77,20 +79,20 @@ def get_display_glyph(base_char: str, mod: str, vattu: str) -> str:
     return f"{base_char}{matra}"
 
 
-# Configure Streamlit Page: Centered layout with controlled width
+# Configure Streamlit Page: Wide layout for side-by-side 2 columns
 st.set_page_config(
     page_title="Telugu Akshara Recognizer",
     page_icon="✍️",
-    layout="centered",
+    layout="wide",
     initial_sidebar_state="collapsed"
 )
 
 
-# Global CSS injection matching the reference mockup
+# Global CSS injection for Matte Technical Utility 2-Column layout
 st.markdown("""
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-sans/style.css">
 <style>
-    /* Reset all Streamlit base colors to Light Matte Greige */
+    /* Global Reset to Matte Palette */
     :root, [data-theme="dark"], [data-theme="light"], .stApp {
         --bg-main: #fbf9f4 !important;
         --surface: #edebe6 !important;
@@ -116,18 +118,14 @@ st.markdown("""
         display: none !important;
     }
 
-    /* Constrain main block to exactly 480px centered column */
+    /* Container constraints */
     .block-container {
-        max-width: 480px !important;
-        padding-top: 16px !important;
-        padding-bottom: 24px !important;
-        padding-left: 12px !important;
-        padding-right: 12px !important;
+        max-width: 1100px !important;
+        padding-top: 14px !important;
+        padding-bottom: 14px !important;
+        padding-left: 24px !important;
+        padding-right: 24px !important;
         margin: 0 auto !important;
-    }
-
-    div[data-testid="stVerticalBlock"] {
-        gap: 0.5rem !important;
     }
 
     /* Top Navbar */
@@ -136,19 +134,19 @@ st.markdown("""
         justify-content: space-between;
         align-items: baseline;
         border-bottom: 1px solid #c9c7c2;
-        padding-bottom: 10px;
-        margin-bottom: 12px;
+        padding-bottom: 12px;
+        margin-bottom: 20px;
         width: 100%;
     }
 
     .top-nav-left {
         display: flex;
         align-items: baseline;
-        gap: 12px;
+        gap: 16px;
     }
 
     .brand-title {
-        font-size: 19px;
+        font-size: 22px;
         font-weight: 700;
         letter-spacing: -0.01em;
         color: #1c1c1b;
@@ -157,14 +155,14 @@ st.markdown("""
     }
 
     .brand-subtitle {
-        font-size: 13px;
+        font-size: 14px;
         color: #574239;
         margin: 0;
         white-space: nowrap;
     }
 
     .top-nav-right a {
-        font-size: 12px;
+        font-size: 13px;
         font-weight: 700;
         color: #a03d00;
         border-bottom: 1.5px solid #a03d00;
@@ -173,17 +171,19 @@ st.markdown("""
         white-space: nowrap;
     }
 
-    /* Tools Bar container */
-    div[data-testid="stHorizontalBlock"] {
-        background-color: #ffffff !important;
-        border: 1px solid #c9c7c2 !important;
-        border-radius: 4px !important;
-        padding: 6px 12px !important;
-        align-items: center !important;
-        margin-bottom: 4px !important;
+    /* Tools Bar */
+    .tools-bar-container {
+        background-color: #ffffff;
+        border: 1px solid #c9c7c2;
+        border-radius: 4px;
+        padding: 4px 12px;
+        margin-bottom: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 44px;
     }
 
-    /* Slider styling */
     .stSlider {
         margin-bottom: 0 !important;
         padding-top: 0 !important;
@@ -198,7 +198,6 @@ st.markdown("""
         border-radius: 4px !important;
         background-color: #ffffff !important;
         width: 100% !important;
-        max-width: 456px !important;
         box-shadow: none !important;
     }
 
@@ -213,8 +212,7 @@ st.markdown("""
         height: 44px !important;
         width: 100% !important;
         cursor: pointer !important;
-        margin-top: 6px !important;
-        margin-bottom: 8px !important;
+        margin-top: 8px !important;
         transition: background-color 0.15s ease !important;
     }
 
@@ -222,7 +220,7 @@ st.markdown("""
         background-color: #a84614 !important;
     }
 
-    /* Secondary Clear Button */
+    /* Clear Button */
     div.stButton > button[kind="secondary"] {
         background-color: #ffffff !important;
         color: #1c1c1b !important;
@@ -238,86 +236,86 @@ st.markdown("""
         background-color: #f5f3ee !important;
     }
 
-    /* Predictions Heading */
+    /* Right Column - Top Predictions Heading */
     .predictions-heading {
-        font-size: 16px;
+        font-size: 20px;
         font-weight: 600;
         color: #1c1c1b;
-        margin-top: 10px;
-        margin-bottom: 8px;
+        margin-top: 0px;
+        margin-bottom: 12px;
     }
 
-    /* Predictions Grid */
-    .predictions-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-        margin-bottom: 16px;
+    /* Vertical Stacked Cards */
+    .predictions-vertical-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
         width: 100%;
     }
 
-    .pred-card {
+    .pred-card-row {
         background-color: #ffffff;
         border: 1px solid #c9c7c2;
         border-radius: 4px;
-        height: 110px;
+        height: 128px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         position: relative;
         overflow: hidden;
+        width: 100%;
     }
 
-    .pred-card.primary {
+    .pred-card-row.primary {
         border: 1.5px solid #c1541a;
     }
 
-    .pred-glyph {
+    .pred-glyph-large {
         flex-grow: 1;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 38px;
+        font-size: 42px;
         font-weight: 600;
         font-family: 'Suranna', 'Gautami', 'Geist', sans-serif !important;
         color: #1c1c1b;
         line-height: 1;
-        padding-top: 6px;
+        padding-top: 4px;
     }
 
-    .pred-glyph.secondary {
+    .pred-glyph-large.secondary {
         opacity: 0.8;
     }
 
-    .pred-glyph.tertiary {
+    .pred-glyph-large.tertiary {
         opacity: 0.6;
     }
 
-    .pred-bottom-bar {
+    .pred-bottom-bar-row {
         background-color: #f5f3ee;
         border-top: 1px solid #c9c7c2;
-        padding: 4px 8px;
+        padding: 6px 12px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 11px;
+        font-size: 11.5px;
         font-weight: 600;
     }
 
-    .pred-bottom-bar .tag {
+    .pred-bottom-bar-row .tag {
         color: #1c1c1b;
     }
 
-    .pred-bottom-bar .pct-primary {
+    .pred-bottom-bar-row .pct-primary {
         color: #c1541a;
         font-weight: 700;
     }
 
-    .pred-bottom-bar .pct-secondary {
+    .pred-bottom-bar-row .pct-secondary {
         color: #574239;
     }
 
-    .pred-progress-stripe {
+    .pred-progress-stripe-row {
         position: absolute;
         bottom: 0;
         left: 0;
@@ -328,12 +326,12 @@ st.markdown("""
     /* Footer */
     .bottom-footer {
         border-top: 1px solid #c9c7c2;
-        padding-top: 12px;
-        margin-top: 16px;
+        padding-top: 14px;
+        margin-top: 24px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 11.5px;
+        font-size: 12px;
         font-weight: 600;
         color: #1c1c1b;
         width: 100%;
@@ -342,7 +340,7 @@ st.markdown("""
     .bottom-footer a {
         color: #a03d00;
         text-decoration: underline;
-        font-size: 11px;
+        font-size: 12px;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -411,7 +409,7 @@ def main():
     if "last_results" not in st.session_state:
         st.session_state.last_results = None
 
-    # 1. Top Navbar (One line)
+    # 1. Top Navbar
     st.markdown("""
     <div class="top-nav-bar">
         <div class="top-nav-left">
@@ -426,120 +424,133 @@ def main():
     
     model, label_maps = load_system_assets()
     
-    # 2. Tools Bar (Brush Slider + Clear)
-    col_brush, col_clear = st.columns([2.5, 1], vertical_alignment="center")
+    # 2. Side-by-Side 2-Column Layout
+    col_left, col_right = st.columns([1.1, 1], gap="large")
     
-    with col_brush:
-        brush_size = st.slider("Brush Size", min_value=2, max_value=20, value=6, step=1)
-        
-    with col_clear:
-        if st.button("Clear", key="btn_clear_canvas", use_container_width=True):
-            st.session_state.canvas_key += 1
-            st.session_state.last_results = None
-            st.rerun()
-            
-    image_to_process = None
-    
-    # 3. Canvas (Full 456px width inside the 480px container)
-    if CANVAS_AVAILABLE:
-        canvas_result = st_canvas(
-            fill_color="rgba(255, 255, 255, 0.0)",
-            stroke_width=brush_size,
-            stroke_color="#000000",
-            background_color="#FFFFFF",
-            width=456,
-            height=456,
-            drawing_mode="freedraw",
-            key=f"canvas_session_{st.session_state.canvas_key}"
-        )
-        if canvas_result.image_data is not None:
-            img_array = canvas_result.image_data.astype(np.uint8)
-            if np.mean(img_array[..., :3]) < 254.0:
-                image_to_process = img_array
-    else:
-        uploaded_file = st.file_uploader("Upload Image", type=["png", "jpg", "jpeg", "bmp"])
-        if uploaded_file is not None:
-            image_to_process = Image.open(uploaded_file)
-            
-    # 4. Predict Button
-    predict_clicked = st.button("Predict", type="primary", use_container_width=True)
-    
-    if predict_clicked and image_to_process is not None:
-        with st.spinner("Decoding..."):
-            rec_result, preprocessed_img = run_inference(image_to_process, model, label_maps)
-            st.session_state.last_results = (rec_result, preprocessed_img)
-            
-    # 5. Results Section (Top Predictions)
-    st.markdown('<div class="predictions-heading">Top Predictions</div>', unsafe_allow_html=True)
-    
-    if st.session_state.last_results is not None:
-        rec_result, preprocessed_img = st.session_state.last_results
-        top_candidates = rec_result["top_5"][:3]
-        
-        cards_html = ['<div class="predictions-grid">']
-        for idx, item in enumerate(top_candidates):
-            cname = item["class_name"]
-            b_char = item["base_letter"]
-            m_code = item["vowel_modifier"]
-            v_code = item["vattu"]
-            prob = item["probability"]
-            pct_str = f"{prob * 100:.1f}%"
-            glyph = get_display_glyph(b_char, m_code, v_code)
-            
-            if idx == 0:
-                card_class = "pred-card primary"
-                glyph_class = "pred-glyph"
-                tag_name = "Primary"
-                pct_class = "pct-primary"
-            elif idx == 1:
-                card_class = "pred-card"
-                glyph_class = "pred-glyph secondary"
-                tag_name = "Match"
-                pct_class = "pct-secondary"
-            else:
-                card_class = "pred-card"
-                glyph_class = "pred-glyph tertiary"
-                tag_name = "Match"
-                pct_class = "pct-secondary"
+    # --- LEFT COLUMN: Tools + Canvas + Predict ---
+    with col_left:
+        # Tools Bar
+        c_slider, c_clear = st.columns([2.5, 1], vertical_alignment="center")
+        with c_slider:
+            brush_size = st.slider("Brush Size", min_value=2, max_value=20, value=5, step=1)
+        with c_clear:
+            if st.button("Clear", key="btn_clear_left", use_container_width=True):
+                st.session_state.canvas_key += 1
+                st.session_state.last_results = None
+                st.rerun()
                 
-            stripe_w = f"{max(1.0, min(100.0, prob * 100)):.1f}%"
+        image_to_process = None
+        
+        # Canvas (Aspect square 450x450)
+        if CANVAS_AVAILABLE:
+            canvas_result = st_canvas(
+                fill_color="rgba(255, 255, 255, 0.0)",
+                stroke_width=brush_size,
+                stroke_color="#000000",
+                background_color="#FFFFFF",
+                width=450,
+                height=450,
+                drawing_mode="freedraw",
+                key=f"canvas_left_{st.session_state.canvas_key}"
+            )
+            if canvas_result.image_data is not None:
+                img_array = canvas_result.image_data.astype(np.uint8)
+                if np.mean(img_array[..., :3]) < 254.0:
+                    image_to_process = img_array
+        else:
+            uploaded_file = st.file_uploader("Upload Image", type=["png", "jpg", "jpeg", "bmp"])
+            if uploaded_file is not None:
+                image_to_process = Image.open(uploaded_file)
+                
+        # Predict Button
+        predict_clicked = st.button("Predict", type="primary", use_container_width=True)
+        
+        if predict_clicked and image_to_process is not None:
+            with st.spinner("Analyzing character..."):
+                rec_result, preprocessed_img = run_inference(image_to_process, model, label_maps)
+                st.session_state.last_results = (rec_result, preprocessed_img)
+                
+    # --- RIGHT COLUMN: Top Predictions (3 Stacked Horizontal Cards) ---
+    with col_right:
+        st.markdown('<div class="predictions-heading">Top Predictions</div>', unsafe_allow_html=True)
+        
+        if st.session_state.last_results is not None:
+            rec_result, preprocessed_img = st.session_state.last_results
+            top_candidates = rec_result["top_5"][:3]
             
-            cards_html.append(f"""
-            <div class="{card_class}">
-                <div class="{glyph_class}">{glyph}</div>
-                <div class="pred-bottom-bar">
-                    <span class="tag">{tag_name}</span>
-                    <span class="{pct_class}">{pct_str}</span>
+            cards_html = ['<div class="predictions-vertical-stack">']
+            for idx, item in enumerate(top_candidates):
+                cname = item["class_name"]
+                b_char = item["base_letter"]
+                m_code = item["vowel_modifier"]
+                v_code = item["vattu"]
+                prob = item["probability"]
+                pct_str = f"{prob * 100:.1f}%"
+                glyph = get_display_glyph(b_char, m_code, v_code)
+                
+                if idx == 0:
+                    card_class = "pred-card-row primary"
+                    glyph_class = "pred-glyph-large"
+                    tag_name = "Primary"
+                    pct_class = "pct-primary"
+                elif idx == 1:
+                    card_class = "pred-card-row"
+                    glyph_class = "pred-glyph-large secondary"
+                    tag_name = "Match"
+                    pct_class = "pct-secondary"
+                else:
+                    card_class = "pred-card-row"
+                    glyph_class = "pred-glyph-large tertiary"
+                    tag_name = "Match"
+                    pct_class = "pct-secondary"
+                    
+                stripe_w = f"{max(1.0, min(100.0, prob * 100)):.1f}%"
+                
+                cards_html.append(f"""
+                <div class="{card_class}">
+                    <div class="{glyph_class}">{glyph}</div>
+                    <div class="pred-bottom-bar-row">
+                        <span class="tag">{tag_name}</span>
+                        <span class="{pct_class}">{pct_str}</span>
+                    </div>
+                    <div class="pred-progress-stripe-row" style="width: {stripe_w};"></div>
                 </div>
-                <div class="pred-progress-stripe" style="width: {stripe_w};"></div>
+                """)
+            cards_html.append('</div>')
+            st.markdown("\n".join(cards_html), unsafe_allow_html=True)
+            
+        else:
+            # Default placeholder cards matching the 2-column reference design
+            st.markdown("""
+            <div class="predictions-vertical-stack">
+                <div class="pred-card-row primary">
+                    <div class="pred-glyph-large">అ</div>
+                    <div class="pred-bottom-bar-row">
+                        <span class="tag">Primary</span>
+                        <span class="pct-primary">98.2%</span>
+                    </div>
+                    <div class="pred-progress-stripe-row" style="width: 98.2%;"></div>
+                </div>
+                <div class="pred-card-row">
+                    <div class="pred-glyph-large secondary">ఆ</div>
+                    <div class="pred-bottom-bar-row">
+                        <span class="tag">Match</span>
+                        <span class="pct-secondary">1.5%</span>
+                    </div>
+                    <div class="pred-progress-stripe-row" style="width: 1.5%;"></div>
+                </div>
+                <div class="pred-card-row">
+                    <div class="pred-glyph-large tertiary">క</div>
+                    <div class="pred-bottom-bar-row">
+                        <span class="tag">Match</span>
+                        <span class="pct-secondary">0.2%</span>
+                    </div>
+                    <div class="pred-progress-stripe-row" style="width: 0.2%;"></div>
+                </div>
             </div>
-            """)
-        cards_html.append('</div>')
-        st.markdown("\n".join(cards_html), unsafe_allow_html=True)
-        
-    else:
-        # Default placeholder cards matching reference mockup
-        st.markdown("""
-        <div class="predictions-grid">
-            <div class="pred-card primary">
-                <div class="pred-glyph">అ</div>
-                <div class="pred-bottom-bar"><span class="tag">Primary</span><span class="pct-primary">98.2%</span></div>
-                <div class="pred-progress-stripe" style="width: 98.2%;"></div>
-            </div>
-            <div class="pred-card">
-                <div class="pred-glyph secondary">ఆ</div>
-                <div class="pred-bottom-bar"><span class="tag">Match</span><span class="pct-secondary">1.5%</span></div>
-                <div class="pred-progress-stripe" style="width: 1.5%;"></div>
-            </div>
-            <div class="pred-card">
-                <div class="pred-glyph tertiary">క</div>
-                <div class="pred-bottom-bar"><span class="tag">Match</span><span class="pct-secondary">0.2%</span></div>
-                <div class="pred-progress-stripe" style="width: 0.2%;"></div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    # 6. Bottom Footer
+            """, unsafe_allow_html=True)
+            
+    # 3. Bottom Footer
     st.markdown("""
     <div class="bottom-footer">
         <span>Model v1.2.0 • Trained on 50k+ Telugu glyphs</span>
