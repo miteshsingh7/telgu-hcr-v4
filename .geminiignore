@@ -1,0 +1,8 @@
+# Antigravity / Gemini Agent Indexing Ignore
+# Ignores HTML files and build outputs from indexing and search
+
+*.html
+**/dist/*.html
+**/build/*.html
+node_modules/
+node_modules/**/*.html

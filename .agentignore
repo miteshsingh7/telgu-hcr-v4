@@ -1,0 +1,6 @@
+# Agent Indexing Ignore
+*.html
+**/dist/*.html
+**/build/*.html
+node_modules/
+node_modules/**/*.html
