@@ -41,3 +41,10 @@ checkpoints/
 !outputs/test.csv
 !outputs/label_maps.json
 outputs/test_checkpoints/
+
+# HTML and Web Build Artifacts
+*.html
+**/dist/*.html
+**/build/*.html
+node_modules/
+node_modules/**/*.html
