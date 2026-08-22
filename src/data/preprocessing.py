@@ -53,24 +53,31 @@ def pad_to_square(image: tf.Tensor, pad_value: float = 255.0) -> tf.Tensor:
 
 def _ensure_single_channel_grayscale(img: tf.Tensor) -> tf.Tensor:
     """Converts 2D/3D image tensors of arbitrary channel count to single-channel (H, W, 1)."""
-    shape = tf.shape(img)
-    rank = tf.rank(img)
+    img = tf.cond(
+        tf.equal(tf.rank(img), 2),
+        lambda: tf.expand_dims(img, axis=-1),
+        lambda: img
+    )
     
-    if rank == 2:
-        return tf.expand_dims(img, axis=-1)
-        
-    c = img.shape[-1] if img.shape[-1] is not None else shape[-1]
-    if c == 1:
-        return img
-    elif c == 3:
-        return tf.image.rgb_to_grayscale(img)
-    elif c == 4:
-        rgb = tf.slice(img, [0, 0, 0], [shape[0], shape[1], 3])
-        alpha = tf.slice(img, [0, 0, 3], [shape[0], shape[1], 1]) / 255.0
-        blended = rgb * alpha + 255.0 * (1.0 - alpha)
-        return tf.image.rgb_to_grayscale(blended)
-    else:
-        return tf.slice(img, [0, 0, 0], [shape[0], shape[1], 1])
+    shape = tf.shape(img)
+    c = shape[-1]
+    
+    return tf.cond(
+        tf.equal(c, 1),
+        lambda: img,
+        lambda: tf.cond(
+            tf.equal(c, 3),
+            lambda: tf.image.rgb_to_grayscale(img),
+            lambda: tf.cond(
+                tf.equal(c, 4),
+                lambda: tf.image.rgb_to_grayscale(
+                    tf.slice(img, [0, 0, 0], [shape[0], shape[1], 3]) * (tf.slice(img, [0, 0, 3], [shape[0], shape[1], 1]) / 255.0) +
+                    255.0 * (1.0 - (tf.slice(img, [0, 0, 3], [shape[0], shape[1], 1]) / 255.0))
+                ),
+                lambda: tf.slice(img, [0, 0, 0], [shape[0], shape[1], 1])
+            )
+        )
+    )
 
 
 def preprocess_image(raw_image_bytes_or_array: Union[tf.Tensor, np.ndarray, bytes], 
@@ -78,7 +85,7 @@ def preprocess_image(raw_image_bytes_or_array: Union[tf.Tensor, np.ndarray, byte
     """The ONLY place image preprocessing logic is allowed to live.
     
     Pipeline:
-      1. Decode raw bytes or convert array -> tf.float32 [0, 255]
+      1. Decode raw bytes (channels=0 for BMP/PNG/JPEG/GIF compatibility) -> tf.float32 [0, 255]
       2. Convert RGB/RGBA to single grayscale channel (H, W, 1)
       3. Aspect-ratio preserving pad-to-square with white (255.0) background
       4. Bilinear resize to (img_size, img_size)
@@ -93,11 +100,13 @@ def preprocess_image(raw_image_bytes_or_array: Union[tf.Tensor, np.ndarray, byte
         (img_size, img_size, 3) float32 tensor ready for model input.
     """
     if isinstance(raw_image_bytes_or_array, (bytes, bytearray)):
-        img = tf.io.decode_image(raw_image_bytes_or_array, channels=1, expand_animations=False)
+        img = tf.io.decode_image(raw_image_bytes_or_array, channels=0, expand_animations=False)
         img = tf.cast(img, tf.float32)
+        img = _ensure_single_channel_grayscale(img)
     elif isinstance(raw_image_bytes_or_array, tf.Tensor) and raw_image_bytes_or_array.dtype == tf.string:
-        img = tf.io.decode_image(raw_image_bytes_or_array, channels=1, expand_animations=False)
+        img = tf.io.decode_image(raw_image_bytes_or_array, channels=0, expand_animations=False)
         img = tf.cast(img, tf.float32)
+        img = _ensure_single_channel_grayscale(img)
     else:
         tensor = tf.convert_to_tensor(raw_image_bytes_or_array)
         img = tf.cast(tensor, tf.float32)

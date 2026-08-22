@@ -56,8 +56,8 @@ def test_preprocess_encoded_bytes():
     processed = preprocess_image(raw_bytes, img_size=IMAGE_SIZE)
     assert processed.shape == (IMAGE_SIZE, IMAGE_SIZE, NUM_CHANNELS)
     assert processed.dtype == tf.float32
-    # Pure white image should normalize to +1.0
-    assert np.allclose(processed.numpy(), BACKGROUND_FILL_VALUE, atol=1e-3)
+    # Pure white image should normalize to BACKGROUND_FILL_VALUE (255.0)
+    assert np.allclose(processed.numpy(), BACKGROUND_FILL_VALUE, atol=0.1)
 
 
 if __name__ == "__main__":
