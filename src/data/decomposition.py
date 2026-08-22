@@ -448,10 +448,12 @@ def recombine_prediction(base_probs: np.ndarray,
         confidence = float(np.exp(best_score))
         is_fallback = True
         
-    # Top-5 joint scoring across all valid triples
+    # Top-5 joint scoring across all valid triples (normalized over valid subspace)
     all_scores = []
+    total_valid_mass = 0.0
     for b, m, v in valid_triples:
         joint_prob = float(base_probs[b] * mod_probs[m] * vattu_probs[v])
+        total_valid_mass += joint_prob
         cname = comb_map[f"{b}_{m}_{v}"]
         all_scores.append({
             "class_name": cname,
@@ -461,6 +463,11 @@ def recombine_prediction(base_probs: np.ndarray,
             "probability": joint_prob,
             "indices": (b, m, v)
         })
+        
+    if total_valid_mass > 0.0:
+        for s in all_scores:
+            s["probability"] = float(s["probability"] / total_valid_mass)
+            
     all_scores.sort(key=lambda x: x["probability"], reverse=True)
     top_5 = all_scores[:5]
     

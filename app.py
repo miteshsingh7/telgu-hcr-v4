@@ -383,11 +383,45 @@ def load_system_assets(checkpoint_dir: str = "checkpoints",
     return model, label_maps
 
 
+def crop_to_content(img: Any, pad: int = 20) -> Any:
+    """Tightly crops margins around the character strokes to match training dataset framing."""
+    if isinstance(img, Image.Image):
+        img_arr = np.array(img)
+    elif isinstance(img, np.ndarray):
+        img_arr = img
+    else:
+        return img
+        
+    if img_arr.ndim == 3 and img_arr.shape[-1] >= 3:
+        # Detect dark stroke pixels against light/white background
+        mask = (img_arr[..., 0] < 240) | (img_arr[..., 1] < 240) | (img_arr[..., 2] < 240)
+    elif img_arr.ndim == 2:
+        mask = img_arr < 240
+    else:
+        return img
+        
+    if not np.any(mask):
+        return img
+        
+    y_indices, x_indices = np.where(mask)
+    y_min, y_max = int(np.min(y_indices)), int(np.max(y_indices))
+    x_min, x_max = int(np.min(x_indices)), int(np.max(x_indices))
+    
+    h, w = img_arr.shape[:2]
+    y_min = max(0, y_min - pad)
+    y_max = min(h, y_max + pad)
+    x_min = max(0, x_min - pad)
+    x_max = min(w, x_max + pad)
+    
+    return img_arr[y_min:y_max, x_min:x_max]
+
+
 def run_inference(image_input: Any, 
                   model: tf.keras.Model, 
                   label_maps: Dict[str, Any]) -> Tuple[Dict[str, Any], np.ndarray]:
     """Runs preprocessing, forward pass, and constrained maximum-likelihood decoding."""
-    preprocessed_tensor = preprocess_image(image_input, img_size=IMAGE_SIZE)
+    cropped_image = crop_to_content(image_input)
+    preprocessed_tensor = preprocess_image(cropped_image, img_size=IMAGE_SIZE)
     input_batch = tf.expand_dims(preprocessed_tensor, axis=0)
     
     raw_preds = model(input_batch, training=False)
