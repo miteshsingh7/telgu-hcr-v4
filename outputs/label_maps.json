@@ -1,9 +1,10 @@
 {
-  "num_base_classes": 47,
+  "num_base_classes": 52,
   "num_modifier_classes": 16,
-  "num_vattu_classes": 32,
-  "num_unique_combinations": 527,
+  "num_vattu_classes": 37,
+  "num_unique_combinations": 596,
   "base_letters": [
+    "none",
     "అ",
     "ఆ",
     "ఇ",
@@ -24,16 +25,20 @@
     "ఖ",
     "గ",
     "ఘ",
+    "ఙ",
     "చ",
     "ఛ",
     "జ",
     "ఝ",
-    "ఞ",
     "ట",
     "ఠ",
     "డ",
     "ఢ",
     "ణ",
+    "త",
+    "థ",
+    "ద",
+    "ధ",
     "న",
     "ప",
     "ఫ",
@@ -53,53 +58,58 @@
     "క్ష"
   ],
   "base_map": {
-    "అ": 0,
-    "ఆ": 1,
-    "ఇ": 2,
-    "ఈ": 3,
-    "ఉ": 4,
-    "ఊ": 5,
-    "ఋ": 6,
-    "ౠ": 7,
-    "ఎ": 8,
-    "ఏ": 9,
-    "ఐ": 10,
-    "ఒ": 11,
-    "ఓ": 12,
-    "ఔ": 13,
-    "అం": 14,
-    "అః": 15,
-    "క": 16,
-    "ఖ": 17,
-    "గ": 18,
-    "ఘ": 19,
-    "చ": 20,
-    "ఛ": 21,
-    "జ": 22,
-    "ఝ": 23,
-    "ఞ": 24,
-    "ట": 25,
-    "ఠ": 26,
-    "డ": 27,
-    "ఢ": 28,
-    "ణ": 29,
-    "న": 30,
-    "ప": 31,
-    "ఫ": 32,
-    "బ": 33,
-    "భ": 34,
-    "మ": 35,
-    "య": 36,
-    "ర": 37,
-    "ఱ": 38,
-    "ల": 39,
-    "ళ": 40,
-    "వ": 41,
-    "శ": 42,
-    "ష": 43,
-    "స": 44,
-    "హ": 45,
-    "క్ష": 46
+    "none": 0,
+    "అ": 1,
+    "ఆ": 2,
+    "ఇ": 3,
+    "ఈ": 4,
+    "ఉ": 5,
+    "ఊ": 6,
+    "ఋ": 7,
+    "ౠ": 8,
+    "ఎ": 9,
+    "ఏ": 10,
+    "ఐ": 11,
+    "ఒ": 12,
+    "ఓ": 13,
+    "ఔ": 14,
+    "అం": 15,
+    "అః": 16,
+    "క": 17,
+    "ఖ": 18,
+    "గ": 19,
+    "ఘ": 20,
+    "ఙ": 21,
+    "చ": 22,
+    "ఛ": 23,
+    "జ": 24,
+    "ఝ": 25,
+    "ట": 26,
+    "ఠ": 27,
+    "డ": 28,
+    "ఢ": 29,
+    "ణ": 30,
+    "త": 31,
+    "థ": 32,
+    "ద": 33,
+    "ధ": 34,
+    "న": 35,
+    "ప": 36,
+    "ఫ": 37,
+    "బ": 38,
+    "భ": 39,
+    "మ": 40,
+    "య": 41,
+    "ర": 42,
+    "ఱ": 43,
+    "ల": 44,
+    "ళ": 45,
+    "వ": 46,
+    "శ": 47,
+    "ష": 48,
+    "స": 49,
+    "హ": 50,
+    "క్ష": 51
   },
   "vowel_modifiers": [
     "none",
@@ -139,1242 +149,1506 @@
   },
   "conjunct_modifiers": [
     "none",
-    "k",
-    "kh",
-    "g",
-    "gh",
-    "c",
-    "ch",
-    "j",
-    "jh",
-    "t",
-    "th",
-    "d",
-    "dh",
-    "ana",
-    "th_dental",
-    "d_dental",
-    "dh_dental",
-    "n",
-    "p",
-    "ph",
+    "an",
     "b",
     "bh",
-    "m",
-    "y",
-    "r",
-    "l",
-    "v",
-    "sh",
-    "s",
+    "c",
+    "ch",
+    "d",
+    "da",
+    "dh",
+    "dha",
+    "g",
+    "gh",
     "h",
-    "ks",
+    "ha",
+    "j",
+    "jh",
+    "k",
+    "kh",
+    "ksh",
+    "l",
+    "m",
+    "n",
+    "na",
+    "nn",
+    "p",
+    "ph",
+    "r",
+    "s",
+    "sa",
+    "sh",
+    "t",
+    "th",
+    "tha",
+    "tt",
+    "v",
+    "y",
     "z"
   ],
   "vattu_map": {
     "none": 0,
-    "k": 1,
-    "kh": 2,
-    "g": 3,
-    "gh": 4,
-    "c": 5,
-    "ch": 6,
-    "j": 7,
-    "jh": 8,
-    "t": 9,
-    "th": 10,
-    "d": 11,
-    "dh": 12,
-    "ana": 13,
-    "th_dental": 14,
-    "d_dental": 15,
-    "dh_dental": 16,
-    "n": 17,
-    "p": 18,
-    "ph": 19,
-    "b": 20,
-    "bh": 21,
-    "m": 22,
-    "y": 23,
-    "r": 24,
-    "l": 25,
-    "v": 26,
-    "sh": 27,
-    "s": 28,
-    "h": 29,
-    "ks": 30,
-    "z": 31
+    "an": 1,
+    "b": 2,
+    "bh": 3,
+    "c": 4,
+    "ch": 5,
+    "d": 6,
+    "da": 7,
+    "dh": 8,
+    "dha": 9,
+    "g": 10,
+    "gh": 11,
+    "h": 12,
+    "ha": 13,
+    "j": 14,
+    "jh": 15,
+    "k": 16,
+    "kh": 17,
+    "ksh": 18,
+    "l": 19,
+    "m": 20,
+    "n": 21,
+    "na": 22,
+    "nn": 23,
+    "p": 24,
+    "ph": 25,
+    "r": 26,
+    "s": 27,
+    "sa": 28,
+    "sh": 29,
+    "t": 30,
+    "th": 31,
+    "tha": 32,
+    "tt": 33,
+    "v": 34,
+    "y": 35,
+    "z": 36
   },
   "combination_to_class": {
-    "38_6_0": "Guninthamulu__RR__R",
-    "38_1_0": "Guninthamulu__RR__RRA",
-    "38_2_0": "Guninthamulu__RR__RRI",
-    "38_3_0": "Guninthamulu__RR__RRII",
-    "38_4_0": "Guninthamulu__RR__RRU",
-    "38_5_0": "Guninthamulu__RR__RRUU",
-    "38_0_0": "Guninthamulu__RR__rr",
-    "38_15_0": "Guninthamulu__RR__rrah",
-    "38_10_0": "Guninthamulu__RR__rrai",
-    "38_8_0": "Guninthamulu__RR__rre",
-    "38_9_0": "Guninthamulu__RR__rree",
-    "38_14_0": "Guninthamulu__RR__rrm",
-    "38_11_0": "Guninthamulu__RR__rro",
-    "38_12_0": "Guninthamulu__RR__rroo",
-    "38_13_0": "Guninthamulu__RR__rrow",
-    "38_7_0": "Guninthamulu__RR__rrr",
-    "29_0_0": "Guninthamulu__ana__an",
-    "29_1_0": "Guninthamulu__ana__ana",
-    "29_15_0": "Guninthamulu__ana__anah",
-    "29_10_0": "Guninthamulu__ana__anai",
-    "29_8_0": "Guninthamulu__ana__ane",
-    "29_9_0": "Guninthamulu__ana__anee",
-    "29_2_0": "Guninthamulu__ana__ani",
-    "29_3_0": "Guninthamulu__ana__anii",
-    "29_14_0": "Guninthamulu__ana__anm",
-    "29_11_0": "Guninthamulu__ana__ano",
-    "29_12_0": "Guninthamulu__ana__anoo",
-    "29_13_0": "Guninthamulu__ana__anou",
-    "29_6_0": "Guninthamulu__ana__anr",
-    "29_7_0": "Guninthamulu__ana__anru",
-    "29_4_0": "Guninthamulu__ana__anu",
-    "29_5_0": "Guninthamulu__ana__anuu",
-    "33_0_0": "Guninthamulu__ba__b",
-    "33_1_0": "Guninthamulu__ba__ba",
-    "33_15_0": "Guninthamulu__ba__bah",
-    "33_10_0": "Guninthamulu__ba__bai",
-    "33_13_0": "Guninthamulu__ba__bau",
-    "33_8_0": "Guninthamulu__ba__be",
-    "33_9_0": "Guninthamulu__ba__bee",
-    "33_2_0": "Guninthamulu__ba__bi",
-    "33_3_0": "Guninthamulu__ba__bii",
-    "33_14_0": "Guninthamulu__ba__bm",
-    "33_11_0": "Guninthamulu__ba__bo",
-    "33_12_0": "Guninthamulu__ba__boo",
-    "33_6_0": "Guninthamulu__ba__bru",
-    "33_7_0": "Guninthamulu__ba__bruu",
-    "33_4_0": "Guninthamulu__ba__bu",
-    "33_5_0": "Guninthamulu__ba__buu",
-    "34_0_0": "Guninthamulu__bha__bh",
-    "34_1_0": "Guninthamulu__bha__bha",
-    "34_15_0": "Guninthamulu__bha__bhah",
-    "34_10_0": "Guninthamulu__bha__bhai",
-    "34_13_0": "Guninthamulu__bha__bhau",
-    "34_8_0": "Guninthamulu__bha__bhe",
-    "34_9_0": "Guninthamulu__bha__bhee",
-    "34_2_0": "Guninthamulu__bha__bhi",
-    "34_3_0": "Guninthamulu__bha__bhii",
-    "34_14_0": "Guninthamulu__bha__bhm",
-    "34_11_0": "Guninthamulu__bha__bho",
-    "34_12_0": "Guninthamulu__bha__bhoo",
-    "34_6_0": "Guninthamulu__bha__bhru",
-    "34_7_0": "Guninthamulu__bha__bhruu",
-    "34_4_0": "Guninthamulu__bha__bhu",
-    "34_5_0": "Guninthamulu__bha__bhuu",
-    "21_0_0": "Guninthamulu__ch__ch",
-    "21_1_0": "Guninthamulu__ch__cha",
-    "21_15_0": "Guninthamulu__ch__chah",
-    "21_10_0": "Guninthamulu__ch__chai",
-    "21_8_0": "Guninthamulu__ch__che",
-    "21_9_0": "Guninthamulu__ch__chee",
-    "21_2_0": "Guninthamulu__ch__chi",
-    "21_3_0": "Guninthamulu__ch__chii",
-    "21_14_0": "Guninthamulu__ch__chm",
-    "21_11_0": "Guninthamulu__ch__cho",
-    "21_12_0": "Guninthamulu__ch__choo",
-    "21_13_0": "Guninthamulu__ch__chou",
-    "21_6_0": "Guninthamulu__ch__chr",
-    "21_7_0": "Guninthamulu__ch__chru",
-    "21_4_0": "Guninthamulu__ch__chu",
-    "21_5_0": "Guninthamulu__ch__chuu",
-    "20_0_0": "Guninthamulu__cha__ch",
-    "20_1_0": "Guninthamulu__cha__cha",
-    "20_15_0": "Guninthamulu__cha__chah",
-    "20_10_0": "Guninthamulu__cha__chai",
-    "20_8_0": "Guninthamulu__cha__che",
-    "20_9_0": "Guninthamulu__cha__chee",
-    "20_2_0": "Guninthamulu__cha__chi",
-    "20_3_0": "Guninthamulu__cha__chii",
-    "20_14_0": "Guninthamulu__cha__chm",
-    "20_11_0": "Guninthamulu__cha__cho",
-    "20_12_0": "Guninthamulu__cha__choo",
-    "20_13_0": "Guninthamulu__cha__chow",
-    "20_6_0": "Guninthamulu__cha__chru",
-    "20_7_0": "Guninthamulu__cha__chruu",
-    "20_4_0": "Guninthamulu__cha__chu",
-    "20_5_0": "Guninthamulu__cha__chuu",
-    "27_0_0": "Guninthamulu__d__d",
-    "27_1_0": "Guninthamulu__d__da",
-    "27_15_0": "Guninthamulu__d__dah",
-    "27_10_0": "Guninthamulu__d__dai",
-    "27_8_0": "Guninthamulu__d__de",
-    "27_9_0": "Guninthamulu__d__dee",
-    "27_2_0": "Guninthamulu__d__di",
-    "27_3_0": "Guninthamulu__d__dii",
-    "27_14_0": "Guninthamulu__d__dm",
-    "27_11_0": "Guninthamulu__d__do",
-    "27_12_0": "Guninthamulu__d__doo",
-    "27_13_0": "Guninthamulu__d__dou",
-    "27_6_0": "Guninthamulu__d__dr",
-    "27_7_0": "Guninthamulu__d__dru",
-    "27_4_0": "Guninthamulu__d__du",
-    "27_5_0": "Guninthamulu__d__duu",
-    "28_0_0": "Guninthamulu__dh__dh",
-    "28_1_0": "Guninthamulu__dh__dha",
-    "28_15_0": "Guninthamulu__dh__dhah",
-    "28_10_0": "Guninthamulu__dh__dhai",
-    "28_8_0": "Guninthamulu__dh__dhe",
-    "28_9_0": "Guninthamulu__dh__dhee",
-    "28_2_0": "Guninthamulu__dh__dhi",
-    "28_3_0": "Guninthamulu__dh__dhii",
-    "28_14_0": "Guninthamulu__dh__dhm",
-    "28_11_0": "Guninthamulu__dh__dho",
-    "28_12_0": "Guninthamulu__dh__dhoo",
-    "28_13_0": "Guninthamulu__dh__dhou",
-    "28_6_0": "Guninthamulu__dh__dhr",
-    "28_7_0": "Guninthamulu__dh__dhru",
-    "28_4_0": "Guninthamulu__dh__dhu",
-    "28_5_0": "Guninthamulu__dh__dhuu",
-    "18_0_0": "Guninthamulu__ga__ga",
-    "18_1_0": "Guninthamulu__ga__gaa",
-    "18_15_0": "Guninthamulu__ga__gaha",
-    "18_10_0": "Guninthamulu__ga__gai",
-    "18_14_0": "Guninthamulu__ga__gam",
-    "18_8_0": "Guninthamulu__ga__ge",
-    "18_9_0": "Guninthamulu__ga__gee",
-    "18_2_0": "Guninthamulu__ga__gi",
-    "18_3_0": "Guninthamulu__ga__gii",
-    "18_11_0": "Guninthamulu__ga__go",
-    "18_12_0": "Guninthamulu__ga__goo",
-    "18_13_0": "Guninthamulu__ga__gou",
-    "18_6_0": "Guninthamulu__ga__gru",
-    "18_7_0": "Guninthamulu__ga__gruu",
-    "18_4_0": "Guninthamulu__ga__gu",
-    "18_5_0": "Guninthamulu__ga__guu",
-    "19_0_0": "Guninthamulu__gha__gha",
-    "19_1_0": "Guninthamulu__gha__ghaa",
-    "19_15_0": "Guninthamulu__gha__ghaha",
-    "19_10_0": "Guninthamulu__gha__ghai",
-    "19_14_0": "Guninthamulu__gha__gham",
-    "19_8_0": "Guninthamulu__gha__ghe",
-    "19_9_0": "Guninthamulu__gha__ghee",
-    "19_2_0": "Guninthamulu__gha__ghi",
-    "19_3_0": "Guninthamulu__gha__ghii",
-    "19_11_0": "Guninthamulu__gha__gho",
-    "19_12_0": "Guninthamulu__gha__ghoo",
-    "19_13_0": "Guninthamulu__gha__ghou",
-    "19_6_0": "Guninthamulu__gha__ghru",
-    "19_7_0": "Guninthamulu__gha__ghruu",
-    "19_4_0": "Guninthamulu__gha__ghu",
-    "19_5_0": "Guninthamulu__gha__ghuu",
-    "45_0_0": "Guninthamulu__ha__h",
-    "45_1_0": "Guninthamulu__ha__ha",
-    "45_15_0": "Guninthamulu__ha__hah",
-    "45_10_0": "Guninthamulu__ha__hai",
-    "45_8_0": "Guninthamulu__ha__he",
-    "45_9_0": "Guninthamulu__ha__hee",
-    "45_2_0": "Guninthamulu__ha__hi",
-    "45_3_0": "Guninthamulu__ha__hii",
-    "45_14_0": "Guninthamulu__ha__hm",
-    "45_11_0": "Guninthamulu__ha__ho",
-    "45_12_0": "Guninthamulu__ha__hoo",
-    "45_13_0": "Guninthamulu__ha__how",
-    "45_6_0": "Guninthamulu__ha__hru",
-    "45_7_0": "Guninthamulu__ha__hruu",
-    "45_4_0": "Guninthamulu__ha__hu",
-    "45_5_0": "Guninthamulu__ha__huu",
-    "22_0_0": "Guninthamulu__ja__j",
-    "22_1_0": "Guninthamulu__ja__ja",
-    "22_15_0": "Guninthamulu__ja__jah",
-    "22_10_0": "Guninthamulu__ja__jai",
-    "22_8_0": "Guninthamulu__ja__je",
-    "22_9_0": "Guninthamulu__ja__jee",
-    "22_2_0": "Guninthamulu__ja__ji",
-    "22_3_0": "Guninthamulu__ja__jii",
-    "22_14_0": "Guninthamulu__ja__jm",
-    "22_11_0": "Guninthamulu__ja__jo",
-    "22_12_0": "Guninthamulu__ja__joo",
-    "22_13_0": "Guninthamulu__ja__jou",
-    "22_6_0": "Guninthamulu__ja__jr",
-    "22_7_0": "Guninthamulu__ja__jru",
-    "22_4_0": "Guninthamulu__ja__ju",
-    "22_5_0": "Guninthamulu__ja__juu",
-    "23_0_0": "Guninthamulu__jh__jh",
-    "23_1_0": "Guninthamulu__jh__jha",
-    "23_15_0": "Guninthamulu__jh__jhah",
-    "23_10_0": "Guninthamulu__jh__jhai",
-    "23_8_0": "Guninthamulu__jh__jhe",
-    "23_9_0": "Guninthamulu__jh__jhee",
-    "23_2_0": "Guninthamulu__jh__jhi",
-    "23_3_0": "Guninthamulu__jh__jhii",
-    "23_14_0": "Guninthamulu__jh__jhm",
-    "23_11_0": "Guninthamulu__jh__jho",
-    "23_12_0": "Guninthamulu__jh__jhoo",
-    "23_13_0": "Guninthamulu__jh__jhou",
-    "23_6_0": "Guninthamulu__jh__jhr",
-    "23_7_0": "Guninthamulu__jh__jhru",
-    "23_4_0": "Guninthamulu__jh__jhu",
-    "23_5_0": "Guninthamulu__jh__jhuu",
-    "16_0_0": "Guninthamulu__kha__ka",
-    "16_1_0": "Guninthamulu__kha__kaa",
-    "16_15_0": "Guninthamulu__kha__kaha",
-    "16_10_0": "Guninthamulu__kha__kai",
-    "16_14_0": "Guninthamulu__kha__kam",
-    "16_8_0": "Guninthamulu__kha__ke",
-    "16_9_0": "Guninthamulu__kha__kee",
-    "16_2_0": "Guninthamulu__kha__ki",
-    "16_3_0": "Guninthamulu__kha__kii",
-    "16_11_0": "Guninthamulu__kha__ko",
-    "16_12_0": "Guninthamulu__kha__koo",
-    "16_13_0": "Guninthamulu__kha__kou",
-    "16_6_0": "Guninthamulu__kha__kru",
-    "16_7_0": "Guninthamulu__kha__kruu",
-    "16_4_0": "Guninthamulu__kha__ku",
-    "16_5_0": "Guninthamulu__kha__kuu",
-    "17_0_0": "Guninthamulu__khh__kha",
-    "17_1_0": "Guninthamulu__khh__khaa",
-    "17_15_0": "Guninthamulu__khh__khaha",
-    "17_10_0": "Guninthamulu__khh__khai",
-    "17_14_0": "Guninthamulu__khh__kham",
-    "17_8_0": "Guninthamulu__khh__khe",
-    "17_9_0": "Guninthamulu__khh__khee",
-    "17_2_0": "Guninthamulu__khh__khi",
-    "17_3_0": "Guninthamulu__khh__khii",
-    "17_11_0": "Guninthamulu__khh__kho",
-    "17_12_0": "Guninthamulu__khh__khoo",
-    "17_13_0": "Guninthamulu__khh__khou",
-    "17_6_0": "Guninthamulu__khh__khru",
-    "17_7_0": "Guninthamulu__khh__khruu",
-    "17_4_0": "Guninthamulu__khh__khu",
-    "17_5_0": "Guninthamulu__khh__khuu",
-    "46_0_0": "Guninthamulu__ksh__ksh",
-    "46_1_0": "Guninthamulu__ksh__ksha",
-    "46_15_0": "Guninthamulu__ksh__kshah",
-    "46_10_0": "Guninthamulu__ksh__kshai",
-    "46_14_0": "Guninthamulu__ksh__ksham",
-    "46_8_0": "Guninthamulu__ksh__kshe",
-    "46_9_0": "Guninthamulu__ksh__kshee",
-    "46_2_0": "Guninthamulu__ksh__kshi",
-    "46_3_0": "Guninthamulu__ksh__kshii",
-    "46_11_0": "Guninthamulu__ksh__ksho",
-    "46_12_0": "Guninthamulu__ksh__kshoo",
-    "46_13_0": "Guninthamulu__ksh__kshou",
-    "46_6_0": "Guninthamulu__ksh__kshr",
-    "46_7_0": "Guninthamulu__ksh__kshru",
-    "46_4_0": "Guninthamulu__ksh__kshu",
-    "46_5_0": "Guninthamulu__ksh__kshuu",
-    "39_0_0": "Guninthamulu__l__l",
-    "39_1_0": "Guninthamulu__l__la",
-    "39_15_0": "Guninthamulu__l__lah",
-    "39_10_0": "Guninthamulu__l__lai",
-    "39_8_0": "Guninthamulu__l__le",
-    "39_9_0": "Guninthamulu__l__lee",
-    "39_2_0": "Guninthamulu__l__li",
-    "39_3_0": "Guninthamulu__l__lii",
-    "39_14_0": "Guninthamulu__l__lm",
-    "39_11_0": "Guninthamulu__l__lo",
-    "39_12_0": "Guninthamulu__l__loo",
-    "39_13_0": "Guninthamulu__l__lou",
-    "39_6_0": "Guninthamulu__l__lr",
-    "39_7_0": "Guninthamulu__l__lru",
-    "39_4_0": "Guninthamulu__l__lu",
-    "39_5_0": "Guninthamulu__l__luu",
-    "40_0_0": "Guninthamulu__ll__l",
-    "40_1_0": "Guninthamulu__ll__la",
-    "40_15_0": "Guninthamulu__ll__lah",
-    "40_10_0": "Guninthamulu__ll__lai",
-    "40_8_0": "Guninthamulu__ll__le",
-    "40_9_0": "Guninthamulu__ll__lee",
-    "40_2_0": "Guninthamulu__ll__li",
-    "40_3_0": "Guninthamulu__ll__lii",
-    "40_14_0": "Guninthamulu__ll__lm",
-    "40_11_0": "Guninthamulu__ll__lo",
-    "40_12_0": "Guninthamulu__ll__loo",
-    "40_13_0": "Guninthamulu__ll__lou",
-    "40_6_0": "Guninthamulu__ll__lr",
-    "40_7_0": "Guninthamulu__ll__lru",
-    "40_4_0": "Guninthamulu__ll__lu",
-    "40_5_0": "Guninthamulu__ll__luu",
-    "35_0_0": "Guninthamulu__ma__m",
-    "35_1_0": "Guninthamulu__ma__ma",
-    "35_15_0": "Guninthamulu__ma__mah",
-    "35_10_0": "Guninthamulu__ma__mai",
-    "35_8_0": "Guninthamulu__ma__me",
-    "35_9_0": "Guninthamulu__ma__mee",
-    "35_2_0": "Guninthamulu__ma__mi",
-    "35_3_0": "Guninthamulu__ma__mii",
-    "35_14_0": "Guninthamulu__ma__mm",
-    "35_11_0": "Guninthamulu__ma__mo",
-    "35_12_0": "Guninthamulu__ma__moo",
-    "35_13_0": "Guninthamulu__ma__mou",
-    "35_6_0": "Guninthamulu__ma__mr",
-    "35_7_0": "Guninthamulu__ma__mru",
-    "35_4_0": "Guninthamulu__ma__mu",
-    "35_5_0": "Guninthamulu__ma__muu",
-    "30_0_0": "Guninthamulu__na__n",
-    "30_1_0": "Guninthamulu__na__na",
-    "30_15_0": "Guninthamulu__na__nah",
-    "30_10_0": "Guninthamulu__na__nai",
-    "30_8_0": "Guninthamulu__na__ne",
-    "30_9_0": "Guninthamulu__na__nee",
-    "30_2_0": "Guninthamulu__na__ni",
-    "30_3_0": "Guninthamulu__na__nii",
-    "30_14_0": "Guninthamulu__na__nm",
-    "30_11_0": "Guninthamulu__na__no",
-    "30_12_0": "Guninthamulu__na__noo",
-    "30_13_0": "Guninthamulu__na__nou",
-    "30_6_0": "Guninthamulu__na__nr",
-    "30_7_0": "Guninthamulu__na__nru",
-    "30_4_0": "Guninthamulu__na__nu",
-    "30_5_0": "Guninthamulu__na__nuu",
-    "31_0_0": "Guninthamulu__pa__p",
-    "31_1_0": "Guninthamulu__pa__pa",
-    "31_15_0": "Guninthamulu__pa__pah",
-    "31_10_0": "Guninthamulu__pa__pai",
-    "31_8_0": "Guninthamulu__pa__pe",
-    "31_9_0": "Guninthamulu__pa__pee",
-    "31_2_0": "Guninthamulu__pa__pi",
-    "31_3_0": "Guninthamulu__pa__pii",
-    "31_14_0": "Guninthamulu__pa__pm",
-    "31_11_0": "Guninthamulu__pa__po",
-    "31_12_0": "Guninthamulu__pa__poo",
-    "31_13_0": "Guninthamulu__pa__pou",
-    "31_6_0": "Guninthamulu__pa__pr",
-    "31_7_0": "Guninthamulu__pa__pru",
-    "31_4_0": "Guninthamulu__pa__pu",
-    "31_5_0": "Guninthamulu__pa__puu",
-    "32_0_0": "Guninthamulu__pha__p",
-    "32_1_0": "Guninthamulu__pha__pa",
-    "32_15_0": "Guninthamulu__pha__pah",
-    "32_10_0": "Guninthamulu__pha__pai",
-    "32_8_0": "Guninthamulu__pha__pe",
-    "32_9_0": "Guninthamulu__pha__pee",
-    "32_2_0": "Guninthamulu__pha__pi",
-    "32_3_0": "Guninthamulu__pha__pii",
-    "32_14_0": "Guninthamulu__pha__pm",
-    "32_11_0": "Guninthamulu__pha__po",
-    "32_12_0": "Guninthamulu__pha__poo",
-    "32_13_0": "Guninthamulu__pha__pou",
-    "32_6_0": "Guninthamulu__pha__pr",
-    "32_7_0": "Guninthamulu__pha__pru",
-    "32_4_0": "Guninthamulu__pha__pu",
-    "32_5_0": "Guninthamulu__pha__puu",
-    "37_0_0": "Guninthamulu__ra__r",
-    "37_1_0": "Guninthamulu__ra__ra",
-    "37_15_0": "Guninthamulu__ra__rah",
-    "37_10_0": "Guninthamulu__ra__rai",
-    "37_8_0": "Guninthamulu__ra__re",
-    "37_9_0": "Guninthamulu__ra__ree",
-    "37_2_0": "Guninthamulu__ra__ri",
-    "37_3_0": "Guninthamulu__ra__rii",
-    "37_14_0": "Guninthamulu__ra__rm",
-    "37_11_0": "Guninthamulu__ra__ro",
-    "37_12_0": "Guninthamulu__ra__roo",
-    "37_13_0": "Guninthamulu__ra__rou",
-    "37_6_0": "Guninthamulu__ra__rr",
-    "37_7_0": "Guninthamulu__ra__rru",
-    "37_4_0": "Guninthamulu__ra__ru",
-    "37_5_0": "Guninthamulu__ra__ruu",
-    "44_0_0": "Guninthamulu__sa__s",
-    "44_1_0": "Guninthamulu__sa__sa",
-    "44_15_0": "Guninthamulu__sa__sah",
-    "44_10_0": "Guninthamulu__sa__sai",
-    "44_8_0": "Guninthamulu__sa__se",
-    "44_9_0": "Guninthamulu__sa__see",
-    "44_2_0": "Guninthamulu__sa__si",
-    "44_3_0": "Guninthamulu__sa__sii",
-    "44_14_0": "Guninthamulu__sa__sm",
-    "44_11_0": "Guninthamulu__sa__so",
-    "44_12_0": "Guninthamulu__sa__soo",
-    "44_13_0": "Guninthamulu__sa__sou",
-    "44_6_0": "Guninthamulu__sa__sr",
-    "44_7_0": "Guninthamulu__sa__sru",
-    "44_4_0": "Guninthamulu__sa__su",
-    "44_5_0": "Guninthamulu__sa__suu",
-    "42_0_0": "Guninthamulu__sh__sh",
-    "42_1_0": "Guninthamulu__sh__sha",
-    "42_15_0": "Guninthamulu__sh__shah",
-    "42_10_0": "Guninthamulu__sh__shai",
-    "42_8_0": "Guninthamulu__sh__she",
-    "42_9_0": "Guninthamulu__sh__shee",
-    "42_2_0": "Guninthamulu__sh__shi",
-    "42_3_0": "Guninthamulu__sh__shii",
-    "42_14_0": "Guninthamulu__sh__shm",
-    "42_11_0": "Guninthamulu__sh__sho",
-    "42_12_0": "Guninthamulu__sh__shoo",
-    "42_13_0": "Guninthamulu__sh__shou",
-    "42_6_0": "Guninthamulu__sh__shr",
-    "42_7_0": "Guninthamulu__sh__shru",
-    "42_4_0": "Guninthamulu__sh__shu",
-    "42_5_0": "Guninthamulu__sh__shuu",
-    "43_0_0": "Guninthamulu__sha__sh",
-    "43_1_0": "Guninthamulu__sha__sha",
-    "43_15_0": "Guninthamulu__sha__shah",
-    "43_10_0": "Guninthamulu__sha__shai",
-    "43_8_0": "Guninthamulu__sha__she",
-    "43_9_0": "Guninthamulu__sha__shee",
-    "43_2_0": "Guninthamulu__sha__shi",
-    "43_3_0": "Guninthamulu__sha__shii",
-    "43_14_0": "Guninthamulu__sha__shm",
-    "43_11_0": "Guninthamulu__sha__sho",
-    "43_12_0": "Guninthamulu__sha__shoo",
-    "43_13_0": "Guninthamulu__sha__shou",
-    "43_6_0": "Guninthamulu__sha__shr",
-    "43_7_0": "Guninthamulu__sha__shru",
-    "43_4_0": "Guninthamulu__sha__shu",
-    "43_5_0": "Guninthamulu__sha__shuu",
-    "25_0_0": "Guninthamulu__ta__ta",
-    "25_1_0": "Guninthamulu__ta__taa",
-    "25_15_0": "Guninthamulu__ta__taha",
-    "25_10_0": "Guninthamulu__ta__tai",
-    "25_14_0": "Guninthamulu__ta__tam",
-    "25_8_0": "Guninthamulu__ta__te",
-    "25_9_0": "Guninthamulu__ta__tee",
-    "25_2_0": "Guninthamulu__ta__ti",
-    "25_3_0": "Guninthamulu__ta__tii",
-    "25_11_0": "Guninthamulu__ta__to",
-    "25_12_0": "Guninthamulu__ta__too",
-    "25_13_0": "Guninthamulu__ta__tou",
-    "25_6_0": "Guninthamulu__ta__tru",
-    "25_7_0": "Guninthamulu__ta__truu",
-    "25_4_0": "Guninthamulu__ta__tu",
-    "25_5_0": "Guninthamulu__ta__tuu",
-    "26_0_0": "Guninthamulu__th__th",
-    "26_1_0": "Guninthamulu__th__tha",
-    "26_15_0": "Guninthamulu__th__thah",
-    "26_10_0": "Guninthamulu__th__thai",
-    "26_8_0": "Guninthamulu__th__the",
-    "26_9_0": "Guninthamulu__th__thee",
-    "26_2_0": "Guninthamulu__th__thi",
-    "26_3_0": "Guninthamulu__th__thii",
-    "26_14_0": "Guninthamulu__th__thm",
-    "26_11_0": "Guninthamulu__th__tho",
-    "26_12_0": "Guninthamulu__th__thoo",
-    "26_13_0": "Guninthamulu__th__thow",
-    "26_6_0": "Guninthamulu__th__thr",
-    "26_7_0": "Guninthamulu__th__thru",
-    "26_4_0": "Guninthamulu__th__thu",
-    "26_5_0": "Guninthamulu__th__thuu",
-    "41_0_0": "Guninthamulu__va__v",
-    "41_1_0": "Guninthamulu__va__va",
-    "41_15_0": "Guninthamulu__va__vah",
-    "41_10_0": "Guninthamulu__va__vai",
-    "41_8_0": "Guninthamulu__va__ve",
-    "41_9_0": "Guninthamulu__va__vee",
-    "41_2_0": "Guninthamulu__va__vi",
-    "41_3_0": "Guninthamulu__va__vii",
-    "41_14_0": "Guninthamulu__va__vm",
-    "41_11_0": "Guninthamulu__va__vo",
-    "41_12_0": "Guninthamulu__va__voo",
-    "41_13_0": "Guninthamulu__va__vow",
-    "41_6_0": "Guninthamulu__va__vr",
-    "41_7_0": "Guninthamulu__va__vru",
-    "41_4_0": "Guninthamulu__va__vu",
-    "41_5_0": "Guninthamulu__va__vuu",
-    "36_0_0": "Guninthamulu__ya__y",
-    "36_1_0": "Guninthamulu__ya__ya",
-    "36_15_0": "Guninthamulu__ya__yah",
-    "36_10_0": "Guninthamulu__ya__yai",
-    "36_8_0": "Guninthamulu__ya__ye",
-    "36_9_0": "Guninthamulu__ya__yee",
-    "36_2_0": "Guninthamulu__ya__yi",
-    "36_3_0": "Guninthamulu__ya__yii",
-    "36_14_0": "Guninthamulu__ya__ym",
-    "36_12_0": "Guninthamulu__ya__yoo",
-    "36_13_0": "Guninthamulu__ya__you",
-    "36_6_0": "Guninthamulu__ya__yr",
-    "36_7_0": "Guninthamulu__ya__yru",
-    "36_4_0": "Guninthamulu__ya__yu",
-    "36_5_0": "Guninthamulu__ya__yuu",
-    "0_0_0": "achulu__a",
-    "1_0_0": "achulu__aa",
-    "15_0_0": "achulu__ah",
-    "10_0_0": "achulu__ai",
-    "14_0_0": "achulu__am",
-    "13_0_0": "achulu__ao",
-    "8_0_0": "achulu__e",
-    "9_0_0": "achulu__ee",
-    "2_0_0": "achulu__i",
-    "3_0_0": "achulu__ii",
-    "11_0_0": "achulu__o",
-    "12_0_0": "achulu__oo",
-    "6_0_0": "achulu__ru",
-    "7_0_0": "achulu__ruu",
-    "4_0_0": "achulu__u",
-    "5_0_0": "achulu__uu",
-    "24_0_0": "hallulu__jna",
-    "29_0_13": "othulu__an",
-    "33_0_20": "othulu__b",
-    "34_0_21": "othulu__bh",
-    "20_0_5": "othulu__c",
-    "21_0_6": "othulu__ch",
-    "27_0_11": "othulu__d",
-    "27_0_15": "othulu__da",
-    "28_0_12": "othulu__dh",
-    "28_0_16": "othulu__dha",
-    "18_0_3": "othulu__g",
-    "19_0_4": "othulu__gh",
-    "45_0_29": "othulu__h",
-    "22_0_7": "othulu__j",
-    "23_0_8": "othulu__jh",
-    "16_0_1": "othulu__k",
-    "17_0_2": "othulu__kh",
-    "46_0_30": "othulu__ksh",
-    "39_0_25": "othulu__l",
-    "35_0_22": "othulu__m",
-    "30_0_17": "othulu__n",
-    "31_0_18": "othulu__p",
-    "32_0_19": "othulu__ph",
-    "37_0_24": "othulu__r",
-    "44_0_28": "othulu__s",
-    "42_0_27": "othulu__sh",
-    "25_0_9": "othulu__t",
-    "26_0_10": "othulu__th",
-    "26_0_14": "othulu__tha",
-    "41_0_26": "othulu__v",
-    "36_0_23": "othulu__y",
-    "16_0_31": "othulu__z"
+    "43_6_0": "Guninthamulu__RR__R",
+    "43_1_0": "Guninthamulu__RR__RRA",
+    "43_2_0": "Guninthamulu__RR__RRI",
+    "43_3_0": "Guninthamulu__RR__RRII",
+    "43_4_0": "Guninthamulu__RR__RRU",
+    "43_5_0": "Guninthamulu__RR__RRUU",
+    "43_0_0": "Guninthamulu__RR__rr",
+    "43_15_0": "Guninthamulu__RR__rrah",
+    "43_10_0": "Guninthamulu__RR__rrai",
+    "43_8_0": "Guninthamulu__RR__rre",
+    "43_9_0": "Guninthamulu__RR__rree",
+    "43_14_0": "Guninthamulu__RR__rrm",
+    "43_11_0": "Guninthamulu__RR__rro",
+    "43_12_0": "Guninthamulu__RR__rroo",
+    "43_13_0": "Guninthamulu__RR__rrow",
+    "43_7_0": "Guninthamulu__RR__rrr",
+    "30_0_0": "Guninthamulu__ana__an",
+    "30_1_0": "Guninthamulu__ana__ana",
+    "30_15_0": "Guninthamulu__ana__anah",
+    "30_10_0": "Guninthamulu__ana__anai",
+    "30_8_0": "Guninthamulu__ana__ane",
+    "30_9_0": "Guninthamulu__ana__anee",
+    "30_2_0": "Guninthamulu__ana__ani",
+    "30_3_0": "Guninthamulu__ana__anii",
+    "30_14_0": "Guninthamulu__ana__anm",
+    "30_11_0": "Guninthamulu__ana__ano",
+    "30_12_0": "Guninthamulu__ana__anoo",
+    "30_13_0": "Guninthamulu__ana__anou",
+    "30_6_0": "Guninthamulu__ana__anr",
+    "30_7_0": "Guninthamulu__ana__anru",
+    "30_4_0": "Guninthamulu__ana__anu",
+    "30_5_0": "Guninthamulu__ana__anuu",
+    "38_0_0": "Guninthamulu__ba__b",
+    "38_1_0": "Guninthamulu__ba__ba",
+    "38_15_0": "Guninthamulu__ba__bah",
+    "38_10_0": "Guninthamulu__ba__bai",
+    "38_13_0": "Guninthamulu__ba__bau",
+    "38_8_0": "Guninthamulu__ba__be",
+    "38_9_0": "Guninthamulu__ba__bee",
+    "38_2_0": "Guninthamulu__ba__bi",
+    "38_3_0": "Guninthamulu__ba__bii",
+    "38_14_0": "Guninthamulu__ba__bm",
+    "38_11_0": "Guninthamulu__ba__bo",
+    "38_12_0": "Guninthamulu__ba__boo",
+    "38_6_0": "Guninthamulu__ba__bru",
+    "38_7_0": "Guninthamulu__ba__bruu",
+    "38_4_0": "Guninthamulu__ba__bu",
+    "38_5_0": "Guninthamulu__ba__buu",
+    "39_0_0": "Guninthamulu__bha__bh",
+    "39_1_0": "Guninthamulu__bha__bha",
+    "39_15_0": "Guninthamulu__bha__bhah",
+    "39_10_0": "Guninthamulu__bha__bhai",
+    "39_13_0": "Guninthamulu__bha__bhau",
+    "39_8_0": "Guninthamulu__bha__bhe",
+    "39_9_0": "Guninthamulu__bha__bhee",
+    "39_2_0": "Guninthamulu__bha__bhi",
+    "39_3_0": "Guninthamulu__bha__bhii",
+    "39_14_0": "Guninthamulu__bha__bhm",
+    "39_11_0": "Guninthamulu__bha__bho",
+    "39_12_0": "Guninthamulu__bha__bhoo",
+    "39_6_0": "Guninthamulu__bha__bhru",
+    "39_7_0": "Guninthamulu__bha__bhruu",
+    "39_4_0": "Guninthamulu__bha__bhu",
+    "39_5_0": "Guninthamulu__bha__bhuu",
+    "22_0_0": "Guninthamulu__ch__ch",
+    "22_1_0": "Guninthamulu__ch__cha",
+    "22_15_0": "Guninthamulu__ch__chah",
+    "22_10_0": "Guninthamulu__ch__chai",
+    "22_8_0": "Guninthamulu__ch__che",
+    "22_9_0": "Guninthamulu__ch__chee",
+    "22_2_0": "Guninthamulu__ch__chi",
+    "22_3_0": "Guninthamulu__ch__chii",
+    "22_14_0": "Guninthamulu__ch__chm",
+    "22_11_0": "Guninthamulu__ch__cho",
+    "22_12_0": "Guninthamulu__ch__choo",
+    "22_13_0": "Guninthamulu__ch__chou",
+    "22_6_0": "Guninthamulu__ch__chr",
+    "22_7_0": "Guninthamulu__ch__chru",
+    "22_4_0": "Guninthamulu__ch__chu",
+    "22_5_0": "Guninthamulu__ch__chuu",
+    "23_0_0": "Guninthamulu__cha__ch",
+    "23_1_0": "Guninthamulu__cha__cha",
+    "23_15_0": "Guninthamulu__cha__chah",
+    "23_10_0": "Guninthamulu__cha__chai",
+    "23_8_0": "Guninthamulu__cha__che",
+    "23_9_0": "Guninthamulu__cha__chee",
+    "23_2_0": "Guninthamulu__cha__chi",
+    "23_3_0": "Guninthamulu__cha__chii",
+    "23_14_0": "Guninthamulu__cha__chm",
+    "23_11_0": "Guninthamulu__cha__cho",
+    "23_12_0": "Guninthamulu__cha__choo",
+    "23_13_0": "Guninthamulu__cha__chow",
+    "23_6_0": "Guninthamulu__cha__chru",
+    "23_7_0": "Guninthamulu__cha__chruu",
+    "23_4_0": "Guninthamulu__cha__chu",
+    "23_5_0": "Guninthamulu__cha__chuu",
+    "28_0_0": "Guninthamulu__d__d",
+    "28_1_0": "Guninthamulu__d__da",
+    "28_15_0": "Guninthamulu__d__dah",
+    "28_10_0": "Guninthamulu__d__dai",
+    "28_8_0": "Guninthamulu__d__de",
+    "28_9_0": "Guninthamulu__d__dee",
+    "28_2_0": "Guninthamulu__d__di",
+    "28_3_0": "Guninthamulu__d__dii",
+    "28_14_0": "Guninthamulu__d__dm",
+    "28_11_0": "Guninthamulu__d__do",
+    "28_12_0": "Guninthamulu__d__doo",
+    "28_13_0": "Guninthamulu__d__dou",
+    "28_6_0": "Guninthamulu__d__dr",
+    "28_7_0": "Guninthamulu__d__dru",
+    "28_4_0": "Guninthamulu__d__du",
+    "28_5_0": "Guninthamulu__d__duu",
+    "33_0_0": "Guninthamulu__da__da",
+    "33_1_0": "Guninthamulu__da__daa",
+    "33_15_0": "Guninthamulu__da__dah",
+    "33_10_0": "Guninthamulu__da__dai",
+    "33_8_0": "Guninthamulu__da__de",
+    "33_9_0": "Guninthamulu__da__dee",
+    "33_2_0": "Guninthamulu__da__di",
+    "33_3_0": "Guninthamulu__da__dii",
+    "33_14_0": "Guninthamulu__da__dm",
+    "33_11_0": "Guninthamulu__da__do",
+    "33_12_0": "Guninthamulu__da__doo",
+    "33_13_0": "Guninthamulu__da__dou",
+    "33_6_0": "Guninthamulu__da__dru",
+    "33_7_0": "Guninthamulu__da__druu",
+    "33_4_0": "Guninthamulu__da__du",
+    "33_5_0": "Guninthamulu__da__duu",
+    "29_0_0": "Guninthamulu__dh__dh",
+    "29_1_0": "Guninthamulu__dh__dha",
+    "29_15_0": "Guninthamulu__dh__dhah",
+    "29_10_0": "Guninthamulu__dh__dhai",
+    "29_8_0": "Guninthamulu__dh__dhe",
+    "29_9_0": "Guninthamulu__dh__dhee",
+    "29_2_0": "Guninthamulu__dh__dhi",
+    "29_3_0": "Guninthamulu__dh__dhii",
+    "29_14_0": "Guninthamulu__dh__dhm",
+    "29_11_0": "Guninthamulu__dh__dho",
+    "29_12_0": "Guninthamulu__dh__dhoo",
+    "29_13_0": "Guninthamulu__dh__dhou",
+    "29_6_0": "Guninthamulu__dh__dhr",
+    "29_7_0": "Guninthamulu__dh__dhru",
+    "29_4_0": "Guninthamulu__dh__dhu",
+    "29_5_0": "Guninthamulu__dh__dhuu",
+    "34_0_0": "Guninthamulu__dha__dh",
+    "34_1_0": "Guninthamulu__dha__dha",
+    "34_15_0": "Guninthamulu__dha__dhah",
+    "34_10_0": "Guninthamulu__dha__dhai",
+    "34_8_0": "Guninthamulu__dha__dhe",
+    "34_9_0": "Guninthamulu__dha__dhee",
+    "34_2_0": "Guninthamulu__dha__dhi",
+    "34_3_0": "Guninthamulu__dha__dhii",
+    "34_14_0": "Guninthamulu__dha__dhm",
+    "34_11_0": "Guninthamulu__dha__dho",
+    "34_12_0": "Guninthamulu__dha__dhoo",
+    "34_13_0": "Guninthamulu__dha__dhou",
+    "34_6_0": "Guninthamulu__dha__dhr",
+    "34_7_0": "Guninthamulu__dha__dhru",
+    "34_4_0": "Guninthamulu__dha__dhu",
+    "34_5_0": "Guninthamulu__dha__dhuu",
+    "19_0_0": "Guninthamulu__ga__ga",
+    "19_1_0": "Guninthamulu__ga__gaa",
+    "19_15_0": "Guninthamulu__ga__gaha",
+    "19_10_0": "Guninthamulu__ga__gai",
+    "19_14_0": "Guninthamulu__ga__gam",
+    "19_8_0": "Guninthamulu__ga__ge",
+    "19_9_0": "Guninthamulu__ga__gee",
+    "19_2_0": "Guninthamulu__ga__gi",
+    "19_3_0": "Guninthamulu__ga__gii",
+    "19_11_0": "Guninthamulu__ga__go",
+    "19_12_0": "Guninthamulu__ga__goo",
+    "19_13_0": "Guninthamulu__ga__gou",
+    "19_6_0": "Guninthamulu__ga__gru",
+    "19_7_0": "Guninthamulu__ga__gruu",
+    "19_4_0": "Guninthamulu__ga__gu",
+    "19_5_0": "Guninthamulu__ga__guu",
+    "20_0_0": "Guninthamulu__gha__gha",
+    "20_1_0": "Guninthamulu__gha__ghaa",
+    "20_15_0": "Guninthamulu__gha__ghaha",
+    "20_10_0": "Guninthamulu__gha__ghai",
+    "20_14_0": "Guninthamulu__gha__gham",
+    "20_8_0": "Guninthamulu__gha__ghe",
+    "20_9_0": "Guninthamulu__gha__ghee",
+    "20_2_0": "Guninthamulu__gha__ghi",
+    "20_3_0": "Guninthamulu__gha__ghii",
+    "20_11_0": "Guninthamulu__gha__gho",
+    "20_12_0": "Guninthamulu__gha__ghoo",
+    "20_13_0": "Guninthamulu__gha__ghou",
+    "20_6_0": "Guninthamulu__gha__ghru",
+    "20_7_0": "Guninthamulu__gha__ghruu",
+    "20_4_0": "Guninthamulu__gha__ghu",
+    "20_5_0": "Guninthamulu__gha__ghuu",
+    "50_0_0": "Guninthamulu__ha__h",
+    "50_1_0": "Guninthamulu__ha__ha",
+    "50_15_0": "Guninthamulu__ha__hah",
+    "50_10_0": "Guninthamulu__ha__hai",
+    "50_8_0": "Guninthamulu__ha__he",
+    "50_9_0": "Guninthamulu__ha__hee",
+    "50_2_0": "Guninthamulu__ha__hi",
+    "50_3_0": "Guninthamulu__ha__hii",
+    "50_14_0": "Guninthamulu__ha__hm",
+    "50_11_0": "Guninthamulu__ha__ho",
+    "50_12_0": "Guninthamulu__ha__hoo",
+    "50_13_0": "Guninthamulu__ha__how",
+    "50_6_0": "Guninthamulu__ha__hru",
+    "50_7_0": "Guninthamulu__ha__hruu",
+    "50_4_0": "Guninthamulu__ha__hu",
+    "50_5_0": "Guninthamulu__ha__huu",
+    "24_0_0": "Guninthamulu__ja__j",
+    "24_1_0": "Guninthamulu__ja__ja",
+    "24_15_0": "Guninthamulu__ja__jah",
+    "24_10_0": "Guninthamulu__ja__jai",
+    "24_8_0": "Guninthamulu__ja__je",
+    "24_9_0": "Guninthamulu__ja__jee",
+    "24_2_0": "Guninthamulu__ja__ji",
+    "24_3_0": "Guninthamulu__ja__jii",
+    "24_14_0": "Guninthamulu__ja__jm",
+    "24_11_0": "Guninthamulu__ja__jo",
+    "24_12_0": "Guninthamulu__ja__joo",
+    "24_13_0": "Guninthamulu__ja__jou",
+    "24_6_0": "Guninthamulu__ja__jr",
+    "24_7_0": "Guninthamulu__ja__jru",
+    "24_4_0": "Guninthamulu__ja__ju",
+    "24_5_0": "Guninthamulu__ja__juu",
+    "25_0_0": "Guninthamulu__jh__jh",
+    "25_1_0": "Guninthamulu__jh__jha",
+    "25_15_0": "Guninthamulu__jh__jhah",
+    "25_10_0": "Guninthamulu__jh__jhai",
+    "25_8_0": "Guninthamulu__jh__jhe",
+    "25_9_0": "Guninthamulu__jh__jhee",
+    "25_2_0": "Guninthamulu__jh__jhi",
+    "25_3_0": "Guninthamulu__jh__jhii",
+    "25_14_0": "Guninthamulu__jh__jhm",
+    "25_11_0": "Guninthamulu__jh__jho",
+    "25_12_0": "Guninthamulu__jh__jhoo",
+    "25_13_0": "Guninthamulu__jh__jhou",
+    "25_6_0": "Guninthamulu__jh__jhr",
+    "25_7_0": "Guninthamulu__jh__jhru",
+    "25_4_0": "Guninthamulu__jh__jhu",
+    "25_5_0": "Guninthamulu__jh__jhuu",
+    "17_0_0": "Guninthamulu__kha__ka",
+    "17_1_0": "Guninthamulu__kha__kaa",
+    "17_15_0": "Guninthamulu__kha__kaha",
+    "17_10_0": "Guninthamulu__kha__kai",
+    "17_14_0": "Guninthamulu__kha__kam",
+    "17_8_0": "Guninthamulu__kha__ke",
+    "17_9_0": "Guninthamulu__kha__kee",
+    "17_2_0": "Guninthamulu__kha__ki",
+    "17_3_0": "Guninthamulu__kha__kii",
+    "17_11_0": "Guninthamulu__kha__ko",
+    "17_12_0": "Guninthamulu__kha__koo",
+    "17_13_0": "Guninthamulu__kha__kou",
+    "17_6_0": "Guninthamulu__kha__kru",
+    "17_7_0": "Guninthamulu__kha__kruu",
+    "17_4_0": "Guninthamulu__kha__ku",
+    "17_5_0": "Guninthamulu__kha__kuu",
+    "18_0_0": "Guninthamulu__khh__kha",
+    "18_1_0": "Guninthamulu__khh__khaa",
+    "18_15_0": "Guninthamulu__khh__khaha",
+    "18_10_0": "Guninthamulu__khh__khai",
+    "18_14_0": "Guninthamulu__khh__kham",
+    "18_8_0": "Guninthamulu__khh__khe",
+    "18_9_0": "Guninthamulu__khh__khee",
+    "18_2_0": "Guninthamulu__khh__khi",
+    "18_3_0": "Guninthamulu__khh__khii",
+    "18_11_0": "Guninthamulu__khh__kho",
+    "18_12_0": "Guninthamulu__khh__khoo",
+    "18_13_0": "Guninthamulu__khh__khou",
+    "18_6_0": "Guninthamulu__khh__khru",
+    "18_7_0": "Guninthamulu__khh__khruu",
+    "18_4_0": "Guninthamulu__khh__khu",
+    "18_5_0": "Guninthamulu__khh__khuu",
+    "51_0_0": "Guninthamulu__ksh__ksh",
+    "51_1_0": "Guninthamulu__ksh__ksha",
+    "51_15_0": "Guninthamulu__ksh__kshah",
+    "51_10_0": "Guninthamulu__ksh__kshai",
+    "51_14_0": "Guninthamulu__ksh__ksham",
+    "51_8_0": "Guninthamulu__ksh__kshe",
+    "51_9_0": "Guninthamulu__ksh__kshee",
+    "51_2_0": "Guninthamulu__ksh__kshi",
+    "51_3_0": "Guninthamulu__ksh__kshii",
+    "51_11_0": "Guninthamulu__ksh__ksho",
+    "51_12_0": "Guninthamulu__ksh__kshoo",
+    "51_13_0": "Guninthamulu__ksh__kshou",
+    "51_6_0": "Guninthamulu__ksh__kshr",
+    "51_7_0": "Guninthamulu__ksh__kshru",
+    "51_4_0": "Guninthamulu__ksh__kshu",
+    "51_5_0": "Guninthamulu__ksh__kshuu",
+    "44_0_0": "Guninthamulu__l__l",
+    "44_1_0": "Guninthamulu__l__la",
+    "44_15_0": "Guninthamulu__l__lah",
+    "44_10_0": "Guninthamulu__l__lai",
+    "44_8_0": "Guninthamulu__l__le",
+    "44_9_0": "Guninthamulu__l__lee",
+    "44_2_0": "Guninthamulu__l__li",
+    "44_3_0": "Guninthamulu__l__lii",
+    "44_14_0": "Guninthamulu__l__lm",
+    "44_11_0": "Guninthamulu__l__lo",
+    "44_12_0": "Guninthamulu__l__loo",
+    "44_13_0": "Guninthamulu__l__lou",
+    "44_6_0": "Guninthamulu__l__lr",
+    "44_7_0": "Guninthamulu__l__lru",
+    "44_4_0": "Guninthamulu__l__lu",
+    "44_5_0": "Guninthamulu__l__luu",
+    "45_0_0": "Guninthamulu__ll__l",
+    "45_1_0": "Guninthamulu__ll__la",
+    "45_15_0": "Guninthamulu__ll__lah",
+    "45_10_0": "Guninthamulu__ll__lai",
+    "45_8_0": "Guninthamulu__ll__le",
+    "45_9_0": "Guninthamulu__ll__lee",
+    "45_2_0": "Guninthamulu__ll__li",
+    "45_3_0": "Guninthamulu__ll__lii",
+    "45_14_0": "Guninthamulu__ll__lm",
+    "45_11_0": "Guninthamulu__ll__lo",
+    "45_12_0": "Guninthamulu__ll__loo",
+    "45_13_0": "Guninthamulu__ll__lou",
+    "45_6_0": "Guninthamulu__ll__lr",
+    "45_7_0": "Guninthamulu__ll__lru",
+    "45_4_0": "Guninthamulu__ll__lu",
+    "45_5_0": "Guninthamulu__ll__luu",
+    "40_0_0": "Guninthamulu__ma__m",
+    "40_1_0": "Guninthamulu__ma__ma",
+    "40_15_0": "Guninthamulu__ma__mah",
+    "40_10_0": "Guninthamulu__ma__mai",
+    "40_8_0": "Guninthamulu__ma__me",
+    "40_9_0": "Guninthamulu__ma__mee",
+    "40_2_0": "Guninthamulu__ma__mi",
+    "40_3_0": "Guninthamulu__ma__mii",
+    "40_14_0": "Guninthamulu__ma__mm",
+    "40_11_0": "Guninthamulu__ma__mo",
+    "40_12_0": "Guninthamulu__ma__moo",
+    "40_13_0": "Guninthamulu__ma__mou",
+    "40_6_0": "Guninthamulu__ma__mr",
+    "40_7_0": "Guninthamulu__ma__mru",
+    "40_4_0": "Guninthamulu__ma__mu",
+    "40_5_0": "Guninthamulu__ma__muu",
+    "35_0_0": "Guninthamulu__na__n",
+    "35_1_0": "Guninthamulu__na__na",
+    "35_15_0": "Guninthamulu__na__nah",
+    "35_10_0": "Guninthamulu__na__nai",
+    "35_8_0": "Guninthamulu__na__ne",
+    "35_9_0": "Guninthamulu__na__nee",
+    "35_2_0": "Guninthamulu__na__ni",
+    "35_3_0": "Guninthamulu__na__nii",
+    "35_14_0": "Guninthamulu__na__nm",
+    "35_11_0": "Guninthamulu__na__no",
+    "35_12_0": "Guninthamulu__na__noo",
+    "35_13_0": "Guninthamulu__na__nou",
+    "35_6_0": "Guninthamulu__na__nr",
+    "35_7_0": "Guninthamulu__na__nru",
+    "35_4_0": "Guninthamulu__na__nu",
+    "35_5_0": "Guninthamulu__na__nuu",
+    "36_0_0": "Guninthamulu__pa__p",
+    "36_1_0": "Guninthamulu__pa__pa",
+    "36_15_0": "Guninthamulu__pa__pah",
+    "36_10_0": "Guninthamulu__pa__pai",
+    "36_8_0": "Guninthamulu__pa__pe",
+    "36_9_0": "Guninthamulu__pa__pee",
+    "36_2_0": "Guninthamulu__pa__pi",
+    "36_3_0": "Guninthamulu__pa__pii",
+    "36_14_0": "Guninthamulu__pa__pm",
+    "36_11_0": "Guninthamulu__pa__po",
+    "36_12_0": "Guninthamulu__pa__poo",
+    "36_13_0": "Guninthamulu__pa__pou",
+    "36_6_0": "Guninthamulu__pa__pr",
+    "36_7_0": "Guninthamulu__pa__pru",
+    "36_4_0": "Guninthamulu__pa__pu",
+    "36_5_0": "Guninthamulu__pa__puu",
+    "37_0_0": "Guninthamulu__pha__p",
+    "37_1_0": "Guninthamulu__pha__pa",
+    "37_15_0": "Guninthamulu__pha__pah",
+    "37_10_0": "Guninthamulu__pha__pai",
+    "37_8_0": "Guninthamulu__pha__pe",
+    "37_9_0": "Guninthamulu__pha__pee",
+    "37_2_0": "Guninthamulu__pha__pi",
+    "37_3_0": "Guninthamulu__pha__pii",
+    "37_14_0": "Guninthamulu__pha__pm",
+    "37_11_0": "Guninthamulu__pha__po",
+    "37_12_0": "Guninthamulu__pha__poo",
+    "37_13_0": "Guninthamulu__pha__pou",
+    "37_6_0": "Guninthamulu__pha__pr",
+    "37_7_0": "Guninthamulu__pha__pru",
+    "37_4_0": "Guninthamulu__pha__pu",
+    "37_5_0": "Guninthamulu__pha__puu",
+    "42_0_0": "Guninthamulu__ra__r",
+    "42_1_0": "Guninthamulu__ra__ra",
+    "42_15_0": "Guninthamulu__ra__rah",
+    "42_10_0": "Guninthamulu__ra__rai",
+    "42_8_0": "Guninthamulu__ra__re",
+    "42_9_0": "Guninthamulu__ra__ree",
+    "42_2_0": "Guninthamulu__ra__ri",
+    "42_3_0": "Guninthamulu__ra__rii",
+    "42_14_0": "Guninthamulu__ra__rm",
+    "42_11_0": "Guninthamulu__ra__ro",
+    "42_12_0": "Guninthamulu__ra__roo",
+    "42_13_0": "Guninthamulu__ra__rou",
+    "42_6_0": "Guninthamulu__ra__rr",
+    "42_7_0": "Guninthamulu__ra__rru",
+    "42_4_0": "Guninthamulu__ra__ru",
+    "42_5_0": "Guninthamulu__ra__ruu",
+    "49_0_0": "Guninthamulu__sa__s",
+    "49_1_0": "Guninthamulu__sa__sa",
+    "49_15_0": "Guninthamulu__sa__sah",
+    "49_10_0": "Guninthamulu__sa__sai",
+    "49_8_0": "Guninthamulu__sa__se",
+    "49_9_0": "Guninthamulu__sa__see",
+    "49_2_0": "Guninthamulu__sa__si",
+    "49_3_0": "Guninthamulu__sa__sii",
+    "49_14_0": "Guninthamulu__sa__sm",
+    "49_11_0": "Guninthamulu__sa__so",
+    "49_12_0": "Guninthamulu__sa__soo",
+    "49_13_0": "Guninthamulu__sa__sou",
+    "49_6_0": "Guninthamulu__sa__sr",
+    "49_7_0": "Guninthamulu__sa__sru",
+    "49_4_0": "Guninthamulu__sa__su",
+    "49_5_0": "Guninthamulu__sa__suu",
+    "48_0_0": "Guninthamulu__sh__sh",
+    "48_1_0": "Guninthamulu__sh__sha",
+    "48_15_0": "Guninthamulu__sh__shah",
+    "48_10_0": "Guninthamulu__sh__shai",
+    "48_8_0": "Guninthamulu__sh__she",
+    "48_9_0": "Guninthamulu__sh__shee",
+    "48_2_0": "Guninthamulu__sh__shi",
+    "48_3_0": "Guninthamulu__sh__shii",
+    "48_14_0": "Guninthamulu__sh__shm",
+    "48_11_0": "Guninthamulu__sh__sho",
+    "48_12_0": "Guninthamulu__sh__shoo",
+    "48_13_0": "Guninthamulu__sh__shou",
+    "48_6_0": "Guninthamulu__sh__shr",
+    "48_7_0": "Guninthamulu__sh__shru",
+    "48_4_0": "Guninthamulu__sh__shu",
+    "48_5_0": "Guninthamulu__sh__shuu",
+    "47_0_0": "Guninthamulu__sha__sh",
+    "47_1_0": "Guninthamulu__sha__sha",
+    "47_15_0": "Guninthamulu__sha__shah",
+    "47_10_0": "Guninthamulu__sha__shai",
+    "47_8_0": "Guninthamulu__sha__she",
+    "47_9_0": "Guninthamulu__sha__shee",
+    "47_2_0": "Guninthamulu__sha__shi",
+    "47_3_0": "Guninthamulu__sha__shii",
+    "47_14_0": "Guninthamulu__sha__shm",
+    "47_11_0": "Guninthamulu__sha__sho",
+    "47_12_0": "Guninthamulu__sha__shoo",
+    "47_13_0": "Guninthamulu__sha__shou",
+    "47_6_0": "Guninthamulu__sha__shr",
+    "47_7_0": "Guninthamulu__sha__shru",
+    "47_4_0": "Guninthamulu__sha__shu",
+    "47_5_0": "Guninthamulu__sha__shuu",
+    "26_0_0": "Guninthamulu__ta__ta",
+    "26_1_0": "Guninthamulu__ta__taa",
+    "26_15_0": "Guninthamulu__ta__taha",
+    "26_10_0": "Guninthamulu__ta__tai",
+    "26_14_0": "Guninthamulu__ta__tam",
+    "26_8_0": "Guninthamulu__ta__te",
+    "26_9_0": "Guninthamulu__ta__tee",
+    "26_2_0": "Guninthamulu__ta__ti",
+    "26_3_0": "Guninthamulu__ta__tii",
+    "26_11_0": "Guninthamulu__ta__to",
+    "26_12_0": "Guninthamulu__ta__too",
+    "26_13_0": "Guninthamulu__ta__tou",
+    "26_6_0": "Guninthamulu__ta__tru",
+    "26_7_0": "Guninthamulu__ta__truu",
+    "26_4_0": "Guninthamulu__ta__tu",
+    "26_5_0": "Guninthamulu__ta__tuu",
+    "31_0_0": "Guninthamulu__th__th",
+    "31_1_0": "Guninthamulu__th__tha",
+    "31_15_0": "Guninthamulu__th__thah",
+    "31_10_0": "Guninthamulu__th__thai",
+    "31_8_0": "Guninthamulu__th__the",
+    "31_9_0": "Guninthamulu__th__thee",
+    "31_2_0": "Guninthamulu__th__thi",
+    "31_3_0": "Guninthamulu__th__thii",
+    "31_14_0": "Guninthamulu__th__thm",
+    "31_11_0": "Guninthamulu__th__tho",
+    "31_12_0": "Guninthamulu__th__thoo",
+    "31_13_0": "Guninthamulu__th__thow",
+    "31_6_0": "Guninthamulu__th__thr",
+    "31_7_0": "Guninthamulu__th__thru",
+    "31_4_0": "Guninthamulu__th__thu",
+    "31_5_0": "Guninthamulu__th__thuu",
+    "32_0_0": "Guninthamulu__tha__th",
+    "32_1_0": "Guninthamulu__tha__tha",
+    "32_15_0": "Guninthamulu__tha__thah",
+    "32_10_0": "Guninthamulu__tha__thai",
+    "32_8_0": "Guninthamulu__tha__the",
+    "32_9_0": "Guninthamulu__tha__thee",
+    "32_2_0": "Guninthamulu__tha__thi",
+    "32_3_0": "Guninthamulu__tha__thii",
+    "32_14_0": "Guninthamulu__tha__thm",
+    "32_11_0": "Guninthamulu__tha__tho",
+    "32_12_0": "Guninthamulu__tha__thoo",
+    "32_13_0": "Guninthamulu__tha__thou",
+    "32_6_0": "Guninthamulu__tha__thr",
+    "32_7_0": "Guninthamulu__tha__thru",
+    "32_4_0": "Guninthamulu__tha__thu",
+    "32_5_0": "Guninthamulu__tha__thuu",
+    "27_0_0": "Guninthamulu__tt__t",
+    "27_1_0": "Guninthamulu__tt__ta",
+    "27_15_0": "Guninthamulu__tt__tah",
+    "27_10_0": "Guninthamulu__tt__tai",
+    "27_8_0": "Guninthamulu__tt__te",
+    "27_9_0": "Guninthamulu__tt__tee",
+    "27_2_0": "Guninthamulu__tt__ti",
+    "27_3_0": "Guninthamulu__tt__tii",
+    "27_14_0": "Guninthamulu__tt__tm",
+    "27_11_0": "Guninthamulu__tt__to",
+    "27_12_0": "Guninthamulu__tt__too",
+    "27_13_0": "Guninthamulu__tt__tou",
+    "27_6_0": "Guninthamulu__tt__tr",
+    "27_7_0": "Guninthamulu__tt__tru",
+    "27_4_0": "Guninthamulu__tt__tu",
+    "27_5_0": "Guninthamulu__tt__tuu",
+    "46_0_0": "Guninthamulu__va__v",
+    "46_1_0": "Guninthamulu__va__va",
+    "46_15_0": "Guninthamulu__va__vah",
+    "46_10_0": "Guninthamulu__va__vai",
+    "46_8_0": "Guninthamulu__va__ve",
+    "46_9_0": "Guninthamulu__va__vee",
+    "46_2_0": "Guninthamulu__va__vi",
+    "46_3_0": "Guninthamulu__va__vii",
+    "46_14_0": "Guninthamulu__va__vm",
+    "46_11_0": "Guninthamulu__va__vo",
+    "46_12_0": "Guninthamulu__va__voo",
+    "46_13_0": "Guninthamulu__va__vow",
+    "46_6_0": "Guninthamulu__va__vr",
+    "46_7_0": "Guninthamulu__va__vru",
+    "46_4_0": "Guninthamulu__va__vu",
+    "46_5_0": "Guninthamulu__va__vuu",
+    "41_0_0": "Guninthamulu__ya__y",
+    "41_1_0": "Guninthamulu__ya__ya",
+    "41_15_0": "Guninthamulu__ya__yah",
+    "41_10_0": "Guninthamulu__ya__yai",
+    "41_8_0": "Guninthamulu__ya__ye",
+    "41_9_0": "Guninthamulu__ya__yee",
+    "41_2_0": "Guninthamulu__ya__yi",
+    "41_3_0": "Guninthamulu__ya__yii",
+    "41_14_0": "Guninthamulu__ya__ym",
+    "41_12_0": "Guninthamulu__ya__yoo",
+    "41_13_0": "Guninthamulu__ya__you",
+    "41_6_0": "Guninthamulu__ya__yr",
+    "41_7_0": "Guninthamulu__ya__yru",
+    "41_4_0": "Guninthamulu__ya__yu",
+    "41_5_0": "Guninthamulu__ya__yuu",
+    "1_0_0": "achulu__a",
+    "2_0_0": "achulu__aa",
+    "16_0_0": "achulu__ah",
+    "11_0_0": "achulu__ai",
+    "15_0_0": "achulu__am",
+    "14_0_0": "achulu__ao",
+    "9_0_0": "achulu__e",
+    "10_0_0": "achulu__ee",
+    "3_0_0": "achulu__i",
+    "4_0_0": "achulu__ii",
+    "12_0_0": "achulu__o",
+    "13_0_0": "achulu__oo",
+    "7_0_0": "achulu__ru",
+    "8_0_0": "achulu__ruu",
+    "5_0_0": "achulu__u",
+    "6_0_0": "achulu__uu",
+    "21_0_0": "hallulu__jna",
+    "0_0_1": "othulu__an",
+    "0_0_2": "othulu__b",
+    "0_0_3": "othulu__bh",
+    "0_0_4": "othulu__c",
+    "0_0_5": "othulu__ch",
+    "0_0_6": "othulu__d",
+    "0_0_7": "othulu__da",
+    "0_0_8": "othulu__dh",
+    "0_0_9": "othulu__dha",
+    "0_0_10": "othulu__g",
+    "0_0_11": "othulu__gh",
+    "0_0_12": "othulu__h",
+    "0_0_13": "othulu__ha",
+    "0_0_14": "othulu__j",
+    "0_0_15": "othulu__jh",
+    "0_0_16": "othulu__k",
+    "0_0_17": "othulu__kh",
+    "0_0_18": "othulu__ksh",
+    "0_0_19": "othulu__l",
+    "0_0_20": "othulu__m",
+    "0_0_21": "othulu__n",
+    "0_0_22": "othulu__na",
+    "0_0_23": "othulu__nn",
+    "0_0_24": "othulu__p",
+    "0_0_25": "othulu__ph",
+    "0_0_26": "othulu__r",
+    "0_0_27": "othulu__s",
+    "0_0_28": "othulu__sa",
+    "0_0_29": "othulu__sh",
+    "0_0_30": "othulu__t",
+    "0_0_31": "othulu__th",
+    "0_0_32": "othulu__tha",
+    "0_0_33": "othulu__tt",
+    "0_0_34": "othulu__v",
+    "0_0_35": "othulu__y",
+    "0_0_36": "othulu__z"
   },
   "class_to_combination": {
-    "Guninthamulu__RR__R": "38_6_0",
-    "Guninthamulu__RR__RRA": "38_1_0",
-    "Guninthamulu__RR__RRI": "38_2_0",
-    "Guninthamulu__RR__RRII": "38_3_0",
-    "Guninthamulu__RR__RRU": "38_4_0",
-    "Guninthamulu__RR__RRUU": "38_5_0",
-    "Guninthamulu__RR__rr": "38_0_0",
-    "Guninthamulu__RR__rrah": "38_15_0",
-    "Guninthamulu__RR__rrai": "38_10_0",
-    "Guninthamulu__RR__rre": "38_8_0",
-    "Guninthamulu__RR__rree": "38_9_0",
-    "Guninthamulu__RR__rrm": "38_14_0",
-    "Guninthamulu__RR__rro": "38_11_0",
-    "Guninthamulu__RR__rroo": "38_12_0",
-    "Guninthamulu__RR__rrow": "38_13_0",
-    "Guninthamulu__RR__rrr": "38_7_0",
-    "Guninthamulu__ana__an": "29_0_0",
-    "Guninthamulu__ana__ana": "29_1_0",
-    "Guninthamulu__ana__anah": "29_15_0",
-    "Guninthamulu__ana__anai": "29_10_0",
-    "Guninthamulu__ana__ane": "29_8_0",
-    "Guninthamulu__ana__anee": "29_9_0",
-    "Guninthamulu__ana__ani": "29_2_0",
-    "Guninthamulu__ana__anii": "29_3_0",
-    "Guninthamulu__ana__anm": "29_14_0",
-    "Guninthamulu__ana__ano": "29_11_0",
-    "Guninthamulu__ana__anoo": "29_12_0",
-    "Guninthamulu__ana__anou": "29_13_0",
-    "Guninthamulu__ana__anr": "29_6_0",
-    "Guninthamulu__ana__anru": "29_7_0",
-    "Guninthamulu__ana__anu": "29_4_0",
-    "Guninthamulu__ana__anuu": "29_5_0",
-    "Guninthamulu__ba__b": "33_0_0",
-    "Guninthamulu__ba__ba": "33_1_0",
-    "Guninthamulu__ba__bah": "33_15_0",
-    "Guninthamulu__ba__bai": "33_10_0",
-    "Guninthamulu__ba__bau": "33_13_0",
-    "Guninthamulu__ba__be": "33_8_0",
-    "Guninthamulu__ba__bee": "33_9_0",
-    "Guninthamulu__ba__bi": "33_2_0",
-    "Guninthamulu__ba__bii": "33_3_0",
-    "Guninthamulu__ba__bm": "33_14_0",
-    "Guninthamulu__ba__bo": "33_11_0",
-    "Guninthamulu__ba__boo": "33_12_0",
-    "Guninthamulu__ba__bru": "33_6_0",
-    "Guninthamulu__ba__bruu": "33_7_0",
-    "Guninthamulu__ba__bu": "33_4_0",
-    "Guninthamulu__ba__buu": "33_5_0",
-    "Guninthamulu__bha__bh": "34_0_0",
-    "Guninthamulu__bha__bha": "34_1_0",
-    "Guninthamulu__bha__bhah": "34_15_0",
-    "Guninthamulu__bha__bhai": "34_10_0",
-    "Guninthamulu__bha__bhau": "34_13_0",
-    "Guninthamulu__bha__bhe": "34_8_0",
-    "Guninthamulu__bha__bhee": "34_9_0",
-    "Guninthamulu__bha__bhi": "34_2_0",
-    "Guninthamulu__bha__bhii": "34_3_0",
-    "Guninthamulu__bha__bhm": "34_14_0",
-    "Guninthamulu__bha__bho": "34_11_0",
-    "Guninthamulu__bha__bhoo": "34_12_0",
-    "Guninthamulu__bha__bhru": "34_6_0",
-    "Guninthamulu__bha__bhruu": "34_7_0",
-    "Guninthamulu__bha__bhu": "34_4_0",
-    "Guninthamulu__bha__bhuu": "34_5_0",
-    "Guninthamulu__ch__ch": "21_0_0",
-    "Guninthamulu__ch__cha": "21_1_0",
-    "Guninthamulu__ch__chah": "21_15_0",
-    "Guninthamulu__ch__chai": "21_10_0",
-    "Guninthamulu__ch__che": "21_8_0",
-    "Guninthamulu__ch__chee": "21_9_0",
-    "Guninthamulu__ch__chi": "21_2_0",
-    "Guninthamulu__ch__chii": "21_3_0",
-    "Guninthamulu__ch__chm": "21_14_0",
-    "Guninthamulu__ch__cho": "21_11_0",
-    "Guninthamulu__ch__choo": "21_12_0",
-    "Guninthamulu__ch__chou": "21_13_0",
-    "Guninthamulu__ch__chr": "21_6_0",
-    "Guninthamulu__ch__chru": "21_7_0",
-    "Guninthamulu__ch__chu": "21_4_0",
-    "Guninthamulu__ch__chuu": "21_5_0",
-    "Guninthamulu__cha__ch": "20_0_0",
-    "Guninthamulu__cha__cha": "20_1_0",
-    "Guninthamulu__cha__chah": "20_15_0",
-    "Guninthamulu__cha__chai": "20_10_0",
-    "Guninthamulu__cha__che": "20_8_0",
-    "Guninthamulu__cha__chee": "20_9_0",
-    "Guninthamulu__cha__chi": "20_2_0",
-    "Guninthamulu__cha__chii": "20_3_0",
-    "Guninthamulu__cha__chm": "20_14_0",
-    "Guninthamulu__cha__cho": "20_11_0",
-    "Guninthamulu__cha__choo": "20_12_0",
-    "Guninthamulu__cha__chow": "20_13_0",
-    "Guninthamulu__cha__chru": "20_6_0",
-    "Guninthamulu__cha__chruu": "20_7_0",
-    "Guninthamulu__cha__chu": "20_4_0",
-    "Guninthamulu__cha__chuu": "20_5_0",
-    "Guninthamulu__d__d": "27_0_0",
-    "Guninthamulu__d__da": "27_1_0",
-    "Guninthamulu__d__dah": "27_15_0",
-    "Guninthamulu__d__dai": "27_10_0",
-    "Guninthamulu__d__de": "27_8_0",
-    "Guninthamulu__d__dee": "27_9_0",
-    "Guninthamulu__d__di": "27_2_0",
-    "Guninthamulu__d__dii": "27_3_0",
-    "Guninthamulu__d__dm": "27_14_0",
-    "Guninthamulu__d__do": "27_11_0",
-    "Guninthamulu__d__doo": "27_12_0",
-    "Guninthamulu__d__dou": "27_13_0",
-    "Guninthamulu__d__dr": "27_6_0",
-    "Guninthamulu__d__dru": "27_7_0",
-    "Guninthamulu__d__du": "27_4_0",
-    "Guninthamulu__d__duu": "27_5_0",
-    "Guninthamulu__da__da": "27_0_0",
-    "Guninthamulu__da__daa": "27_1_0",
-    "Guninthamulu__da__dah": "27_15_0",
-    "Guninthamulu__da__dai": "27_10_0",
-    "Guninthamulu__da__de": "27_8_0",
-    "Guninthamulu__da__dee": "27_9_0",
-    "Guninthamulu__da__di": "27_2_0",
-    "Guninthamulu__da__dii": "27_3_0",
-    "Guninthamulu__da__dm": "27_14_0",
-    "Guninthamulu__da__do": "27_11_0",
-    "Guninthamulu__da__doo": "27_12_0",
-    "Guninthamulu__da__dou": "27_13_0",
-    "Guninthamulu__da__dru": "27_6_0",
-    "Guninthamulu__da__druu": "27_7_0",
-    "Guninthamulu__da__du": "27_4_0",
-    "Guninthamulu__da__duu": "27_5_0",
-    "Guninthamulu__dh__dh": "28_0_0",
-    "Guninthamulu__dh__dha": "28_1_0",
-    "Guninthamulu__dh__dhah": "28_15_0",
-    "Guninthamulu__dh__dhai": "28_10_0",
-    "Guninthamulu__dh__dhe": "28_8_0",
-    "Guninthamulu__dh__dhee": "28_9_0",
-    "Guninthamulu__dh__dhi": "28_2_0",
-    "Guninthamulu__dh__dhii": "28_3_0",
-    "Guninthamulu__dh__dhm": "28_14_0",
-    "Guninthamulu__dh__dho": "28_11_0",
-    "Guninthamulu__dh__dhoo": "28_12_0",
-    "Guninthamulu__dh__dhou": "28_13_0",
-    "Guninthamulu__dh__dhr": "28_6_0",
-    "Guninthamulu__dh__dhru": "28_7_0",
-    "Guninthamulu__dh__dhu": "28_4_0",
-    "Guninthamulu__dh__dhuu": "28_5_0",
-    "Guninthamulu__dha__dh": "28_0_0",
-    "Guninthamulu__dha__dha": "28_1_0",
-    "Guninthamulu__dha__dhah": "28_15_0",
-    "Guninthamulu__dha__dhai": "28_10_0",
-    "Guninthamulu__dha__dhe": "28_8_0",
-    "Guninthamulu__dha__dhee": "28_9_0",
-    "Guninthamulu__dha__dhi": "28_2_0",
-    "Guninthamulu__dha__dhii": "28_3_0",
-    "Guninthamulu__dha__dhm": "28_14_0",
-    "Guninthamulu__dha__dho": "28_11_0",
-    "Guninthamulu__dha__dhoo": "28_12_0",
-    "Guninthamulu__dha__dhou": "28_13_0",
-    "Guninthamulu__dha__dhr": "28_6_0",
-    "Guninthamulu__dha__dhru": "28_7_0",
-    "Guninthamulu__dha__dhu": "28_4_0",
-    "Guninthamulu__dha__dhuu": "28_5_0",
-    "Guninthamulu__ga__ga": "18_0_0",
-    "Guninthamulu__ga__gaa": "18_1_0",
-    "Guninthamulu__ga__gaha": "18_15_0",
-    "Guninthamulu__ga__gai": "18_10_0",
-    "Guninthamulu__ga__gam": "18_14_0",
-    "Guninthamulu__ga__ge": "18_8_0",
-    "Guninthamulu__ga__gee": "18_9_0",
-    "Guninthamulu__ga__gi": "18_2_0",
-    "Guninthamulu__ga__gii": "18_3_0",
-    "Guninthamulu__ga__go": "18_11_0",
-    "Guninthamulu__ga__goo": "18_12_0",
-    "Guninthamulu__ga__gou": "18_13_0",
-    "Guninthamulu__ga__gru": "18_6_0",
-    "Guninthamulu__ga__gruu": "18_7_0",
-    "Guninthamulu__ga__gu": "18_4_0",
-    "Guninthamulu__ga__guu": "18_5_0",
-    "Guninthamulu__gha__gha": "19_0_0",
-    "Guninthamulu__gha__ghaa": "19_1_0",
-    "Guninthamulu__gha__ghaha": "19_15_0",
-    "Guninthamulu__gha__ghai": "19_10_0",
-    "Guninthamulu__gha__gham": "19_14_0",
-    "Guninthamulu__gha__ghe": "19_8_0",
-    "Guninthamulu__gha__ghee": "19_9_0",
-    "Guninthamulu__gha__ghi": "19_2_0",
-    "Guninthamulu__gha__ghii": "19_3_0",
-    "Guninthamulu__gha__gho": "19_11_0",
-    "Guninthamulu__gha__ghoo": "19_12_0",
-    "Guninthamulu__gha__ghou": "19_13_0",
-    "Guninthamulu__gha__ghru": "19_6_0",
-    "Guninthamulu__gha__ghruu": "19_7_0",
-    "Guninthamulu__gha__ghu": "19_4_0",
-    "Guninthamulu__gha__ghuu": "19_5_0",
-    "Guninthamulu__ha__h": "45_0_0",
-    "Guninthamulu__ha__ha": "45_1_0",
-    "Guninthamulu__ha__hah": "45_15_0",
-    "Guninthamulu__ha__hai": "45_10_0",
-    "Guninthamulu__ha__he": "45_8_0",
-    "Guninthamulu__ha__hee": "45_9_0",
-    "Guninthamulu__ha__hi": "45_2_0",
-    "Guninthamulu__ha__hii": "45_3_0",
-    "Guninthamulu__ha__hm": "45_14_0",
-    "Guninthamulu__ha__ho": "45_11_0",
-    "Guninthamulu__ha__hoo": "45_12_0",
-    "Guninthamulu__ha__how": "45_13_0",
-    "Guninthamulu__ha__hru": "45_6_0",
-    "Guninthamulu__ha__hruu": "45_7_0",
-    "Guninthamulu__ha__hu": "45_4_0",
-    "Guninthamulu__ha__huu": "45_5_0",
-    "Guninthamulu__ja__j": "22_0_0",
-    "Guninthamulu__ja__ja": "22_1_0",
-    "Guninthamulu__ja__jah": "22_15_0",
-    "Guninthamulu__ja__jai": "22_10_0",
-    "Guninthamulu__ja__je": "22_8_0",
-    "Guninthamulu__ja__jee": "22_9_0",
-    "Guninthamulu__ja__ji": "22_2_0",
-    "Guninthamulu__ja__jii": "22_3_0",
-    "Guninthamulu__ja__jm": "22_14_0",
-    "Guninthamulu__ja__jo": "22_11_0",
-    "Guninthamulu__ja__joo": "22_12_0",
-    "Guninthamulu__ja__jou": "22_13_0",
-    "Guninthamulu__ja__jr": "22_6_0",
-    "Guninthamulu__ja__jru": "22_7_0",
-    "Guninthamulu__ja__ju": "22_4_0",
-    "Guninthamulu__ja__juu": "22_5_0",
-    "Guninthamulu__jh__jh": "23_0_0",
-    "Guninthamulu__jh__jha": "23_1_0",
-    "Guninthamulu__jh__jhah": "23_15_0",
-    "Guninthamulu__jh__jhai": "23_10_0",
-    "Guninthamulu__jh__jhe": "23_8_0",
-    "Guninthamulu__jh__jhee": "23_9_0",
-    "Guninthamulu__jh__jhi": "23_2_0",
-    "Guninthamulu__jh__jhii": "23_3_0",
-    "Guninthamulu__jh__jhm": "23_14_0",
-    "Guninthamulu__jh__jho": "23_11_0",
-    "Guninthamulu__jh__jhoo": "23_12_0",
-    "Guninthamulu__jh__jhou": "23_13_0",
-    "Guninthamulu__jh__jhr": "23_6_0",
-    "Guninthamulu__jh__jhru": "23_7_0",
-    "Guninthamulu__jh__jhu": "23_4_0",
-    "Guninthamulu__jh__jhuu": "23_5_0",
-    "Guninthamulu__kha__ka": "16_0_0",
-    "Guninthamulu__kha__kaa": "16_1_0",
-    "Guninthamulu__kha__kaha": "16_15_0",
-    "Guninthamulu__kha__kai": "16_10_0",
-    "Guninthamulu__kha__kam": "16_14_0",
-    "Guninthamulu__kha__ke": "16_8_0",
-    "Guninthamulu__kha__kee": "16_9_0",
-    "Guninthamulu__kha__ki": "16_2_0",
-    "Guninthamulu__kha__kii": "16_3_0",
-    "Guninthamulu__kha__ko": "16_11_0",
-    "Guninthamulu__kha__koo": "16_12_0",
-    "Guninthamulu__kha__kou": "16_13_0",
-    "Guninthamulu__kha__kru": "16_6_0",
-    "Guninthamulu__kha__kruu": "16_7_0",
-    "Guninthamulu__kha__ku": "16_4_0",
-    "Guninthamulu__kha__kuu": "16_5_0",
-    "Guninthamulu__khh__kha": "17_0_0",
-    "Guninthamulu__khh__khaa": "17_1_0",
-    "Guninthamulu__khh__khaha": "17_15_0",
-    "Guninthamulu__khh__khai": "17_10_0",
-    "Guninthamulu__khh__kham": "17_14_0",
-    "Guninthamulu__khh__khe": "17_8_0",
-    "Guninthamulu__khh__khee": "17_9_0",
-    "Guninthamulu__khh__khi": "17_2_0",
-    "Guninthamulu__khh__khii": "17_3_0",
-    "Guninthamulu__khh__kho": "17_11_0",
-    "Guninthamulu__khh__khoo": "17_12_0",
-    "Guninthamulu__khh__khou": "17_13_0",
-    "Guninthamulu__khh__khru": "17_6_0",
-    "Guninthamulu__khh__khruu": "17_7_0",
-    "Guninthamulu__khh__khu": "17_4_0",
-    "Guninthamulu__khh__khuu": "17_5_0",
-    "Guninthamulu__ksh__ksh": "46_0_0",
-    "Guninthamulu__ksh__ksha": "46_1_0",
-    "Guninthamulu__ksh__kshah": "46_15_0",
-    "Guninthamulu__ksh__kshai": "46_10_0",
-    "Guninthamulu__ksh__ksham": "46_14_0",
-    "Guninthamulu__ksh__kshe": "46_8_0",
-    "Guninthamulu__ksh__kshee": "46_9_0",
-    "Guninthamulu__ksh__kshi": "46_2_0",
-    "Guninthamulu__ksh__kshii": "46_3_0",
-    "Guninthamulu__ksh__ksho": "46_11_0",
-    "Guninthamulu__ksh__kshoo": "46_12_0",
-    "Guninthamulu__ksh__kshou": "46_13_0",
-    "Guninthamulu__ksh__kshr": "46_6_0",
-    "Guninthamulu__ksh__kshru": "46_7_0",
-    "Guninthamulu__ksh__kshu": "46_4_0",
-    "Guninthamulu__ksh__kshuu": "46_5_0",
-    "Guninthamulu__l__l": "39_0_0",
-    "Guninthamulu__l__la": "39_1_0",
-    "Guninthamulu__l__lah": "39_15_0",
-    "Guninthamulu__l__lai": "39_10_0",
-    "Guninthamulu__l__le": "39_8_0",
-    "Guninthamulu__l__lee": "39_9_0",
-    "Guninthamulu__l__li": "39_2_0",
-    "Guninthamulu__l__lii": "39_3_0",
-    "Guninthamulu__l__lm": "39_14_0",
-    "Guninthamulu__l__lo": "39_11_0",
-    "Guninthamulu__l__loo": "39_12_0",
-    "Guninthamulu__l__lou": "39_13_0",
-    "Guninthamulu__l__lr": "39_6_0",
-    "Guninthamulu__l__lru": "39_7_0",
-    "Guninthamulu__l__lu": "39_4_0",
-    "Guninthamulu__l__luu": "39_5_0",
-    "Guninthamulu__ll__l": "40_0_0",
-    "Guninthamulu__ll__la": "40_1_0",
-    "Guninthamulu__ll__lah": "40_15_0",
-    "Guninthamulu__ll__lai": "40_10_0",
-    "Guninthamulu__ll__le": "40_8_0",
-    "Guninthamulu__ll__lee": "40_9_0",
-    "Guninthamulu__ll__li": "40_2_0",
-    "Guninthamulu__ll__lii": "40_3_0",
-    "Guninthamulu__ll__lm": "40_14_0",
-    "Guninthamulu__ll__lo": "40_11_0",
-    "Guninthamulu__ll__loo": "40_12_0",
-    "Guninthamulu__ll__lou": "40_13_0",
-    "Guninthamulu__ll__lr": "40_6_0",
-    "Guninthamulu__ll__lru": "40_7_0",
-    "Guninthamulu__ll__lu": "40_4_0",
-    "Guninthamulu__ll__luu": "40_5_0",
-    "Guninthamulu__ma__m": "35_0_0",
-    "Guninthamulu__ma__ma": "35_1_0",
-    "Guninthamulu__ma__mah": "35_15_0",
-    "Guninthamulu__ma__mai": "35_10_0",
-    "Guninthamulu__ma__me": "35_8_0",
-    "Guninthamulu__ma__mee": "35_9_0",
-    "Guninthamulu__ma__mi": "35_2_0",
-    "Guninthamulu__ma__mii": "35_3_0",
-    "Guninthamulu__ma__mm": "35_14_0",
-    "Guninthamulu__ma__mo": "35_11_0",
-    "Guninthamulu__ma__moo": "35_12_0",
-    "Guninthamulu__ma__mou": "35_13_0",
-    "Guninthamulu__ma__mr": "35_6_0",
-    "Guninthamulu__ma__mru": "35_7_0",
-    "Guninthamulu__ma__mu": "35_4_0",
-    "Guninthamulu__ma__muu": "35_5_0",
-    "Guninthamulu__na__n": "30_0_0",
-    "Guninthamulu__na__na": "30_1_0",
-    "Guninthamulu__na__nah": "30_15_0",
-    "Guninthamulu__na__nai": "30_10_0",
-    "Guninthamulu__na__ne": "30_8_0",
-    "Guninthamulu__na__nee": "30_9_0",
-    "Guninthamulu__na__ni": "30_2_0",
-    "Guninthamulu__na__nii": "30_3_0",
-    "Guninthamulu__na__nm": "30_14_0",
-    "Guninthamulu__na__no": "30_11_0",
-    "Guninthamulu__na__noo": "30_12_0",
-    "Guninthamulu__na__nou": "30_13_0",
-    "Guninthamulu__na__nr": "30_6_0",
-    "Guninthamulu__na__nru": "30_7_0",
-    "Guninthamulu__na__nu": "30_4_0",
-    "Guninthamulu__na__nuu": "30_5_0",
-    "Guninthamulu__pa__p": "31_0_0",
-    "Guninthamulu__pa__pa": "31_1_0",
-    "Guninthamulu__pa__pah": "31_15_0",
-    "Guninthamulu__pa__pai": "31_10_0",
-    "Guninthamulu__pa__pe": "31_8_0",
-    "Guninthamulu__pa__pee": "31_9_0",
-    "Guninthamulu__pa__pi": "31_2_0",
-    "Guninthamulu__pa__pii": "31_3_0",
-    "Guninthamulu__pa__pm": "31_14_0",
-    "Guninthamulu__pa__po": "31_11_0",
-    "Guninthamulu__pa__poo": "31_12_0",
-    "Guninthamulu__pa__pou": "31_13_0",
-    "Guninthamulu__pa__pr": "31_6_0",
-    "Guninthamulu__pa__pru": "31_7_0",
-    "Guninthamulu__pa__pu": "31_4_0",
-    "Guninthamulu__pa__puu": "31_5_0",
-    "Guninthamulu__pha__p": "32_0_0",
-    "Guninthamulu__pha__pa": "32_1_0",
-    "Guninthamulu__pha__pah": "32_15_0",
-    "Guninthamulu__pha__pai": "32_10_0",
-    "Guninthamulu__pha__pe": "32_8_0",
-    "Guninthamulu__pha__pee": "32_9_0",
-    "Guninthamulu__pha__pi": "32_2_0",
-    "Guninthamulu__pha__pii": "32_3_0",
-    "Guninthamulu__pha__pm": "32_14_0",
-    "Guninthamulu__pha__po": "32_11_0",
-    "Guninthamulu__pha__poo": "32_12_0",
-    "Guninthamulu__pha__pou": "32_13_0",
-    "Guninthamulu__pha__pr": "32_6_0",
-    "Guninthamulu__pha__pru": "32_7_0",
-    "Guninthamulu__pha__pu": "32_4_0",
-    "Guninthamulu__pha__puu": "32_5_0",
-    "Guninthamulu__ra__r": "37_0_0",
-    "Guninthamulu__ra__ra": "37_1_0",
-    "Guninthamulu__ra__rah": "37_15_0",
-    "Guninthamulu__ra__rai": "37_10_0",
-    "Guninthamulu__ra__re": "37_8_0",
-    "Guninthamulu__ra__ree": "37_9_0",
-    "Guninthamulu__ra__ri": "37_2_0",
-    "Guninthamulu__ra__rii": "37_3_0",
-    "Guninthamulu__ra__rm": "37_14_0",
-    "Guninthamulu__ra__ro": "37_11_0",
-    "Guninthamulu__ra__roo": "37_12_0",
-    "Guninthamulu__ra__rou": "37_13_0",
-    "Guninthamulu__ra__rr": "37_6_0",
-    "Guninthamulu__ra__rru": "37_7_0",
-    "Guninthamulu__ra__ru": "37_4_0",
-    "Guninthamulu__ra__ruu": "37_5_0",
-    "Guninthamulu__sa__s": "44_0_0",
-    "Guninthamulu__sa__sa": "44_1_0",
-    "Guninthamulu__sa__sah": "44_15_0",
-    "Guninthamulu__sa__sai": "44_10_0",
-    "Guninthamulu__sa__se": "44_8_0",
-    "Guninthamulu__sa__see": "44_9_0",
-    "Guninthamulu__sa__si": "44_2_0",
-    "Guninthamulu__sa__sii": "44_3_0",
-    "Guninthamulu__sa__sm": "44_14_0",
-    "Guninthamulu__sa__so": "44_11_0",
-    "Guninthamulu__sa__soo": "44_12_0",
-    "Guninthamulu__sa__sou": "44_13_0",
-    "Guninthamulu__sa__sr": "44_6_0",
-    "Guninthamulu__sa__sru": "44_7_0",
-    "Guninthamulu__sa__su": "44_4_0",
-    "Guninthamulu__sa__suu": "44_5_0",
-    "Guninthamulu__sh__sh": "42_0_0",
-    "Guninthamulu__sh__sha": "42_1_0",
-    "Guninthamulu__sh__shah": "42_15_0",
-    "Guninthamulu__sh__shai": "42_10_0",
-    "Guninthamulu__sh__she": "42_8_0",
-    "Guninthamulu__sh__shee": "42_9_0",
-    "Guninthamulu__sh__shi": "42_2_0",
-    "Guninthamulu__sh__shii": "42_3_0",
-    "Guninthamulu__sh__shm": "42_14_0",
-    "Guninthamulu__sh__sho": "42_11_0",
-    "Guninthamulu__sh__shoo": "42_12_0",
-    "Guninthamulu__sh__shou": "42_13_0",
-    "Guninthamulu__sh__shr": "42_6_0",
-    "Guninthamulu__sh__shru": "42_7_0",
-    "Guninthamulu__sh__shu": "42_4_0",
-    "Guninthamulu__sh__shuu": "42_5_0",
-    "Guninthamulu__sha__sh": "43_0_0",
-    "Guninthamulu__sha__sha": "43_1_0",
-    "Guninthamulu__sha__shah": "43_15_0",
-    "Guninthamulu__sha__shai": "43_10_0",
-    "Guninthamulu__sha__she": "43_8_0",
-    "Guninthamulu__sha__shee": "43_9_0",
-    "Guninthamulu__sha__shi": "43_2_0",
-    "Guninthamulu__sha__shii": "43_3_0",
-    "Guninthamulu__sha__shm": "43_14_0",
-    "Guninthamulu__sha__sho": "43_11_0",
-    "Guninthamulu__sha__shoo": "43_12_0",
-    "Guninthamulu__sha__shou": "43_13_0",
-    "Guninthamulu__sha__shr": "43_6_0",
-    "Guninthamulu__sha__shru": "43_7_0",
-    "Guninthamulu__sha__shu": "43_4_0",
-    "Guninthamulu__sha__shuu": "43_5_0",
-    "Guninthamulu__ta__ta": "25_0_0",
-    "Guninthamulu__ta__taa": "25_1_0",
-    "Guninthamulu__ta__taha": "25_15_0",
-    "Guninthamulu__ta__tai": "25_10_0",
-    "Guninthamulu__ta__tam": "25_14_0",
-    "Guninthamulu__ta__te": "25_8_0",
-    "Guninthamulu__ta__tee": "25_9_0",
-    "Guninthamulu__ta__ti": "25_2_0",
-    "Guninthamulu__ta__tii": "25_3_0",
-    "Guninthamulu__ta__to": "25_11_0",
-    "Guninthamulu__ta__too": "25_12_0",
-    "Guninthamulu__ta__tou": "25_13_0",
-    "Guninthamulu__ta__tru": "25_6_0",
-    "Guninthamulu__ta__truu": "25_7_0",
-    "Guninthamulu__ta__tu": "25_4_0",
-    "Guninthamulu__ta__tuu": "25_5_0",
-    "Guninthamulu__th__th": "26_0_0",
-    "Guninthamulu__th__tha": "26_1_0",
-    "Guninthamulu__th__thah": "26_15_0",
-    "Guninthamulu__th__thai": "26_10_0",
-    "Guninthamulu__th__the": "26_8_0",
-    "Guninthamulu__th__thee": "26_9_0",
-    "Guninthamulu__th__thi": "26_2_0",
-    "Guninthamulu__th__thii": "26_3_0",
-    "Guninthamulu__th__thm": "26_14_0",
-    "Guninthamulu__th__tho": "26_11_0",
-    "Guninthamulu__th__thoo": "26_12_0",
-    "Guninthamulu__th__thow": "26_13_0",
-    "Guninthamulu__th__thr": "26_6_0",
-    "Guninthamulu__th__thru": "26_7_0",
-    "Guninthamulu__th__thu": "26_4_0",
-    "Guninthamulu__th__thuu": "26_5_0",
-    "Guninthamulu__tha__th": "26_0_0",
-    "Guninthamulu__tha__tha": "26_1_0",
-    "Guninthamulu__tha__thah": "26_15_0",
-    "Guninthamulu__tha__thai": "26_10_0",
-    "Guninthamulu__tha__the": "26_8_0",
-    "Guninthamulu__tha__thee": "26_9_0",
-    "Guninthamulu__tha__thi": "26_2_0",
-    "Guninthamulu__tha__thii": "26_3_0",
-    "Guninthamulu__tha__thm": "26_14_0",
-    "Guninthamulu__tha__tho": "26_11_0",
-    "Guninthamulu__tha__thoo": "26_12_0",
-    "Guninthamulu__tha__thou": "26_13_0",
-    "Guninthamulu__tha__thr": "26_6_0",
-    "Guninthamulu__tha__thru": "26_7_0",
-    "Guninthamulu__tha__thu": "26_4_0",
-    "Guninthamulu__tha__thuu": "26_5_0",
-    "Guninthamulu__tt__t": "25_0_0",
-    "Guninthamulu__tt__ta": "25_1_0",
-    "Guninthamulu__tt__tah": "25_15_0",
-    "Guninthamulu__tt__tai": "25_10_0",
-    "Guninthamulu__tt__te": "25_8_0",
-    "Guninthamulu__tt__tee": "25_9_0",
-    "Guninthamulu__tt__ti": "25_2_0",
-    "Guninthamulu__tt__tii": "25_3_0",
-    "Guninthamulu__tt__tm": "25_14_0",
-    "Guninthamulu__tt__to": "25_11_0",
-    "Guninthamulu__tt__too": "25_12_0",
-    "Guninthamulu__tt__tou": "25_13_0",
-    "Guninthamulu__tt__tr": "25_6_0",
-    "Guninthamulu__tt__tru": "25_7_0",
-    "Guninthamulu__tt__tu": "25_4_0",
-    "Guninthamulu__tt__tuu": "25_5_0",
-    "Guninthamulu__va__v": "41_0_0",
-    "Guninthamulu__va__va": "41_1_0",
-    "Guninthamulu__va__vah": "41_15_0",
-    "Guninthamulu__va__vai": "41_10_0",
-    "Guninthamulu__va__ve": "41_8_0",
-    "Guninthamulu__va__vee": "41_9_0",
-    "Guninthamulu__va__vi": "41_2_0",
-    "Guninthamulu__va__vii": "41_3_0",
-    "Guninthamulu__va__vm": "41_14_0",
-    "Guninthamulu__va__vo": "41_11_0",
-    "Guninthamulu__va__voo": "41_12_0",
-    "Guninthamulu__va__vow": "41_13_0",
-    "Guninthamulu__va__vr": "41_6_0",
-    "Guninthamulu__va__vru": "41_7_0",
-    "Guninthamulu__va__vu": "41_4_0",
-    "Guninthamulu__va__vuu": "41_5_0",
-    "Guninthamulu__ya__y": "36_0_0",
-    "Guninthamulu__ya__ya": "36_1_0",
-    "Guninthamulu__ya__yah": "36_15_0",
-    "Guninthamulu__ya__yai": "36_10_0",
-    "Guninthamulu__ya__ye": "36_8_0",
-    "Guninthamulu__ya__yee": "36_9_0",
-    "Guninthamulu__ya__yi": "36_2_0",
-    "Guninthamulu__ya__yii": "36_3_0",
-    "Guninthamulu__ya__ym": "36_14_0",
-    "Guninthamulu__ya__yoo": "36_12_0",
-    "Guninthamulu__ya__you": "36_13_0",
-    "Guninthamulu__ya__yr": "36_6_0",
-    "Guninthamulu__ya__yru": "36_7_0",
-    "Guninthamulu__ya__yu": "36_4_0",
-    "Guninthamulu__ya__yuu": "36_5_0",
-    "achulu__a": "0_0_0",
-    "achulu__aa": "1_0_0",
-    "achulu__ah": "15_0_0",
-    "achulu__ai": "10_0_0",
-    "achulu__am": "14_0_0",
-    "achulu__ao": "13_0_0",
-    "achulu__e": "8_0_0",
-    "achulu__ee": "9_0_0",
-    "achulu__i": "2_0_0",
-    "achulu__ii": "3_0_0",
-    "achulu__o": "11_0_0",
-    "achulu__oo": "12_0_0",
-    "achulu__ru": "6_0_0",
-    "achulu__ruu": "7_0_0",
-    "achulu__u": "4_0_0",
-    "achulu__uu": "5_0_0",
-    "hallulu__P": "31_0_0",
-    "hallulu__Ph": "32_0_0",
-    "hallulu__ana": "29_0_0",
-    "hallulu__b": "33_0_0",
-    "hallulu__bh": "34_0_0",
-    "hallulu__ch": "21_0_0",
-    "hallulu__cha": "20_0_0",
-    "hallulu__d": "27_0_0",
-    "hallulu__da": "27_0_0",
-    "hallulu__dh": "28_0_0",
-    "hallulu__dha": "28_0_0",
-    "hallulu__g": "18_0_0",
-    "hallulu__gh": "19_0_0",
-    "hallulu__h": "45_0_0",
-    "hallulu__jh": "23_0_0",
-    "hallulu__jha": "23_0_0",
-    "hallulu__jna": "24_0_0",
-    "hallulu__ka": "16_0_0",
-    "hallulu__kha": "16_0_0",
-    "hallulu__ks": "46_0_0",
-    "hallulu__l": "39_0_0",
-    "hallulu__ll": "40_0_0",
-    "hallulu__m": "35_0_0",
-    "hallulu__n": "30_0_0",
-    "hallulu__r": "37_0_0",
-    "hallulu__rr": "38_0_0",
-    "hallulu__s": "44_0_0",
-    "hallulu__sa": "44_0_0",
-    "hallulu__sh": "42_0_0",
-    "hallulu__ta": "25_0_0",
-    "hallulu__th": "26_0_0",
-    "hallulu__tha": "26_0_0",
-    "hallulu__thah": "26_0_0",
-    "hallulu__v": "41_0_0",
-    "hallulu__y": "36_0_0",
-    "othulu__an": "29_0_13",
-    "othulu__b": "33_0_20",
-    "othulu__bh": "34_0_21",
-    "othulu__c": "20_0_5",
-    "othulu__ch": "21_0_6",
-    "othulu__d": "27_0_11",
-    "othulu__da": "27_0_15",
-    "othulu__dh": "28_0_12",
-    "othulu__dha": "28_0_16",
-    "othulu__g": "18_0_3",
-    "othulu__gh": "19_0_4",
-    "othulu__h": "45_0_29",
-    "othulu__ha": "45_0_29",
-    "othulu__j": "22_0_7",
-    "othulu__jh": "23_0_8",
-    "othulu__k": "16_0_1",
-    "othulu__kh": "17_0_2",
-    "othulu__ksh": "46_0_30",
-    "othulu__l": "39_0_25",
-    "othulu__m": "35_0_22",
-    "othulu__n": "30_0_17",
-    "othulu__na": "30_0_17",
-    "othulu__nn": "29_0_13",
-    "othulu__p": "31_0_18",
-    "othulu__ph": "32_0_19",
-    "othulu__r": "37_0_24",
-    "othulu__s": "44_0_28",
-    "othulu__sa": "44_0_28",
-    "othulu__sh": "42_0_27",
-    "othulu__t": "25_0_9",
-    "othulu__th": "26_0_10",
-    "othulu__tha": "26_0_14",
-    "othulu__tt": "25_0_9",
-    "othulu__v": "41_0_26",
-    "othulu__y": "36_0_23",
-    "othulu__z": "16_0_31"
+    "Guninthamulu__RR__R": "43_6_0",
+    "Guninthamulu__RR__RRA": "43_1_0",
+    "Guninthamulu__RR__RRI": "43_2_0",
+    "Guninthamulu__RR__RRII": "43_3_0",
+    "Guninthamulu__RR__RRU": "43_4_0",
+    "Guninthamulu__RR__RRUU": "43_5_0",
+    "Guninthamulu__RR__rr": "43_0_0",
+    "Guninthamulu__RR__rrah": "43_15_0",
+    "Guninthamulu__RR__rrai": "43_10_0",
+    "Guninthamulu__RR__rre": "43_8_0",
+    "Guninthamulu__RR__rree": "43_9_0",
+    "Guninthamulu__RR__rrm": "43_14_0",
+    "Guninthamulu__RR__rro": "43_11_0",
+    "Guninthamulu__RR__rroo": "43_12_0",
+    "Guninthamulu__RR__rrow": "43_13_0",
+    "Guninthamulu__RR__rrr": "43_7_0",
+    "Guninthamulu__ana__an": "30_0_0",
+    "Guninthamulu__ana__ana": "30_1_0",
+    "Guninthamulu__ana__anah": "30_15_0",
+    "Guninthamulu__ana__anai": "30_10_0",
+    "Guninthamulu__ana__ane": "30_8_0",
+    "Guninthamulu__ana__anee": "30_9_0",
+    "Guninthamulu__ana__ani": "30_2_0",
+    "Guninthamulu__ana__anii": "30_3_0",
+    "Guninthamulu__ana__anm": "30_14_0",
+    "Guninthamulu__ana__ano": "30_11_0",
+    "Guninthamulu__ana__anoo": "30_12_0",
+    "Guninthamulu__ana__anou": "30_13_0",
+    "Guninthamulu__ana__anr": "30_6_0",
+    "Guninthamulu__ana__anru": "30_7_0",
+    "Guninthamulu__ana__anu": "30_4_0",
+    "Guninthamulu__ana__anuu": "30_5_0",
+    "Guninthamulu__ba__b": "38_0_0",
+    "Guninthamulu__ba__ba": "38_1_0",
+    "Guninthamulu__ba__bah": "38_15_0",
+    "Guninthamulu__ba__bai": "38_10_0",
+    "Guninthamulu__ba__bau": "38_13_0",
+    "Guninthamulu__ba__be": "38_8_0",
+    "Guninthamulu__ba__bee": "38_9_0",
+    "Guninthamulu__ba__bi": "38_2_0",
+    "Guninthamulu__ba__bii": "38_3_0",
+    "Guninthamulu__ba__bm": "38_14_0",
+    "Guninthamulu__ba__bo": "38_11_0",
+    "Guninthamulu__ba__boo": "38_12_0",
+    "Guninthamulu__ba__bru": "38_6_0",
+    "Guninthamulu__ba__bruu": "38_7_0",
+    "Guninthamulu__ba__bu": "38_4_0",
+    "Guninthamulu__ba__buu": "38_5_0",
+    "Guninthamulu__bha__bh": "39_0_0",
+    "Guninthamulu__bha__bha": "39_1_0",
+    "Guninthamulu__bha__bhah": "39_15_0",
+    "Guninthamulu__bha__bhai": "39_10_0",
+    "Guninthamulu__bha__bhau": "39_13_0",
+    "Guninthamulu__bha__bhe": "39_8_0",
+    "Guninthamulu__bha__bhee": "39_9_0",
+    "Guninthamulu__bha__bhi": "39_2_0",
+    "Guninthamulu__bha__bhii": "39_3_0",
+    "Guninthamulu__bha__bhm": "39_14_0",
+    "Guninthamulu__bha__bho": "39_11_0",
+    "Guninthamulu__bha__bhoo": "39_12_0",
+    "Guninthamulu__bha__bhru": "39_6_0",
+    "Guninthamulu__bha__bhruu": "39_7_0",
+    "Guninthamulu__bha__bhu": "39_4_0",
+    "Guninthamulu__bha__bhuu": "39_5_0",
+    "Guninthamulu__ch__ch": "22_0_0",
+    "Guninthamulu__ch__cha": "22_1_0",
+    "Guninthamulu__ch__chah": "22_15_0",
+    "Guninthamulu__ch__chai": "22_10_0",
+    "Guninthamulu__ch__che": "22_8_0",
+    "Guninthamulu__ch__chee": "22_9_0",
+    "Guninthamulu__ch__chi": "22_2_0",
+    "Guninthamulu__ch__chii": "22_3_0",
+    "Guninthamulu__ch__chm": "22_14_0",
+    "Guninthamulu__ch__cho": "22_11_0",
+    "Guninthamulu__ch__choo": "22_12_0",
+    "Guninthamulu__ch__chou": "22_13_0",
+    "Guninthamulu__ch__chr": "22_6_0",
+    "Guninthamulu__ch__chru": "22_7_0",
+    "Guninthamulu__ch__chu": "22_4_0",
+    "Guninthamulu__ch__chuu": "22_5_0",
+    "Guninthamulu__cha__ch": "23_0_0",
+    "Guninthamulu__cha__cha": "23_1_0",
+    "Guninthamulu__cha__chah": "23_15_0",
+    "Guninthamulu__cha__chai": "23_10_0",
+    "Guninthamulu__cha__che": "23_8_0",
+    "Guninthamulu__cha__chee": "23_9_0",
+    "Guninthamulu__cha__chi": "23_2_0",
+    "Guninthamulu__cha__chii": "23_3_0",
+    "Guninthamulu__cha__chm": "23_14_0",
+    "Guninthamulu__cha__cho": "23_11_0",
+    "Guninthamulu__cha__choo": "23_12_0",
+    "Guninthamulu__cha__chow": "23_13_0",
+    "Guninthamulu__cha__chru": "23_6_0",
+    "Guninthamulu__cha__chruu": "23_7_0",
+    "Guninthamulu__cha__chu": "23_4_0",
+    "Guninthamulu__cha__chuu": "23_5_0",
+    "Guninthamulu__d__d": "28_0_0",
+    "Guninthamulu__d__da": "28_1_0",
+    "Guninthamulu__d__dah": "28_15_0",
+    "Guninthamulu__d__dai": "28_10_0",
+    "Guninthamulu__d__de": "28_8_0",
+    "Guninthamulu__d__dee": "28_9_0",
+    "Guninthamulu__d__di": "28_2_0",
+    "Guninthamulu__d__dii": "28_3_0",
+    "Guninthamulu__d__dm": "28_14_0",
+    "Guninthamulu__d__do": "28_11_0",
+    "Guninthamulu__d__doo": "28_12_0",
+    "Guninthamulu__d__dou": "28_13_0",
+    "Guninthamulu__d__dr": "28_6_0",
+    "Guninthamulu__d__dru": "28_7_0",
+    "Guninthamulu__d__du": "28_4_0",
+    "Guninthamulu__d__duu": "28_5_0",
+    "Guninthamulu__da__da": "33_0_0",
+    "Guninthamulu__da__daa": "33_1_0",
+    "Guninthamulu__da__dah": "33_15_0",
+    "Guninthamulu__da__dai": "33_10_0",
+    "Guninthamulu__da__de": "33_8_0",
+    "Guninthamulu__da__dee": "33_9_0",
+    "Guninthamulu__da__di": "33_2_0",
+    "Guninthamulu__da__dii": "33_3_0",
+    "Guninthamulu__da__dm": "33_14_0",
+    "Guninthamulu__da__do": "33_11_0",
+    "Guninthamulu__da__doo": "33_12_0",
+    "Guninthamulu__da__dou": "33_13_0",
+    "Guninthamulu__da__dru": "33_6_0",
+    "Guninthamulu__da__druu": "33_7_0",
+    "Guninthamulu__da__du": "33_4_0",
+    "Guninthamulu__da__duu": "33_5_0",
+    "Guninthamulu__dh__dh": "29_0_0",
+    "Guninthamulu__dh__dha": "29_1_0",
+    "Guninthamulu__dh__dhah": "29_15_0",
+    "Guninthamulu__dh__dhai": "29_10_0",
+    "Guninthamulu__dh__dhe": "29_8_0",
+    "Guninthamulu__dh__dhee": "29_9_0",
+    "Guninthamulu__dh__dhi": "29_2_0",
+    "Guninthamulu__dh__dhii": "29_3_0",
+    "Guninthamulu__dh__dhm": "29_14_0",
+    "Guninthamulu__dh__dho": "29_11_0",
+    "Guninthamulu__dh__dhoo": "29_12_0",
+    "Guninthamulu__dh__dhou": "29_13_0",
+    "Guninthamulu__dh__dhr": "29_6_0",
+    "Guninthamulu__dh__dhru": "29_7_0",
+    "Guninthamulu__dh__dhu": "29_4_0",
+    "Guninthamulu__dh__dhuu": "29_5_0",
+    "Guninthamulu__dha__dh": "34_0_0",
+    "Guninthamulu__dha__dha": "34_1_0",
+    "Guninthamulu__dha__dhah": "34_15_0",
+    "Guninthamulu__dha__dhai": "34_10_0",
+    "Guninthamulu__dha__dhe": "34_8_0",
+    "Guninthamulu__dha__dhee": "34_9_0",
+    "Guninthamulu__dha__dhi": "34_2_0",
+    "Guninthamulu__dha__dhii": "34_3_0",
+    "Guninthamulu__dha__dhm": "34_14_0",
+    "Guninthamulu__dha__dho": "34_11_0",
+    "Guninthamulu__dha__dhoo": "34_12_0",
+    "Guninthamulu__dha__dhou": "34_13_0",
+    "Guninthamulu__dha__dhr": "34_6_0",
+    "Guninthamulu__dha__dhru": "34_7_0",
+    "Guninthamulu__dha__dhu": "34_4_0",
+    "Guninthamulu__dha__dhuu": "34_5_0",
+    "Guninthamulu__ga__ga": "19_0_0",
+    "Guninthamulu__ga__gaa": "19_1_0",
+    "Guninthamulu__ga__gaha": "19_15_0",
+    "Guninthamulu__ga__gai": "19_10_0",
+    "Guninthamulu__ga__gam": "19_14_0",
+    "Guninthamulu__ga__ge": "19_8_0",
+    "Guninthamulu__ga__gee": "19_9_0",
+    "Guninthamulu__ga__gi": "19_2_0",
+    "Guninthamulu__ga__gii": "19_3_0",
+    "Guninthamulu__ga__go": "19_11_0",
+    "Guninthamulu__ga__goo": "19_12_0",
+    "Guninthamulu__ga__gou": "19_13_0",
+    "Guninthamulu__ga__gru": "19_6_0",
+    "Guninthamulu__ga__gruu": "19_7_0",
+    "Guninthamulu__ga__gu": "19_4_0",
+    "Guninthamulu__ga__guu": "19_5_0",
+    "Guninthamulu__gha__gha": "20_0_0",
+    "Guninthamulu__gha__ghaa": "20_1_0",
+    "Guninthamulu__gha__ghaha": "20_15_0",
+    "Guninthamulu__gha__ghai": "20_10_0",
+    "Guninthamulu__gha__gham": "20_14_0",
+    "Guninthamulu__gha__ghe": "20_8_0",
+    "Guninthamulu__gha__ghee": "20_9_0",
+    "Guninthamulu__gha__ghi": "20_2_0",
+    "Guninthamulu__gha__ghii": "20_3_0",
+    "Guninthamulu__gha__gho": "20_11_0",
+    "Guninthamulu__gha__ghoo": "20_12_0",
+    "Guninthamulu__gha__ghou": "20_13_0",
+    "Guninthamulu__gha__ghru": "20_6_0",
+    "Guninthamulu__gha__ghruu": "20_7_0",
+    "Guninthamulu__gha__ghu": "20_4_0",
+    "Guninthamulu__gha__ghuu": "20_5_0",
+    "Guninthamulu__ha__h": "50_0_0",
+    "Guninthamulu__ha__ha": "50_1_0",
+    "Guninthamulu__ha__hah": "50_15_0",
+    "Guninthamulu__ha__hai": "50_10_0",
+    "Guninthamulu__ha__he": "50_8_0",
+    "Guninthamulu__ha__hee": "50_9_0",
+    "Guninthamulu__ha__hi": "50_2_0",
+    "Guninthamulu__ha__hii": "50_3_0",
+    "Guninthamulu__ha__hm": "50_14_0",
+    "Guninthamulu__ha__ho": "50_11_0",
+    "Guninthamulu__ha__hoo": "50_12_0",
+    "Guninthamulu__ha__how": "50_13_0",
+    "Guninthamulu__ha__hru": "50_6_0",
+    "Guninthamulu__ha__hruu": "50_7_0",
+    "Guninthamulu__ha__hu": "50_4_0",
+    "Guninthamulu__ha__huu": "50_5_0",
+    "Guninthamulu__ja__j": "24_0_0",
+    "Guninthamulu__ja__ja": "24_1_0",
+    "Guninthamulu__ja__jah": "24_15_0",
+    "Guninthamulu__ja__jai": "24_10_0",
+    "Guninthamulu__ja__je": "24_8_0",
+    "Guninthamulu__ja__jee": "24_9_0",
+    "Guninthamulu__ja__ji": "24_2_0",
+    "Guninthamulu__ja__jii": "24_3_0",
+    "Guninthamulu__ja__jm": "24_14_0",
+    "Guninthamulu__ja__jo": "24_11_0",
+    "Guninthamulu__ja__joo": "24_12_0",
+    "Guninthamulu__ja__jou": "24_13_0",
+    "Guninthamulu__ja__jr": "24_6_0",
+    "Guninthamulu__ja__jru": "24_7_0",
+    "Guninthamulu__ja__ju": "24_4_0",
+    "Guninthamulu__ja__juu": "24_5_0",
+    "Guninthamulu__jh__jh": "25_0_0",
+    "Guninthamulu__jh__jha": "25_1_0",
+    "Guninthamulu__jh__jhah": "25_15_0",
+    "Guninthamulu__jh__jhai": "25_10_0",
+    "Guninthamulu__jh__jhe": "25_8_0",
+    "Guninthamulu__jh__jhee": "25_9_0",
+    "Guninthamulu__jh__jhi": "25_2_0",
+    "Guninthamulu__jh__jhii": "25_3_0",
+    "Guninthamulu__jh__jhm": "25_14_0",
+    "Guninthamulu__jh__jho": "25_11_0",
+    "Guninthamulu__jh__jhoo": "25_12_0",
+    "Guninthamulu__jh__jhou": "25_13_0",
+    "Guninthamulu__jh__jhr": "25_6_0",
+    "Guninthamulu__jh__jhru": "25_7_0",
+    "Guninthamulu__jh__jhu": "25_4_0",
+    "Guninthamulu__jh__jhuu": "25_5_0",
+    "Guninthamulu__kha__ka": "17_0_0",
+    "Guninthamulu__kha__kaa": "17_1_0",
+    "Guninthamulu__kha__kaha": "17_15_0",
+    "Guninthamulu__kha__kai": "17_10_0",
+    "Guninthamulu__kha__kam": "17_14_0",
+    "Guninthamulu__kha__ke": "17_8_0",
+    "Guninthamulu__kha__kee": "17_9_0",
+    "Guninthamulu__kha__ki": "17_2_0",
+    "Guninthamulu__kha__kii": "17_3_0",
+    "Guninthamulu__kha__ko": "17_11_0",
+    "Guninthamulu__kha__koo": "17_12_0",
+    "Guninthamulu__kha__kou": "17_13_0",
+    "Guninthamulu__kha__kru": "17_6_0",
+    "Guninthamulu__kha__kruu": "17_7_0",
+    "Guninthamulu__kha__ku": "17_4_0",
+    "Guninthamulu__kha__kuu": "17_5_0",
+    "Guninthamulu__khh__kha": "18_0_0",
+    "Guninthamulu__khh__khaa": "18_1_0",
+    "Guninthamulu__khh__khaha": "18_15_0",
+    "Guninthamulu__khh__khai": "18_10_0",
+    "Guninthamulu__khh__kham": "18_14_0",
+    "Guninthamulu__khh__khe": "18_8_0",
+    "Guninthamulu__khh__khee": "18_9_0",
+    "Guninthamulu__khh__khi": "18_2_0",
+    "Guninthamulu__khh__khii": "18_3_0",
+    "Guninthamulu__khh__kho": "18_11_0",
+    "Guninthamulu__khh__khoo": "18_12_0",
+    "Guninthamulu__khh__khou": "18_13_0",
+    "Guninthamulu__khh__khru": "18_6_0",
+    "Guninthamulu__khh__khruu": "18_7_0",
+    "Guninthamulu__khh__khu": "18_4_0",
+    "Guninthamulu__khh__khuu": "18_5_0",
+    "Guninthamulu__ksh__ksh": "51_0_0",
+    "Guninthamulu__ksh__ksha": "51_1_0",
+    "Guninthamulu__ksh__kshah": "51_15_0",
+    "Guninthamulu__ksh__kshai": "51_10_0",
+    "Guninthamulu__ksh__ksham": "51_14_0",
+    "Guninthamulu__ksh__kshe": "51_8_0",
+    "Guninthamulu__ksh__kshee": "51_9_0",
+    "Guninthamulu__ksh__kshi": "51_2_0",
+    "Guninthamulu__ksh__kshii": "51_3_0",
+    "Guninthamulu__ksh__ksho": "51_11_0",
+    "Guninthamulu__ksh__kshoo": "51_12_0",
+    "Guninthamulu__ksh__kshou": "51_13_0",
+    "Guninthamulu__ksh__kshr": "51_6_0",
+    "Guninthamulu__ksh__kshru": "51_7_0",
+    "Guninthamulu__ksh__kshu": "51_4_0",
+    "Guninthamulu__ksh__kshuu": "51_5_0",
+    "Guninthamulu__l__l": "44_0_0",
+    "Guninthamulu__l__la": "44_1_0",
+    "Guninthamulu__l__lah": "44_15_0",
+    "Guninthamulu__l__lai": "44_10_0",
+    "Guninthamulu__l__le": "44_8_0",
+    "Guninthamulu__l__lee": "44_9_0",
+    "Guninthamulu__l__li": "44_2_0",
+    "Guninthamulu__l__lii": "44_3_0",
+    "Guninthamulu__l__lm": "44_14_0",
+    "Guninthamulu__l__lo": "44_11_0",
+    "Guninthamulu__l__loo": "44_12_0",
+    "Guninthamulu__l__lou": "44_13_0",
+    "Guninthamulu__l__lr": "44_6_0",
+    "Guninthamulu__l__lru": "44_7_0",
+    "Guninthamulu__l__lu": "44_4_0",
+    "Guninthamulu__l__luu": "44_5_0",
+    "Guninthamulu__ll__l": "45_0_0",
+    "Guninthamulu__ll__la": "45_1_0",
+    "Guninthamulu__ll__lah": "45_15_0",
+    "Guninthamulu__ll__lai": "45_10_0",
+    "Guninthamulu__ll__le": "45_8_0",
+    "Guninthamulu__ll__lee": "45_9_0",
+    "Guninthamulu__ll__li": "45_2_0",
+    "Guninthamulu__ll__lii": "45_3_0",
+    "Guninthamulu__ll__lm": "45_14_0",
+    "Guninthamulu__ll__lo": "45_11_0",
+    "Guninthamulu__ll__loo": "45_12_0",
+    "Guninthamulu__ll__lou": "45_13_0",
+    "Guninthamulu__ll__lr": "45_6_0",
+    "Guninthamulu__ll__lru": "45_7_0",
+    "Guninthamulu__ll__lu": "45_4_0",
+    "Guninthamulu__ll__luu": "45_5_0",
+    "Guninthamulu__ma__m": "40_0_0",
+    "Guninthamulu__ma__ma": "40_1_0",
+    "Guninthamulu__ma__mah": "40_15_0",
+    "Guninthamulu__ma__mai": "40_10_0",
+    "Guninthamulu__ma__me": "40_8_0",
+    "Guninthamulu__ma__mee": "40_9_0",
+    "Guninthamulu__ma__mi": "40_2_0",
+    "Guninthamulu__ma__mii": "40_3_0",
+    "Guninthamulu__ma__mm": "40_14_0",
+    "Guninthamulu__ma__mo": "40_11_0",
+    "Guninthamulu__ma__moo": "40_12_0",
+    "Guninthamulu__ma__mou": "40_13_0",
+    "Guninthamulu__ma__mr": "40_6_0",
+    "Guninthamulu__ma__mru": "40_7_0",
+    "Guninthamulu__ma__mu": "40_4_0",
+    "Guninthamulu__ma__muu": "40_5_0",
+    "Guninthamulu__na__n": "35_0_0",
+    "Guninthamulu__na__na": "35_1_0",
+    "Guninthamulu__na__nah": "35_15_0",
+    "Guninthamulu__na__nai": "35_10_0",
+    "Guninthamulu__na__ne": "35_8_0",
+    "Guninthamulu__na__nee": "35_9_0",
+    "Guninthamulu__na__ni": "35_2_0",
+    "Guninthamulu__na__nii": "35_3_0",
+    "Guninthamulu__na__nm": "35_14_0",
+    "Guninthamulu__na__no": "35_11_0",
+    "Guninthamulu__na__noo": "35_12_0",
+    "Guninthamulu__na__nou": "35_13_0",
+    "Guninthamulu__na__nr": "35_6_0",
+    "Guninthamulu__na__nru": "35_7_0",
+    "Guninthamulu__na__nu": "35_4_0",
+    "Guninthamulu__na__nuu": "35_5_0",
+    "Guninthamulu__pa__p": "36_0_0",
+    "Guninthamulu__pa__pa": "36_1_0",
+    "Guninthamulu__pa__pah": "36_15_0",
+    "Guninthamulu__pa__pai": "36_10_0",
+    "Guninthamulu__pa__pe": "36_8_0",
+    "Guninthamulu__pa__pee": "36_9_0",
+    "Guninthamulu__pa__pi": "36_2_0",
+    "Guninthamulu__pa__pii": "36_3_0",
+    "Guninthamulu__pa__pm": "36_14_0",
+    "Guninthamulu__pa__po": "36_11_0",
+    "Guninthamulu__pa__poo": "36_12_0",
+    "Guninthamulu__pa__pou": "36_13_0",
+    "Guninthamulu__pa__pr": "36_6_0",
+    "Guninthamulu__pa__pru": "36_7_0",
+    "Guninthamulu__pa__pu": "36_4_0",
+    "Guninthamulu__pa__puu": "36_5_0",
+    "Guninthamulu__pha__p": "37_0_0",
+    "Guninthamulu__pha__pa": "37_1_0",
+    "Guninthamulu__pha__pah": "37_15_0",
+    "Guninthamulu__pha__pai": "37_10_0",
+    "Guninthamulu__pha__pe": "37_8_0",
+    "Guninthamulu__pha__pee": "37_9_0",
+    "Guninthamulu__pha__pi": "37_2_0",
+    "Guninthamulu__pha__pii": "37_3_0",
+    "Guninthamulu__pha__pm": "37_14_0",
+    "Guninthamulu__pha__po": "37_11_0",
+    "Guninthamulu__pha__poo": "37_12_0",
+    "Guninthamulu__pha__pou": "37_13_0",
+    "Guninthamulu__pha__pr": "37_6_0",
+    "Guninthamulu__pha__pru": "37_7_0",
+    "Guninthamulu__pha__pu": "37_4_0",
+    "Guninthamulu__pha__puu": "37_5_0",
+    "Guninthamulu__ra__r": "42_0_0",
+    "Guninthamulu__ra__ra": "42_1_0",
+    "Guninthamulu__ra__rah": "42_15_0",
+    "Guninthamulu__ra__rai": "42_10_0",
+    "Guninthamulu__ra__re": "42_8_0",
+    "Guninthamulu__ra__ree": "42_9_0",
+    "Guninthamulu__ra__ri": "42_2_0",
+    "Guninthamulu__ra__rii": "42_3_0",
+    "Guninthamulu__ra__rm": "42_14_0",
+    "Guninthamulu__ra__ro": "42_11_0",
+    "Guninthamulu__ra__roo": "42_12_0",
+    "Guninthamulu__ra__rou": "42_13_0",
+    "Guninthamulu__ra__rr": "42_6_0",
+    "Guninthamulu__ra__rru": "42_7_0",
+    "Guninthamulu__ra__ru": "42_4_0",
+    "Guninthamulu__ra__ruu": "42_5_0",
+    "Guninthamulu__sa__s": "49_0_0",
+    "Guninthamulu__sa__sa": "49_1_0",
+    "Guninthamulu__sa__sah": "49_15_0",
+    "Guninthamulu__sa__sai": "49_10_0",
+    "Guninthamulu__sa__se": "49_8_0",
+    "Guninthamulu__sa__see": "49_9_0",
+    "Guninthamulu__sa__si": "49_2_0",
+    "Guninthamulu__sa__sii": "49_3_0",
+    "Guninthamulu__sa__sm": "49_14_0",
+    "Guninthamulu__sa__so": "49_11_0",
+    "Guninthamulu__sa__soo": "49_12_0",
+    "Guninthamulu__sa__sou": "49_13_0",
+    "Guninthamulu__sa__sr": "49_6_0",
+    "Guninthamulu__sa__sru": "49_7_0",
+    "Guninthamulu__sa__su": "49_4_0",
+    "Guninthamulu__sa__suu": "49_5_0",
+    "Guninthamulu__sh__sh": "48_0_0",
+    "Guninthamulu__sh__sha": "48_1_0",
+    "Guninthamulu__sh__shah": "48_15_0",
+    "Guninthamulu__sh__shai": "48_10_0",
+    "Guninthamulu__sh__she": "48_8_0",
+    "Guninthamulu__sh__shee": "48_9_0",
+    "Guninthamulu__sh__shi": "48_2_0",
+    "Guninthamulu__sh__shii": "48_3_0",
+    "Guninthamulu__sh__shm": "48_14_0",
+    "Guninthamulu__sh__sho": "48_11_0",
+    "Guninthamulu__sh__shoo": "48_12_0",
+    "Guninthamulu__sh__shou": "48_13_0",
+    "Guninthamulu__sh__shr": "48_6_0",
+    "Guninthamulu__sh__shru": "48_7_0",
+    "Guninthamulu__sh__shu": "48_4_0",
+    "Guninthamulu__sh__shuu": "48_5_0",
+    "Guninthamulu__sha__sh": "47_0_0",
+    "Guninthamulu__sha__sha": "47_1_0",
+    "Guninthamulu__sha__shah": "47_15_0",
+    "Guninthamulu__sha__shai": "47_10_0",
+    "Guninthamulu__sha__she": "47_8_0",
+    "Guninthamulu__sha__shee": "47_9_0",
+    "Guninthamulu__sha__shi": "47_2_0",
+    "Guninthamulu__sha__shii": "47_3_0",
+    "Guninthamulu__sha__shm": "47_14_0",
+    "Guninthamulu__sha__sho": "47_11_0",
+    "Guninthamulu__sha__shoo": "47_12_0",
+    "Guninthamulu__sha__shou": "47_13_0",
+    "Guninthamulu__sha__shr": "47_6_0",
+    "Guninthamulu__sha__shru": "47_7_0",
+    "Guninthamulu__sha__shu": "47_4_0",
+    "Guninthamulu__sha__shuu": "47_5_0",
+    "Guninthamulu__ta__ta": "26_0_0",
+    "Guninthamulu__ta__taa": "26_1_0",
+    "Guninthamulu__ta__taha": "26_15_0",
+    "Guninthamulu__ta__tai": "26_10_0",
+    "Guninthamulu__ta__tam": "26_14_0",
+    "Guninthamulu__ta__te": "26_8_0",
+    "Guninthamulu__ta__tee": "26_9_0",
+    "Guninthamulu__ta__ti": "26_2_0",
+    "Guninthamulu__ta__tii": "26_3_0",
+    "Guninthamulu__ta__to": "26_11_0",
+    "Guninthamulu__ta__too": "26_12_0",
+    "Guninthamulu__ta__tou": "26_13_0",
+    "Guninthamulu__ta__tru": "26_6_0",
+    "Guninthamulu__ta__truu": "26_7_0",
+    "Guninthamulu__ta__tu": "26_4_0",
+    "Guninthamulu__ta__tuu": "26_5_0",
+    "Guninthamulu__th__th": "31_0_0",
+    "Guninthamulu__th__tha": "31_1_0",
+    "Guninthamulu__th__thah": "31_15_0",
+    "Guninthamulu__th__thai": "31_10_0",
+    "Guninthamulu__th__the": "31_8_0",
+    "Guninthamulu__th__thee": "31_9_0",
+    "Guninthamulu__th__thi": "31_2_0",
+    "Guninthamulu__th__thii": "31_3_0",
+    "Guninthamulu__th__thm": "31_14_0",
+    "Guninthamulu__th__tho": "31_11_0",
+    "Guninthamulu__th__thoo": "31_12_0",
+    "Guninthamulu__th__thow": "31_13_0",
+    "Guninthamulu__th__thr": "31_6_0",
+    "Guninthamulu__th__thru": "31_7_0",
+    "Guninthamulu__th__thu": "31_4_0",
+    "Guninthamulu__th__thuu": "31_5_0",
+    "Guninthamulu__tha__th": "32_0_0",
+    "Guninthamulu__tha__tha": "32_1_0",
+    "Guninthamulu__tha__thah": "32_15_0",
+    "Guninthamulu__tha__thai": "32_10_0",
+    "Guninthamulu__tha__the": "32_8_0",
+    "Guninthamulu__tha__thee": "32_9_0",
+    "Guninthamulu__tha__thi": "32_2_0",
+    "Guninthamulu__tha__thii": "32_3_0",
+    "Guninthamulu__tha__thm": "32_14_0",
+    "Guninthamulu__tha__tho": "32_11_0",
+    "Guninthamulu__tha__thoo": "32_12_0",
+    "Guninthamulu__tha__thou": "32_13_0",
+    "Guninthamulu__tha__thr": "32_6_0",
+    "Guninthamulu__tha__thru": "32_7_0",
+    "Guninthamulu__tha__thu": "32_4_0",
+    "Guninthamulu__tha__thuu": "32_5_0",
+    "Guninthamulu__tt__t": "27_0_0",
+    "Guninthamulu__tt__ta": "27_1_0",
+    "Guninthamulu__tt__tah": "27_15_0",
+    "Guninthamulu__tt__tai": "27_10_0",
+    "Guninthamulu__tt__te": "27_8_0",
+    "Guninthamulu__tt__tee": "27_9_0",
+    "Guninthamulu__tt__ti": "27_2_0",
+    "Guninthamulu__tt__tii": "27_3_0",
+    "Guninthamulu__tt__tm": "27_14_0",
+    "Guninthamulu__tt__to": "27_11_0",
+    "Guninthamulu__tt__too": "27_12_0",
+    "Guninthamulu__tt__tou": "27_13_0",
+    "Guninthamulu__tt__tr": "27_6_0",
+    "Guninthamulu__tt__tru": "27_7_0",
+    "Guninthamulu__tt__tu": "27_4_0",
+    "Guninthamulu__tt__tuu": "27_5_0",
+    "Guninthamulu__va__v": "46_0_0",
+    "Guninthamulu__va__va": "46_1_0",
+    "Guninthamulu__va__vah": "46_15_0",
+    "Guninthamulu__va__vai": "46_10_0",
+    "Guninthamulu__va__ve": "46_8_0",
+    "Guninthamulu__va__vee": "46_9_0",
+    "Guninthamulu__va__vi": "46_2_0",
+    "Guninthamulu__va__vii": "46_3_0",
+    "Guninthamulu__va__vm": "46_14_0",
+    "Guninthamulu__va__vo": "46_11_0",
+    "Guninthamulu__va__voo": "46_12_0",
+    "Guninthamulu__va__vow": "46_13_0",
+    "Guninthamulu__va__vr": "46_6_0",
+    "Guninthamulu__va__vru": "46_7_0",
+    "Guninthamulu__va__vu": "46_4_0",
+    "Guninthamulu__va__vuu": "46_5_0",
+    "Guninthamulu__ya__y": "41_0_0",
+    "Guninthamulu__ya__ya": "41_1_0",
+    "Guninthamulu__ya__yah": "41_15_0",
+    "Guninthamulu__ya__yai": "41_10_0",
+    "Guninthamulu__ya__ye": "41_8_0",
+    "Guninthamulu__ya__yee": "41_9_0",
+    "Guninthamulu__ya__yi": "41_2_0",
+    "Guninthamulu__ya__yii": "41_3_0",
+    "Guninthamulu__ya__ym": "41_14_0",
+    "Guninthamulu__ya__yoo": "41_12_0",
+    "Guninthamulu__ya__you": "41_13_0",
+    "Guninthamulu__ya__yr": "41_6_0",
+    "Guninthamulu__ya__yru": "41_7_0",
+    "Guninthamulu__ya__yu": "41_4_0",
+    "Guninthamulu__ya__yuu": "41_5_0",
+    "achulu__a": "1_0_0",
+    "achulu__aa": "2_0_0",
+    "achulu__ah": "16_0_0",
+    "achulu__ai": "11_0_0",
+    "achulu__am": "15_0_0",
+    "achulu__ao": "14_0_0",
+    "achulu__e": "9_0_0",
+    "achulu__ee": "10_0_0",
+    "achulu__i": "3_0_0",
+    "achulu__ii": "4_0_0",
+    "achulu__o": "12_0_0",
+    "achulu__oo": "13_0_0",
+    "achulu__ru": "7_0_0",
+    "achulu__ruu": "8_0_0",
+    "achulu__u": "5_0_0",
+    "achulu__uu": "6_0_0",
+    "hallulu__P": "36_0_0",
+    "hallulu__Ph": "37_0_0",
+    "hallulu__ana": "30_0_0",
+    "hallulu__b": "38_0_0",
+    "hallulu__bh": "39_0_0",
+    "hallulu__ch": "22_0_0",
+    "hallulu__cha": "23_0_0",
+    "hallulu__d": "28_0_0",
+    "hallulu__da": "33_0_0",
+    "hallulu__dh": "29_0_0",
+    "hallulu__dha": "34_0_0",
+    "hallulu__g": "19_0_0",
+    "hallulu__gh": "20_0_0",
+    "hallulu__h": "50_0_0",
+    "hallulu__jh": "24_0_0",
+    "hallulu__jha": "25_0_0",
+    "hallulu__jna": "21_0_0",
+    "hallulu__ka": "17_0_0",
+    "hallulu__kha": "18_0_0",
+    "hallulu__ks": "51_0_0",
+    "hallulu__l": "44_0_0",
+    "hallulu__ll": "45_0_0",
+    "hallulu__m": "40_0_0",
+    "hallulu__n": "35_0_0",
+    "hallulu__r": "42_0_0",
+    "hallulu__rr": "43_0_0",
+    "hallulu__s": "47_0_0",
+    "hallulu__sa": "49_0_0",
+    "hallulu__sh": "48_0_0",
+    "hallulu__ta": "26_0_0",
+    "hallulu__th": "27_0_0",
+    "hallulu__tha": "31_0_0",
+    "hallulu__thah": "32_0_0",
+    "hallulu__v": "46_0_0",
+    "hallulu__y": "41_0_0",
+    "othulu__an": "0_0_1",
+    "othulu__b": "0_0_2",
+    "othulu__bh": "0_0_3",
+    "othulu__c": "0_0_4",
+    "othulu__ch": "0_0_5",
+    "othulu__d": "0_0_6",
+    "othulu__da": "0_0_7",
+    "othulu__dh": "0_0_8",
+    "othulu__dha": "0_0_9",
+    "othulu__g": "0_0_10",
+    "othulu__gh": "0_0_11",
+    "othulu__h": "0_0_12",
+    "othulu__ha": "0_0_13",
+    "othulu__j": "0_0_14",
+    "othulu__jh": "0_0_15",
+    "othulu__k": "0_0_16",
+    "othulu__kh": "0_0_17",
+    "othulu__ksh": "0_0_18",
+    "othulu__l": "0_0_19",
+    "othulu__m": "0_0_20",
+    "othulu__n": "0_0_21",
+    "othulu__na": "0_0_22",
+    "othulu__nn": "0_0_23",
+    "othulu__p": "0_0_24",
+    "othulu__ph": "0_0_25",
+    "othulu__r": "0_0_26",
+    "othulu__s": "0_0_27",
+    "othulu__sa": "0_0_28",
+    "othulu__sh": "0_0_29",
+    "othulu__t": "0_0_30",
+    "othulu__th": "0_0_31",
+    "othulu__tha": "0_0_32",
+    "othulu__tt": "0_0_33",
+    "othulu__v": "0_0_34",
+    "othulu__y": "0_0_35",
+    "othulu__z": "0_0_36"
   },
   "valid_triples": [
     [
-      38,
+      43,
       6,
+      0
+    ],
+    [
+      43,
+      1,
+      0
+    ],
+    [
+      43,
+      2,
+      0
+    ],
+    [
+      43,
+      3,
+      0
+    ],
+    [
+      43,
+      4,
+      0
+    ],
+    [
+      43,
+      5,
+      0
+    ],
+    [
+      43,
+      0,
+      0
+    ],
+    [
+      43,
+      15,
+      0
+    ],
+    [
+      43,
+      10,
+      0
+    ],
+    [
+      43,
+      8,
+      0
+    ],
+    [
+      43,
+      9,
+      0
+    ],
+    [
+      43,
+      14,
+      0
+    ],
+    [
+      43,
+      11,
+      0
+    ],
+    [
+      43,
+      12,
+      0
+    ],
+    [
+      43,
+      13,
+      0
+    ],
+    [
+      43,
+      7,
+      0
+    ],
+    [
+      30,
+      0,
+      0
+    ],
+    [
+      30,
+      1,
+      0
+    ],
+    [
+      30,
+      15,
+      0
+    ],
+    [
+      30,
+      10,
+      0
+    ],
+    [
+      30,
+      8,
+      0
+    ],
+    [
+      30,
+      9,
+      0
+    ],
+    [
+      30,
+      2,
+      0
+    ],
+    [
+      30,
+      3,
+      0
+    ],
+    [
+      30,
+      14,
+      0
+    ],
+    [
+      30,
+      11,
+      0
+    ],
+    [
+      30,
+      12,
+      0
+    ],
+    [
+      30,
+      13,
+      0
+    ],
+    [
+      30,
+      6,
+      0
+    ],
+    [
+      30,
+      7,
+      0
+    ],
+    [
+      30,
+      4,
+      0
+    ],
+    [
+      30,
+      5,
+      0
+    ],
+    [
+      38,
+      0,
       0
     ],
     [
       38,
       1,
+      0
+    ],
+    [
+      38,
+      15,
+      0
+    ],
+    [
+      38,
+      10,
+      0
+    ],
+    [
+      38,
+      13,
+      0
+    ],
+    [
+      38,
+      8,
+      0
+    ],
+    [
+      38,
+      9,
       0
     ],
     [
@@ -1385,6 +1659,31 @@
     [
       38,
       3,
+      0
+    ],
+    [
+      38,
+      14,
+      0
+    ],
+    [
+      38,
+      11,
+      0
+    ],
+    [
+      38,
+      12,
+      0
+    ],
+    [
+      38,
+      6,
+      0
+    ],
+    [
+      38,
+      7,
       0
     ],
     [
@@ -1398,852 +1697,82 @@
       0
     ],
     [
-      38,
+      39,
       0,
       0
     ],
     [
-      38,
-      15,
-      0
-    ],
-    [
-      38,
-      10,
-      0
-    ],
-    [
-      38,
-      8,
-      0
-    ],
-    [
-      38,
-      9,
-      0
-    ],
-    [
-      38,
-      14,
-      0
-    ],
-    [
-      38,
-      11,
-      0
-    ],
-    [
-      38,
-      12,
-      0
-    ],
-    [
-      38,
-      13,
-      0
-    ],
-    [
-      38,
-      7,
-      0
-    ],
-    [
-      29,
-      0,
-      0
-    ],
-    [
-      29,
+      39,
       1,
       0
     ],
     [
-      29,
+      39,
       15,
       0
     ],
     [
-      29,
+      39,
       10,
       0
     ],
     [
-      29,
-      8,
-      0
-    ],
-    [
-      29,
-      9,
-      0
-    ],
-    [
-      29,
-      2,
-      0
-    ],
-    [
-      29,
-      3,
-      0
-    ],
-    [
-      29,
-      14,
-      0
-    ],
-    [
-      29,
-      11,
-      0
-    ],
-    [
-      29,
-      12,
-      0
-    ],
-    [
-      29,
+      39,
       13,
       0
     ],
     [
-      29,
-      6,
-      0
-    ],
-    [
-      29,
-      7,
-      0
-    ],
-    [
-      29,
-      4,
-      0
-    ],
-    [
-      29,
-      5,
-      0
-    ],
-    [
-      33,
-      0,
-      0
-    ],
-    [
-      33,
-      1,
-      0
-    ],
-    [
-      33,
-      15,
-      0
-    ],
-    [
-      33,
-      10,
-      0
-    ],
-    [
-      33,
-      13,
-      0
-    ],
-    [
-      33,
+      39,
       8,
       0
     ],
     [
-      33,
+      39,
       9,
       0
     ],
     [
-      33,
+      39,
       2,
       0
     ],
     [
-      33,
+      39,
       3,
       0
     ],
     [
-      33,
+      39,
       14,
       0
     ],
     [
-      33,
+      39,
       11,
       0
     ],
     [
-      33,
+      39,
       12,
       0
     ],
     [
-      33,
+      39,
       6,
       0
     ],
     [
-      33,
+      39,
       7,
       0
     ],
     [
-      33,
+      39,
       4,
       0
     ],
     [
-      33,
-      5,
-      0
-    ],
-    [
-      34,
-      0,
-      0
-    ],
-    [
-      34,
-      1,
-      0
-    ],
-    [
-      34,
-      15,
-      0
-    ],
-    [
-      34,
-      10,
-      0
-    ],
-    [
-      34,
-      13,
-      0
-    ],
-    [
-      34,
-      8,
-      0
-    ],
-    [
-      34,
-      9,
-      0
-    ],
-    [
-      34,
-      2,
-      0
-    ],
-    [
-      34,
-      3,
-      0
-    ],
-    [
-      34,
-      14,
-      0
-    ],
-    [
-      34,
-      11,
-      0
-    ],
-    [
-      34,
-      12,
-      0
-    ],
-    [
-      34,
-      6,
-      0
-    ],
-    [
-      34,
-      7,
-      0
-    ],
-    [
-      34,
-      4,
-      0
-    ],
-    [
-      34,
-      5,
-      0
-    ],
-    [
-      21,
-      0,
-      0
-    ],
-    [
-      21,
-      1,
-      0
-    ],
-    [
-      21,
-      15,
-      0
-    ],
-    [
-      21,
-      10,
-      0
-    ],
-    [
-      21,
-      8,
-      0
-    ],
-    [
-      21,
-      9,
-      0
-    ],
-    [
-      21,
-      2,
-      0
-    ],
-    [
-      21,
-      3,
-      0
-    ],
-    [
-      21,
-      14,
-      0
-    ],
-    [
-      21,
-      11,
-      0
-    ],
-    [
-      21,
-      12,
-      0
-    ],
-    [
-      21,
-      13,
-      0
-    ],
-    [
-      21,
-      6,
-      0
-    ],
-    [
-      21,
-      7,
-      0
-    ],
-    [
-      21,
-      4,
-      0
-    ],
-    [
-      21,
-      5,
-      0
-    ],
-    [
-      20,
-      0,
-      0
-    ],
-    [
-      20,
-      1,
-      0
-    ],
-    [
-      20,
-      15,
-      0
-    ],
-    [
-      20,
-      10,
-      0
-    ],
-    [
-      20,
-      8,
-      0
-    ],
-    [
-      20,
-      9,
-      0
-    ],
-    [
-      20,
-      2,
-      0
-    ],
-    [
-      20,
-      3,
-      0
-    ],
-    [
-      20,
-      14,
-      0
-    ],
-    [
-      20,
-      11,
-      0
-    ],
-    [
-      20,
-      12,
-      0
-    ],
-    [
-      20,
-      13,
-      0
-    ],
-    [
-      20,
-      6,
-      0
-    ],
-    [
-      20,
-      7,
-      0
-    ],
-    [
-      20,
-      4,
-      0
-    ],
-    [
-      20,
-      5,
-      0
-    ],
-    [
-      27,
-      0,
-      0
-    ],
-    [
-      27,
-      1,
-      0
-    ],
-    [
-      27,
-      15,
-      0
-    ],
-    [
-      27,
-      10,
-      0
-    ],
-    [
-      27,
-      8,
-      0
-    ],
-    [
-      27,
-      9,
-      0
-    ],
-    [
-      27,
-      2,
-      0
-    ],
-    [
-      27,
-      3,
-      0
-    ],
-    [
-      27,
-      14,
-      0
-    ],
-    [
-      27,
-      11,
-      0
-    ],
-    [
-      27,
-      12,
-      0
-    ],
-    [
-      27,
-      13,
-      0
-    ],
-    [
-      27,
-      6,
-      0
-    ],
-    [
-      27,
-      7,
-      0
-    ],
-    [
-      27,
-      4,
-      0
-    ],
-    [
-      27,
-      5,
-      0
-    ],
-    [
-      28,
-      0,
-      0
-    ],
-    [
-      28,
-      1,
-      0
-    ],
-    [
-      28,
-      15,
-      0
-    ],
-    [
-      28,
-      10,
-      0
-    ],
-    [
-      28,
-      8,
-      0
-    ],
-    [
-      28,
-      9,
-      0
-    ],
-    [
-      28,
-      2,
-      0
-    ],
-    [
-      28,
-      3,
-      0
-    ],
-    [
-      28,
-      14,
-      0
-    ],
-    [
-      28,
-      11,
-      0
-    ],
-    [
-      28,
-      12,
-      0
-    ],
-    [
-      28,
-      13,
-      0
-    ],
-    [
-      28,
-      6,
-      0
-    ],
-    [
-      28,
-      7,
-      0
-    ],
-    [
-      28,
-      4,
-      0
-    ],
-    [
-      28,
-      5,
-      0
-    ],
-    [
-      18,
-      0,
-      0
-    ],
-    [
-      18,
-      1,
-      0
-    ],
-    [
-      18,
-      15,
-      0
-    ],
-    [
-      18,
-      10,
-      0
-    ],
-    [
-      18,
-      14,
-      0
-    ],
-    [
-      18,
-      8,
-      0
-    ],
-    [
-      18,
-      9,
-      0
-    ],
-    [
-      18,
-      2,
-      0
-    ],
-    [
-      18,
-      3,
-      0
-    ],
-    [
-      18,
-      11,
-      0
-    ],
-    [
-      18,
-      12,
-      0
-    ],
-    [
-      18,
-      13,
-      0
-    ],
-    [
-      18,
-      6,
-      0
-    ],
-    [
-      18,
-      7,
-      0
-    ],
-    [
-      18,
-      4,
-      0
-    ],
-    [
-      18,
-      5,
-      0
-    ],
-    [
-      19,
-      0,
-      0
-    ],
-    [
-      19,
-      1,
-      0
-    ],
-    [
-      19,
-      15,
-      0
-    ],
-    [
-      19,
-      10,
-      0
-    ],
-    [
-      19,
-      14,
-      0
-    ],
-    [
-      19,
-      8,
-      0
-    ],
-    [
-      19,
-      9,
-      0
-    ],
-    [
-      19,
-      2,
-      0
-    ],
-    [
-      19,
-      3,
-      0
-    ],
-    [
-      19,
-      11,
-      0
-    ],
-    [
-      19,
-      12,
-      0
-    ],
-    [
-      19,
-      13,
-      0
-    ],
-    [
-      19,
-      6,
-      0
-    ],
-    [
-      19,
-      7,
-      0
-    ],
-    [
-      19,
-      4,
-      0
-    ],
-    [
-      19,
-      5,
-      0
-    ],
-    [
-      45,
-      0,
-      0
-    ],
-    [
-      45,
-      1,
-      0
-    ],
-    [
-      45,
-      15,
-      0
-    ],
-    [
-      45,
-      10,
-      0
-    ],
-    [
-      45,
-      8,
-      0
-    ],
-    [
-      45,
-      9,
-      0
-    ],
-    [
-      45,
-      2,
-      0
-    ],
-    [
-      45,
-      3,
-      0
-    ],
-    [
-      45,
-      14,
-      0
-    ],
-    [
-      45,
-      11,
-      0
-    ],
-    [
-      45,
-      12,
-      0
-    ],
-    [
-      45,
-      13,
-      0
-    ],
-    [
-      45,
-      6,
-      0
-    ],
-    [
-      45,
-      7,
-      0
-    ],
-    [
-      45,
-      4,
-      0
-    ],
-    [
-      45,
+      39,
       5,
       0
     ],
@@ -2408,1438 +1937,563 @@
       0
     ],
     [
-      16,
+      28,
       0,
       0
     ],
     [
-      16,
+      28,
       1,
       0
     ],
     [
-      16,
+      28,
       15,
       0
     ],
     [
-      16,
+      28,
       10,
       0
     ],
     [
-      16,
-      14,
-      0
-    ],
-    [
-      16,
+      28,
       8,
       0
     ],
     [
-      16,
+      28,
       9,
       0
     ],
     [
-      16,
+      28,
       2,
       0
     ],
     [
-      16,
+      28,
       3,
       0
     ],
     [
-      16,
+      28,
+      14,
+      0
+    ],
+    [
+      28,
       11,
       0
     ],
     [
-      16,
+      28,
       12,
       0
     ],
     [
-      16,
+      28,
       13,
       0
     ],
     [
-      16,
+      28,
       6,
       0
     ],
     [
-      16,
+      28,
       7,
       0
     ],
     [
-      16,
+      28,
       4,
       0
     ],
     [
-      16,
+      28,
       5,
       0
     ],
     [
-      17,
+      33,
       0,
       0
     ],
     [
-      17,
+      33,
       1,
       0
     ],
     [
-      17,
+      33,
       15,
       0
     ],
     [
-      17,
+      33,
       10,
       0
     ],
     [
-      17,
-      14,
-      0
-    ],
-    [
-      17,
+      33,
       8,
       0
     ],
     [
-      17,
+      33,
       9,
       0
     ],
     [
-      17,
+      33,
       2,
       0
     ],
     [
-      17,
+      33,
       3,
       0
     ],
     [
-      17,
+      33,
+      14,
+      0
+    ],
+    [
+      33,
       11,
       0
     ],
     [
-      17,
+      33,
       12,
       0
     ],
     [
-      17,
+      33,
       13,
       0
     ],
     [
-      17,
+      33,
       6,
       0
     ],
     [
-      17,
+      33,
       7,
       0
     ],
     [
-      17,
+      33,
       4,
       0
     ],
     [
-      17,
+      33,
       5,
       0
     ],
     [
-      46,
+      29,
       0,
       0
     ],
     [
-      46,
+      29,
       1,
       0
     ],
     [
-      46,
+      29,
       15,
       0
     ],
     [
-      46,
+      29,
       10,
       0
     ],
     [
-      46,
-      14,
-      0
-    ],
-    [
-      46,
+      29,
       8,
       0
     ],
     [
-      46,
+      29,
       9,
       0
     ],
     [
-      46,
+      29,
       2,
       0
     ],
     [
-      46,
+      29,
       3,
       0
     ],
     [
-      46,
+      29,
+      14,
+      0
+    ],
+    [
+      29,
       11,
       0
     ],
     [
-      46,
+      29,
       12,
       0
     ],
     [
-      46,
+      29,
       13,
       0
     ],
     [
-      46,
+      29,
       6,
       0
     ],
     [
-      46,
+      29,
       7,
       0
     ],
     [
-      46,
+      29,
       4,
       0
     ],
     [
-      46,
+      29,
       5,
       0
     ],
     [
-      39,
+      34,
       0,
       0
     ],
     [
-      39,
+      34,
       1,
       0
     ],
     [
-      39,
+      34,
       15,
       0
     ],
     [
-      39,
+      34,
       10,
       0
     ],
     [
-      39,
+      34,
       8,
       0
     ],
     [
-      39,
+      34,
       9,
       0
     ],
     [
-      39,
+      34,
       2,
       0
     ],
     [
-      39,
+      34,
       3,
       0
     ],
     [
-      39,
+      34,
       14,
       0
     ],
     [
-      39,
+      34,
       11,
       0
     ],
     [
-      39,
+      34,
       12,
       0
     ],
     [
-      39,
+      34,
       13,
       0
     ],
     [
-      39,
+      34,
       6,
       0
     ],
     [
-      39,
+      34,
       7,
       0
     ],
     [
-      39,
+      34,
       4,
       0
     ],
     [
-      39,
+      34,
       5,
       0
     ],
     [
-      40,
+      19,
       0,
       0
     ],
     [
-      40,
+      19,
       1,
       0
     ],
     [
-      40,
+      19,
       15,
       0
     ],
     [
-      40,
+      19,
       10,
       0
     ],
     [
-      40,
-      8,
-      0
-    ],
-    [
-      40,
-      9,
-      0
-    ],
-    [
-      40,
-      2,
-      0
-    ],
-    [
-      40,
-      3,
-      0
-    ],
-    [
-      40,
+      19,
       14,
       0
     ],
     [
-      40,
+      19,
+      8,
+      0
+    ],
+    [
+      19,
+      9,
+      0
+    ],
+    [
+      19,
+      2,
+      0
+    ],
+    [
+      19,
+      3,
+      0
+    ],
+    [
+      19,
       11,
       0
     ],
     [
-      40,
+      19,
       12,
       0
     ],
     [
-      40,
+      19,
       13,
       0
     ],
     [
-      40,
+      19,
       6,
       0
     ],
     [
-      40,
+      19,
       7,
       0
     ],
     [
-      40,
+      19,
       4,
       0
     ],
     [
-      40,
+      19,
       5,
       0
     ],
     [
-      35,
+      20,
       0,
       0
     ],
     [
-      35,
+      20,
       1,
       0
     ],
     [
-      35,
+      20,
       15,
       0
     ],
     [
-      35,
+      20,
       10,
       0
     ],
     [
-      35,
-      8,
-      0
-    ],
-    [
-      35,
-      9,
-      0
-    ],
-    [
-      35,
-      2,
-      0
-    ],
-    [
-      35,
-      3,
-      0
-    ],
-    [
-      35,
+      20,
       14,
       0
     ],
     [
-      35,
+      20,
+      8,
+      0
+    ],
+    [
+      20,
+      9,
+      0
+    ],
+    [
+      20,
+      2,
+      0
+    ],
+    [
+      20,
+      3,
+      0
+    ],
+    [
+      20,
       11,
       0
     ],
     [
-      35,
+      20,
       12,
       0
     ],
     [
-      35,
+      20,
       13,
       0
     ],
     [
-      35,
+      20,
       6,
       0
     ],
     [
-      35,
+      20,
       7,
       0
     ],
     [
-      35,
+      20,
       4,
       0
     ],
     [
-      35,
+      20,
       5,
       0
     ],
     [
-      30,
+      50,
       0,
       0
     ],
     [
-      30,
+      50,
       1,
       0
     ],
     [
-      30,
+      50,
       15,
       0
     ],
     [
-      30,
+      50,
       10,
       0
     ],
     [
-      30,
+      50,
       8,
       0
     ],
     [
-      30,
+      50,
       9,
       0
     ],
     [
-      30,
+      50,
       2,
       0
     ],
     [
-      30,
+      50,
       3,
       0
     ],
     [
-      30,
+      50,
       14,
       0
     ],
     [
-      30,
+      50,
       11,
       0
     ],
     [
-      30,
+      50,
       12,
       0
     ],
     [
-      30,
+      50,
       13,
       0
     ],
     [
-      30,
+      50,
       6,
       0
     ],
     [
-      30,
+      50,
       7,
       0
     ],
     [
-      30,
+      50,
       4,
       0
     ],
     [
-      30,
+      50,
       5,
-      0
-    ],
-    [
-      31,
-      0,
-      0
-    ],
-    [
-      31,
-      1,
-      0
-    ],
-    [
-      31,
-      15,
-      0
-    ],
-    [
-      31,
-      10,
-      0
-    ],
-    [
-      31,
-      8,
-      0
-    ],
-    [
-      31,
-      9,
-      0
-    ],
-    [
-      31,
-      2,
-      0
-    ],
-    [
-      31,
-      3,
-      0
-    ],
-    [
-      31,
-      14,
-      0
-    ],
-    [
-      31,
-      11,
-      0
-    ],
-    [
-      31,
-      12,
-      0
-    ],
-    [
-      31,
-      13,
-      0
-    ],
-    [
-      31,
-      6,
-      0
-    ],
-    [
-      31,
-      7,
-      0
-    ],
-    [
-      31,
-      4,
-      0
-    ],
-    [
-      31,
-      5,
-      0
-    ],
-    [
-      32,
-      0,
-      0
-    ],
-    [
-      32,
-      1,
-      0
-    ],
-    [
-      32,
-      15,
-      0
-    ],
-    [
-      32,
-      10,
-      0
-    ],
-    [
-      32,
-      8,
-      0
-    ],
-    [
-      32,
-      9,
-      0
-    ],
-    [
-      32,
-      2,
-      0
-    ],
-    [
-      32,
-      3,
-      0
-    ],
-    [
-      32,
-      14,
-      0
-    ],
-    [
-      32,
-      11,
-      0
-    ],
-    [
-      32,
-      12,
-      0
-    ],
-    [
-      32,
-      13,
-      0
-    ],
-    [
-      32,
-      6,
-      0
-    ],
-    [
-      32,
-      7,
-      0
-    ],
-    [
-      32,
-      4,
-      0
-    ],
-    [
-      32,
-      5,
-      0
-    ],
-    [
-      37,
-      0,
-      0
-    ],
-    [
-      37,
-      1,
-      0
-    ],
-    [
-      37,
-      15,
-      0
-    ],
-    [
-      37,
-      10,
-      0
-    ],
-    [
-      37,
-      8,
-      0
-    ],
-    [
-      37,
-      9,
-      0
-    ],
-    [
-      37,
-      2,
-      0
-    ],
-    [
-      37,
-      3,
-      0
-    ],
-    [
-      37,
-      14,
-      0
-    ],
-    [
-      37,
-      11,
-      0
-    ],
-    [
-      37,
-      12,
-      0
-    ],
-    [
-      37,
-      13,
-      0
-    ],
-    [
-      37,
-      6,
-      0
-    ],
-    [
-      37,
-      7,
-      0
-    ],
-    [
-      37,
-      4,
-      0
-    ],
-    [
-      37,
-      5,
-      0
-    ],
-    [
-      44,
-      0,
-      0
-    ],
-    [
-      44,
-      1,
-      0
-    ],
-    [
-      44,
-      15,
-      0
-    ],
-    [
-      44,
-      10,
-      0
-    ],
-    [
-      44,
-      8,
-      0
-    ],
-    [
-      44,
-      9,
-      0
-    ],
-    [
-      44,
-      2,
-      0
-    ],
-    [
-      44,
-      3,
-      0
-    ],
-    [
-      44,
-      14,
-      0
-    ],
-    [
-      44,
-      11,
-      0
-    ],
-    [
-      44,
-      12,
-      0
-    ],
-    [
-      44,
-      13,
-      0
-    ],
-    [
-      44,
-      6,
-      0
-    ],
-    [
-      44,
-      7,
-      0
-    ],
-    [
-      44,
-      4,
-      0
-    ],
-    [
-      44,
-      5,
-      0
-    ],
-    [
-      42,
-      0,
-      0
-    ],
-    [
-      42,
-      1,
-      0
-    ],
-    [
-      42,
-      15,
-      0
-    ],
-    [
-      42,
-      10,
-      0
-    ],
-    [
-      42,
-      8,
-      0
-    ],
-    [
-      42,
-      9,
-      0
-    ],
-    [
-      42,
-      2,
-      0
-    ],
-    [
-      42,
-      3,
-      0
-    ],
-    [
-      42,
-      14,
-      0
-    ],
-    [
-      42,
-      11,
-      0
-    ],
-    [
-      42,
-      12,
-      0
-    ],
-    [
-      42,
-      13,
-      0
-    ],
-    [
-      42,
-      6,
-      0
-    ],
-    [
-      42,
-      7,
-      0
-    ],
-    [
-      42,
-      4,
-      0
-    ],
-    [
-      42,
-      5,
-      0
-    ],
-    [
-      43,
-      0,
-      0
-    ],
-    [
-      43,
-      1,
-      0
-    ],
-    [
-      43,
-      15,
-      0
-    ],
-    [
-      43,
-      10,
-      0
-    ],
-    [
-      43,
-      8,
-      0
-    ],
-    [
-      43,
-      9,
-      0
-    ],
-    [
-      43,
-      2,
-      0
-    ],
-    [
-      43,
-      3,
-      0
-    ],
-    [
-      43,
-      14,
-      0
-    ],
-    [
-      43,
-      11,
-      0
-    ],
-    [
-      43,
-      12,
-      0
-    ],
-    [
-      43,
-      13,
-      0
-    ],
-    [
-      43,
-      6,
-      0
-    ],
-    [
-      43,
-      7,
-      0
-    ],
-    [
-      43,
-      4,
-      0
-    ],
-    [
-      43,
-      5,
-      0
-    ],
-    [
-      25,
-      0,
-      0
-    ],
-    [
-      25,
-      1,
-      0
-    ],
-    [
-      25,
-      15,
-      0
-    ],
-    [
-      25,
-      10,
-      0
-    ],
-    [
-      25,
-      14,
-      0
-    ],
-    [
-      25,
-      8,
-      0
-    ],
-    [
-      25,
-      9,
-      0
-    ],
-    [
-      25,
-      2,
-      0
-    ],
-    [
-      25,
-      3,
-      0
-    ],
-    [
-      25,
-      11,
-      0
-    ],
-    [
-      25,
-      12,
-      0
-    ],
-    [
-      25,
-      13,
-      0
-    ],
-    [
-      25,
-      6,
-      0
-    ],
-    [
-      25,
-      7,
-      0
-    ],
-    [
-      25,
-      4,
-      0
-    ],
-    [
-      25,
-      5,
-      0
-    ],
-    [
-      26,
-      0,
-      0
-    ],
-    [
-      26,
-      1,
-      0
-    ],
-    [
-      26,
-      15,
-      0
-    ],
-    [
-      26,
-      10,
-      0
-    ],
-    [
-      26,
-      8,
-      0
-    ],
-    [
-      26,
-      9,
-      0
-    ],
-    [
-      26,
-      2,
-      0
-    ],
-    [
-      26,
-      3,
-      0
-    ],
-    [
-      26,
-      14,
-      0
-    ],
-    [
-      26,
-      11,
-      0
-    ],
-    [
-      26,
-      12,
-      0
-    ],
-    [
-      26,
-      13,
-      0
-    ],
-    [
-      26,
-      6,
-      0
-    ],
-    [
-      26,
-      7,
-      0
-    ],
-    [
-      26,
-      4,
-      0
-    ],
-    [
-      26,
-      5,
-      0
-    ],
-    [
-      41,
-      0,
-      0
-    ],
-    [
-      41,
-      1,
-      0
-    ],
-    [
-      41,
-      15,
-      0
-    ],
-    [
-      41,
-      10,
-      0
-    ],
-    [
-      41,
-      8,
-      0
-    ],
-    [
-      41,
-      9,
-      0
-    ],
-    [
-      41,
-      2,
-      0
-    ],
-    [
-      41,
-      3,
-      0
-    ],
-    [
-      41,
-      14,
-      0
-    ],
-    [
-      41,
-      11,
-      0
-    ],
-    [
-      41,
-      12,
-      0
-    ],
-    [
-      41,
-      13,
-      0
-    ],
-    [
-      41,
-      6,
-      0
-    ],
-    [
-      41,
-      7,
-      0
-    ],
-    [
-      41,
-      4,
-      0
-    ],
-    [
-      41,
-      5,
-      0
-    ],
-    [
-      36,
-      0,
-      0
-    ],
-    [
-      36,
-      1,
-      0
-    ],
-    [
-      36,
-      15,
-      0
-    ],
-    [
-      36,
-      10,
-      0
-    ],
-    [
-      36,
-      8,
-      0
-    ],
-    [
-      36,
-      9,
-      0
-    ],
-    [
-      36,
-      2,
-      0
-    ],
-    [
-      36,
-      3,
-      0
-    ],
-    [
-      36,
-      14,
-      0
-    ],
-    [
-      36,
-      12,
-      0
-    ],
-    [
-      36,
-      13,
-      0
-    ],
-    [
-      36,
-      6,
-      0
-    ],
-    [
-      36,
-      7,
-      0
-    ],
-    [
-      36,
-      4,
-      0
-    ],
-    [
-      36,
-      5,
-      0
-    ],
-    [
-      0,
-      0,
-      0
-    ],
-    [
-      1,
-      0,
-      0
-    ],
-    [
-      15,
-      0,
-      0
-    ],
-    [
-      10,
-      0,
-      0
-    ],
-    [
-      14,
-      0,
-      0
-    ],
-    [
-      13,
-      0,
-      0
-    ],
-    [
-      8,
-      0,
-      0
-    ],
-    [
-      9,
-      0,
-      0
-    ],
-    [
-      2,
-      0,
-      0
-    ],
-    [
-      3,
-      0,
-      0
-    ],
-    [
-      11,
-      0,
-      0
-    ],
-    [
-      12,
-      0,
-      0
-    ],
-    [
-      6,
-      0,
-      0
-    ],
-    [
-      7,
-      0,
-      0
-    ],
-    [
-      4,
-      0,
-      0
-    ],
-    [
-      5,
-      0,
       0
     ],
     [
@@ -3848,159 +2502,1939 @@
       0
     ],
     [
-      29,
-      0,
-      13
+      24,
+      1,
+      0
     ],
     [
-      33,
-      0,
-      20
+      24,
+      15,
+      0
     ],
     [
-      34,
-      0,
-      21
+      24,
+      10,
+      0
     ],
     [
-      20,
-      0,
-      5
+      24,
+      8,
+      0
     ],
     [
-      21,
-      0,
-      6
+      24,
+      9,
+      0
     ],
     [
-      27,
-      0,
-      11
+      24,
+      2,
+      0
     ],
     [
-      27,
-      0,
-      15
+      24,
+      3,
+      0
     ],
     [
-      28,
-      0,
-      12
+      24,
+      14,
+      0
     ],
     [
-      28,
-      0,
-      16
+      24,
+      11,
+      0
     ],
     [
-      18,
-      0,
-      3
+      24,
+      12,
+      0
     ],
     [
-      19,
-      0,
-      4
+      24,
+      13,
+      0
     ],
     [
-      45,
-      0,
-      29
+      24,
+      6,
+      0
     ],
     [
-      22,
-      0,
-      7
+      24,
+      7,
+      0
     ],
     [
-      23,
-      0,
-      8
+      24,
+      4,
+      0
     ],
     [
-      16,
-      0,
-      1
-    ],
-    [
-      17,
-      0,
-      2
-    ],
-    [
-      46,
-      0,
-      30
-    ],
-    [
-      39,
-      0,
-      25
-    ],
-    [
-      35,
-      0,
-      22
-    ],
-    [
-      30,
-      0,
-      17
-    ],
-    [
-      31,
-      0,
-      18
-    ],
-    [
-      32,
-      0,
-      19
-    ],
-    [
-      37,
-      0,
-      24
-    ],
-    [
-      44,
-      0,
-      28
-    ],
-    [
-      42,
-      0,
-      27
+      24,
+      5,
+      0
     ],
     [
       25,
       0,
-      9
+      0
     ],
     [
-      26,
-      0,
-      10
+      25,
+      1,
+      0
     ],
     [
-      26,
-      0,
-      14
+      25,
+      15,
+      0
     ],
     [
-      41,
+      25,
+      10,
+      0
+    ],
+    [
+      25,
+      8,
+      0
+    ],
+    [
+      25,
+      9,
+      0
+    ],
+    [
+      25,
+      2,
+      0
+    ],
+    [
+      25,
+      3,
+      0
+    ],
+    [
+      25,
+      14,
+      0
+    ],
+    [
+      25,
+      11,
+      0
+    ],
+    [
+      25,
+      12,
+      0
+    ],
+    [
+      25,
+      13,
+      0
+    ],
+    [
+      25,
+      6,
+      0
+    ],
+    [
+      25,
+      7,
+      0
+    ],
+    [
+      25,
+      4,
+      0
+    ],
+    [
+      25,
+      5,
+      0
+    ],
+    [
+      17,
       0,
-      26
+      0
+    ],
+    [
+      17,
+      1,
+      0
+    ],
+    [
+      17,
+      15,
+      0
+    ],
+    [
+      17,
+      10,
+      0
+    ],
+    [
+      17,
+      14,
+      0
+    ],
+    [
+      17,
+      8,
+      0
+    ],
+    [
+      17,
+      9,
+      0
+    ],
+    [
+      17,
+      2,
+      0
+    ],
+    [
+      17,
+      3,
+      0
+    ],
+    [
+      17,
+      11,
+      0
+    ],
+    [
+      17,
+      12,
+      0
+    ],
+    [
+      17,
+      13,
+      0
+    ],
+    [
+      17,
+      6,
+      0
+    ],
+    [
+      17,
+      7,
+      0
+    ],
+    [
+      17,
+      4,
+      0
+    ],
+    [
+      17,
+      5,
+      0
+    ],
+    [
+      18,
+      0,
+      0
+    ],
+    [
+      18,
+      1,
+      0
+    ],
+    [
+      18,
+      15,
+      0
+    ],
+    [
+      18,
+      10,
+      0
+    ],
+    [
+      18,
+      14,
+      0
+    ],
+    [
+      18,
+      8,
+      0
+    ],
+    [
+      18,
+      9,
+      0
+    ],
+    [
+      18,
+      2,
+      0
+    ],
+    [
+      18,
+      3,
+      0
+    ],
+    [
+      18,
+      11,
+      0
+    ],
+    [
+      18,
+      12,
+      0
+    ],
+    [
+      18,
+      13,
+      0
+    ],
+    [
+      18,
+      6,
+      0
+    ],
+    [
+      18,
+      7,
+      0
+    ],
+    [
+      18,
+      4,
+      0
+    ],
+    [
+      18,
+      5,
+      0
+    ],
+    [
+      51,
+      0,
+      0
+    ],
+    [
+      51,
+      1,
+      0
+    ],
+    [
+      51,
+      15,
+      0
+    ],
+    [
+      51,
+      10,
+      0
+    ],
+    [
+      51,
+      14,
+      0
+    ],
+    [
+      51,
+      8,
+      0
+    ],
+    [
+      51,
+      9,
+      0
+    ],
+    [
+      51,
+      2,
+      0
+    ],
+    [
+      51,
+      3,
+      0
+    ],
+    [
+      51,
+      11,
+      0
+    ],
+    [
+      51,
+      12,
+      0
+    ],
+    [
+      51,
+      13,
+      0
+    ],
+    [
+      51,
+      6,
+      0
+    ],
+    [
+      51,
+      7,
+      0
+    ],
+    [
+      51,
+      4,
+      0
+    ],
+    [
+      51,
+      5,
+      0
+    ],
+    [
+      44,
+      0,
+      0
+    ],
+    [
+      44,
+      1,
+      0
+    ],
+    [
+      44,
+      15,
+      0
+    ],
+    [
+      44,
+      10,
+      0
+    ],
+    [
+      44,
+      8,
+      0
+    ],
+    [
+      44,
+      9,
+      0
+    ],
+    [
+      44,
+      2,
+      0
+    ],
+    [
+      44,
+      3,
+      0
+    ],
+    [
+      44,
+      14,
+      0
+    ],
+    [
+      44,
+      11,
+      0
+    ],
+    [
+      44,
+      12,
+      0
+    ],
+    [
+      44,
+      13,
+      0
+    ],
+    [
+      44,
+      6,
+      0
+    ],
+    [
+      44,
+      7,
+      0
+    ],
+    [
+      44,
+      4,
+      0
+    ],
+    [
+      44,
+      5,
+      0
+    ],
+    [
+      45,
+      0,
+      0
+    ],
+    [
+      45,
+      1,
+      0
+    ],
+    [
+      45,
+      15,
+      0
+    ],
+    [
+      45,
+      10,
+      0
+    ],
+    [
+      45,
+      8,
+      0
+    ],
+    [
+      45,
+      9,
+      0
+    ],
+    [
+      45,
+      2,
+      0
+    ],
+    [
+      45,
+      3,
+      0
+    ],
+    [
+      45,
+      14,
+      0
+    ],
+    [
+      45,
+      11,
+      0
+    ],
+    [
+      45,
+      12,
+      0
+    ],
+    [
+      45,
+      13,
+      0
+    ],
+    [
+      45,
+      6,
+      0
+    ],
+    [
+      45,
+      7,
+      0
+    ],
+    [
+      45,
+      4,
+      0
+    ],
+    [
+      45,
+      5,
+      0
+    ],
+    [
+      40,
+      0,
+      0
+    ],
+    [
+      40,
+      1,
+      0
+    ],
+    [
+      40,
+      15,
+      0
+    ],
+    [
+      40,
+      10,
+      0
+    ],
+    [
+      40,
+      8,
+      0
+    ],
+    [
+      40,
+      9,
+      0
+    ],
+    [
+      40,
+      2,
+      0
+    ],
+    [
+      40,
+      3,
+      0
+    ],
+    [
+      40,
+      14,
+      0
+    ],
+    [
+      40,
+      11,
+      0
+    ],
+    [
+      40,
+      12,
+      0
+    ],
+    [
+      40,
+      13,
+      0
+    ],
+    [
+      40,
+      6,
+      0
+    ],
+    [
+      40,
+      7,
+      0
+    ],
+    [
+      40,
+      4,
+      0
+    ],
+    [
+      40,
+      5,
+      0
+    ],
+    [
+      35,
+      0,
+      0
+    ],
+    [
+      35,
+      1,
+      0
+    ],
+    [
+      35,
+      15,
+      0
+    ],
+    [
+      35,
+      10,
+      0
+    ],
+    [
+      35,
+      8,
+      0
+    ],
+    [
+      35,
+      9,
+      0
+    ],
+    [
+      35,
+      2,
+      0
+    ],
+    [
+      35,
+      3,
+      0
+    ],
+    [
+      35,
+      14,
+      0
+    ],
+    [
+      35,
+      11,
+      0
+    ],
+    [
+      35,
+      12,
+      0
+    ],
+    [
+      35,
+      13,
+      0
+    ],
+    [
+      35,
+      6,
+      0
+    ],
+    [
+      35,
+      7,
+      0
+    ],
+    [
+      35,
+      4,
+      0
+    ],
+    [
+      35,
+      5,
+      0
     ],
     [
       36,
       0,
-      23
+      0
+    ],
+    [
+      36,
+      1,
+      0
+    ],
+    [
+      36,
+      15,
+      0
+    ],
+    [
+      36,
+      10,
+      0
+    ],
+    [
+      36,
+      8,
+      0
+    ],
+    [
+      36,
+      9,
+      0
+    ],
+    [
+      36,
+      2,
+      0
+    ],
+    [
+      36,
+      3,
+      0
+    ],
+    [
+      36,
+      14,
+      0
+    ],
+    [
+      36,
+      11,
+      0
+    ],
+    [
+      36,
+      12,
+      0
+    ],
+    [
+      36,
+      13,
+      0
+    ],
+    [
+      36,
+      6,
+      0
+    ],
+    [
+      36,
+      7,
+      0
+    ],
+    [
+      36,
+      4,
+      0
+    ],
+    [
+      36,
+      5,
+      0
+    ],
+    [
+      37,
+      0,
+      0
+    ],
+    [
+      37,
+      1,
+      0
+    ],
+    [
+      37,
+      15,
+      0
+    ],
+    [
+      37,
+      10,
+      0
+    ],
+    [
+      37,
+      8,
+      0
+    ],
+    [
+      37,
+      9,
+      0
+    ],
+    [
+      37,
+      2,
+      0
+    ],
+    [
+      37,
+      3,
+      0
+    ],
+    [
+      37,
+      14,
+      0
+    ],
+    [
+      37,
+      11,
+      0
+    ],
+    [
+      37,
+      12,
+      0
+    ],
+    [
+      37,
+      13,
+      0
+    ],
+    [
+      37,
+      6,
+      0
+    ],
+    [
+      37,
+      7,
+      0
+    ],
+    [
+      37,
+      4,
+      0
+    ],
+    [
+      37,
+      5,
+      0
+    ],
+    [
+      42,
+      0,
+      0
+    ],
+    [
+      42,
+      1,
+      0
+    ],
+    [
+      42,
+      15,
+      0
+    ],
+    [
+      42,
+      10,
+      0
+    ],
+    [
+      42,
+      8,
+      0
+    ],
+    [
+      42,
+      9,
+      0
+    ],
+    [
+      42,
+      2,
+      0
+    ],
+    [
+      42,
+      3,
+      0
+    ],
+    [
+      42,
+      14,
+      0
+    ],
+    [
+      42,
+      11,
+      0
+    ],
+    [
+      42,
+      12,
+      0
+    ],
+    [
+      42,
+      13,
+      0
+    ],
+    [
+      42,
+      6,
+      0
+    ],
+    [
+      42,
+      7,
+      0
+    ],
+    [
+      42,
+      4,
+      0
+    ],
+    [
+      42,
+      5,
+      0
+    ],
+    [
+      49,
+      0,
+      0
+    ],
+    [
+      49,
+      1,
+      0
+    ],
+    [
+      49,
+      15,
+      0
+    ],
+    [
+      49,
+      10,
+      0
+    ],
+    [
+      49,
+      8,
+      0
+    ],
+    [
+      49,
+      9,
+      0
+    ],
+    [
+      49,
+      2,
+      0
+    ],
+    [
+      49,
+      3,
+      0
+    ],
+    [
+      49,
+      14,
+      0
+    ],
+    [
+      49,
+      11,
+      0
+    ],
+    [
+      49,
+      12,
+      0
+    ],
+    [
+      49,
+      13,
+      0
+    ],
+    [
+      49,
+      6,
+      0
+    ],
+    [
+      49,
+      7,
+      0
+    ],
+    [
+      49,
+      4,
+      0
+    ],
+    [
+      49,
+      5,
+      0
+    ],
+    [
+      48,
+      0,
+      0
+    ],
+    [
+      48,
+      1,
+      0
+    ],
+    [
+      48,
+      15,
+      0
+    ],
+    [
+      48,
+      10,
+      0
+    ],
+    [
+      48,
+      8,
+      0
+    ],
+    [
+      48,
+      9,
+      0
+    ],
+    [
+      48,
+      2,
+      0
+    ],
+    [
+      48,
+      3,
+      0
+    ],
+    [
+      48,
+      14,
+      0
+    ],
+    [
+      48,
+      11,
+      0
+    ],
+    [
+      48,
+      12,
+      0
+    ],
+    [
+      48,
+      13,
+      0
+    ],
+    [
+      48,
+      6,
+      0
+    ],
+    [
+      48,
+      7,
+      0
+    ],
+    [
+      48,
+      4,
+      0
+    ],
+    [
+      48,
+      5,
+      0
+    ],
+    [
+      47,
+      0,
+      0
+    ],
+    [
+      47,
+      1,
+      0
+    ],
+    [
+      47,
+      15,
+      0
+    ],
+    [
+      47,
+      10,
+      0
+    ],
+    [
+      47,
+      8,
+      0
+    ],
+    [
+      47,
+      9,
+      0
+    ],
+    [
+      47,
+      2,
+      0
+    ],
+    [
+      47,
+      3,
+      0
+    ],
+    [
+      47,
+      14,
+      0
+    ],
+    [
+      47,
+      11,
+      0
+    ],
+    [
+      47,
+      12,
+      0
+    ],
+    [
+      47,
+      13,
+      0
+    ],
+    [
+      47,
+      6,
+      0
+    ],
+    [
+      47,
+      7,
+      0
+    ],
+    [
+      47,
+      4,
+      0
+    ],
+    [
+      47,
+      5,
+      0
+    ],
+    [
+      26,
+      0,
+      0
+    ],
+    [
+      26,
+      1,
+      0
+    ],
+    [
+      26,
+      15,
+      0
+    ],
+    [
+      26,
+      10,
+      0
+    ],
+    [
+      26,
+      14,
+      0
+    ],
+    [
+      26,
+      8,
+      0
+    ],
+    [
+      26,
+      9,
+      0
+    ],
+    [
+      26,
+      2,
+      0
+    ],
+    [
+      26,
+      3,
+      0
+    ],
+    [
+      26,
+      11,
+      0
+    ],
+    [
+      26,
+      12,
+      0
+    ],
+    [
+      26,
+      13,
+      0
+    ],
+    [
+      26,
+      6,
+      0
+    ],
+    [
+      26,
+      7,
+      0
+    ],
+    [
+      26,
+      4,
+      0
+    ],
+    [
+      26,
+      5,
+      0
+    ],
+    [
+      31,
+      0,
+      0
+    ],
+    [
+      31,
+      1,
+      0
+    ],
+    [
+      31,
+      15,
+      0
+    ],
+    [
+      31,
+      10,
+      0
+    ],
+    [
+      31,
+      8,
+      0
+    ],
+    [
+      31,
+      9,
+      0
+    ],
+    [
+      31,
+      2,
+      0
+    ],
+    [
+      31,
+      3,
+      0
+    ],
+    [
+      31,
+      14,
+      0
+    ],
+    [
+      31,
+      11,
+      0
+    ],
+    [
+      31,
+      12,
+      0
+    ],
+    [
+      31,
+      13,
+      0
+    ],
+    [
+      31,
+      6,
+      0
+    ],
+    [
+      31,
+      7,
+      0
+    ],
+    [
+      31,
+      4,
+      0
+    ],
+    [
+      31,
+      5,
+      0
+    ],
+    [
+      32,
+      0,
+      0
+    ],
+    [
+      32,
+      1,
+      0
+    ],
+    [
+      32,
+      15,
+      0
+    ],
+    [
+      32,
+      10,
+      0
+    ],
+    [
+      32,
+      8,
+      0
+    ],
+    [
+      32,
+      9,
+      0
+    ],
+    [
+      32,
+      2,
+      0
+    ],
+    [
+      32,
+      3,
+      0
+    ],
+    [
+      32,
+      14,
+      0
+    ],
+    [
+      32,
+      11,
+      0
+    ],
+    [
+      32,
+      12,
+      0
+    ],
+    [
+      32,
+      13,
+      0
+    ],
+    [
+      32,
+      6,
+      0
+    ],
+    [
+      32,
+      7,
+      0
+    ],
+    [
+      32,
+      4,
+      0
+    ],
+    [
+      32,
+      5,
+      0
+    ],
+    [
+      27,
+      0,
+      0
+    ],
+    [
+      27,
+      1,
+      0
+    ],
+    [
+      27,
+      15,
+      0
+    ],
+    [
+      27,
+      10,
+      0
+    ],
+    [
+      27,
+      8,
+      0
+    ],
+    [
+      27,
+      9,
+      0
+    ],
+    [
+      27,
+      2,
+      0
+    ],
+    [
+      27,
+      3,
+      0
+    ],
+    [
+      27,
+      14,
+      0
+    ],
+    [
+      27,
+      11,
+      0
+    ],
+    [
+      27,
+      12,
+      0
+    ],
+    [
+      27,
+      13,
+      0
+    ],
+    [
+      27,
+      6,
+      0
+    ],
+    [
+      27,
+      7,
+      0
+    ],
+    [
+      27,
+      4,
+      0
+    ],
+    [
+      27,
+      5,
+      0
+    ],
+    [
+      46,
+      0,
+      0
+    ],
+    [
+      46,
+      1,
+      0
+    ],
+    [
+      46,
+      15,
+      0
+    ],
+    [
+      46,
+      10,
+      0
+    ],
+    [
+      46,
+      8,
+      0
+    ],
+    [
+      46,
+      9,
+      0
+    ],
+    [
+      46,
+      2,
+      0
+    ],
+    [
+      46,
+      3,
+      0
+    ],
+    [
+      46,
+      14,
+      0
+    ],
+    [
+      46,
+      11,
+      0
+    ],
+    [
+      46,
+      12,
+      0
+    ],
+    [
+      46,
+      13,
+      0
+    ],
+    [
+      46,
+      6,
+      0
+    ],
+    [
+      46,
+      7,
+      0
+    ],
+    [
+      46,
+      4,
+      0
+    ],
+    [
+      46,
+      5,
+      0
+    ],
+    [
+      41,
+      0,
+      0
+    ],
+    [
+      41,
+      1,
+      0
+    ],
+    [
+      41,
+      15,
+      0
+    ],
+    [
+      41,
+      10,
+      0
+    ],
+    [
+      41,
+      8,
+      0
+    ],
+    [
+      41,
+      9,
+      0
+    ],
+    [
+      41,
+      2,
+      0
+    ],
+    [
+      41,
+      3,
+      0
+    ],
+    [
+      41,
+      14,
+      0
+    ],
+    [
+      41,
+      12,
+      0
+    ],
+    [
+      41,
+      13,
+      0
+    ],
+    [
+      41,
+      6,
+      0
+    ],
+    [
+      41,
+      7,
+      0
+    ],
+    [
+      41,
+      4,
+      0
+    ],
+    [
+      41,
+      5,
+      0
+    ],
+    [
+      1,
+      0,
+      0
+    ],
+    [
+      2,
+      0,
+      0
     ],
     [
       16,
       0,
+      0
+    ],
+    [
+      11,
+      0,
+      0
+    ],
+    [
+      15,
+      0,
+      0
+    ],
+    [
+      14,
+      0,
+      0
+    ],
+    [
+      9,
+      0,
+      0
+    ],
+    [
+      10,
+      0,
+      0
+    ],
+    [
+      3,
+      0,
+      0
+    ],
+    [
+      4,
+      0,
+      0
+    ],
+    [
+      12,
+      0,
+      0
+    ],
+    [
+      13,
+      0,
+      0
+    ],
+    [
+      7,
+      0,
+      0
+    ],
+    [
+      8,
+      0,
+      0
+    ],
+    [
+      5,
+      0,
+      0
+    ],
+    [
+      6,
+      0,
+      0
+    ],
+    [
+      21,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      1
+    ],
+    [
+      0,
+      0,
+      2
+    ],
+    [
+      0,
+      0,
+      3
+    ],
+    [
+      0,
+      0,
+      4
+    ],
+    [
+      0,
+      0,
+      5
+    ],
+    [
+      0,
+      0,
+      6
+    ],
+    [
+      0,
+      0,
+      7
+    ],
+    [
+      0,
+      0,
+      8
+    ],
+    [
+      0,
+      0,
+      9
+    ],
+    [
+      0,
+      0,
+      10
+    ],
+    [
+      0,
+      0,
+      11
+    ],
+    [
+      0,
+      0,
+      12
+    ],
+    [
+      0,
+      0,
+      13
+    ],
+    [
+      0,
+      0,
+      14
+    ],
+    [
+      0,
+      0,
+      15
+    ],
+    [
+      0,
+      0,
+      16
+    ],
+    [
+      0,
+      0,
+      17
+    ],
+    [
+      0,
+      0,
+      18
+    ],
+    [
+      0,
+      0,
+      19
+    ],
+    [
+      0,
+      0,
+      20
+    ],
+    [
+      0,
+      0,
+      21
+    ],
+    [
+      0,
+      0,
+      22
+    ],
+    [
+      0,
+      0,
+      23
+    ],
+    [
+      0,
+      0,
+      24
+    ],
+    [
+      0,
+      0,
+      25
+    ],
+    [
+      0,
+      0,
+      26
+    ],
+    [
+      0,
+      0,
+      27
+    ],
+    [
+      0,
+      0,
+      28
+    ],
+    [
+      0,
+      0,
+      29
+    ],
+    [
+      0,
+      0,
+      30
+    ],
+    [
+      0,
+      0,
       31
+    ],
+    [
+      0,
+      0,
+      32
+    ],
+    [
+      0,
+      0,
+      33
+    ],
+    [
+      0,
+      0,
+      34
+    ],
+    [
+      0,
+      0,
+      35
+    ],
+    [
+      0,
+      0,
+      36
     ]
   ],
   "total_classes": 630

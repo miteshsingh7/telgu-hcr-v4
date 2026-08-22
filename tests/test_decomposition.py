@@ -11,30 +11,53 @@ from src.data.decomposition import (
 )
 
 
+from src.data.known_duplicates import (
+    CONFIRMED_DUPLICATE_CLASSES,
+    is_known_duplicate_pair,
+    get_equivalent_classes
+)
+
+
 def test_individual_decompositions():
     """Verifies decomposition logic across representative categories and aliases."""
     # Achulu
     assert decompose_class_name("achulu__a") == ("అ", "none", "none")
     assert decompose_class_name("achulu__aa") == ("ఆ", "none", "none")
     assert decompose_class_name("achulu__ah") == ("అః", "none", "none")
+    assert decompose_class_name("achulu__ao") == ("ఔ", "none", "none")
     
     # Hallulu
     assert decompose_class_name("hallulu__ka") == ("క", "none", "none")
     assert decompose_class_name("hallulu__P") == ("ప", "none", "none")
     assert decompose_class_name("hallulu__rr") == ("ఱ", "none", "none")
-    assert decompose_class_name("hallulu__RR") == ("ఱ", "none", "none")
+    assert decompose_class_name("hallulu__ta") == ("ట", "none", "none")
+    assert decompose_class_name("hallulu__th") == ("ఠ", "none", "none")
+    assert decompose_class_name("hallulu__tha") == ("త", "none", "none")
+    assert decompose_class_name("hallulu__thah") == ("థ", "none", "none")
+    assert decompose_class_name("hallulu__da") == ("ద", "none", "none")
+    assert decompose_class_name("hallulu__dha") == ("ధ", "none", "none")
     
     # Guninthamulu
     assert decompose_class_name("Guninthamulu__kha__ki") == ("క", "i", "none")
     assert decompose_class_name("Guninthamulu__khh__khi") == ("ఖ", "i", "none")
     assert decompose_class_name("Guninthamulu__RR__rrah") == ("ఱ", "ah", "none")
     assert decompose_class_name("Guninthamulu__ana__ane") == ("ణ", "e", "none")
-    assert decompose_class_name("Guninthamulu__cha__chow") == ("చ", "au", "none")
+    assert decompose_class_name("Guninthamulu__ch__ch") == ("చ", "none", "none")
+    assert decompose_class_name("Guninthamulu__cha__ch") == ("ఛ", "none", "none")
+    assert decompose_class_name("Guninthamulu__ta__ta") == ("ట", "none", "none")
+    assert decompose_class_name("Guninthamulu__tt__t") == ("ఠ", "none", "none")
+    assert decompose_class_name("Guninthamulu__th__th") == ("త", "none", "none")
+    assert decompose_class_name("Guninthamulu__tha__th") == ("థ", "none", "none")
+    assert decompose_class_name("Guninthamulu__d__d") == ("డ", "none", "none")
+    assert decompose_class_name("Guninthamulu__da__da") == ("ద", "none", "none")
+    assert decompose_class_name("Guninthamulu__dh__dh") == ("ఢ", "none", "none")
+    assert decompose_class_name("Guninthamulu__dha__dh") == ("ధ", "none", "none")
     
-    # Othulu
-    assert decompose_class_name("othulu__v") == ("వ", "none", "v")
-    assert decompose_class_name("othulu__ks") == ("క్ష", "none", "ks")
-    assert decompose_class_name("othulu__rr") == ("ఱ", "none", "rr")
+    # Othulu (isolated subscripts)
+    assert decompose_class_name("othulu__v") == ("none", "none", "v")
+    assert decompose_class_name("othulu__ks") == ("none", "none", "ks")
+    assert decompose_class_name("othulu__an") == ("none", "none", "an")
+    assert decompose_class_name("othulu__nn") == ("none", "none", "nn")
 
 
 def test_full_dataset_decomposition_audit():
@@ -84,14 +107,41 @@ def test_full_dataset_decomposition_audit():
     num_base = label_maps["num_base_classes"]
     num_mod = label_maps["num_modifier_classes"]
     num_vattu = label_maps["num_vattu_classes"]
+    num_unique = label_maps["num_unique_combinations"]
     
-    print(f"Empirically derived vocabulary: num_base={num_base}, num_mod={num_mod}, num_vattu={num_vattu}")
-    assert num_base > 0
-    assert num_mod > 0
-    assert num_vattu > 0
-    assert len(label_maps["valid_triples"]) == label_maps["num_unique_combinations"]
+    print(f"Empirically derived vocabulary: num_base={num_base}, num_mod={num_mod}, num_vattu={num_vattu}, unique={num_unique}")
+    assert num_base == 52, f"Expected 52 base classes, got {num_base}"
+    assert num_mod == 16, f"Expected 16 modifier classes, got {num_mod}"
+    assert num_vattu == 37, f"Expected 37 vattu classes, got {num_vattu}"
+    assert num_unique == 596, f"Expected 596 unique combinations, got {num_unique}"
+    assert len(label_maps["valid_triples"]) == num_unique
     assert len(label_maps["class_to_combination"]) == len(class_names)
     
+    # Independent Injectivity Check: Ensure NO unexpected collisions exist
+    triple_to_classes = {}
+    for cname in class_names:
+        triple = decompose_class_name(cname)
+        if triple not in triple_to_classes:
+            triple_to_classes[triple] = []
+        triple_to_classes[triple].append(cname)
+        
+    # Verify all collisions are in confirmed duplicates list
+    for triple, classes in triple_to_classes.items():
+        if len(classes) > 1:
+            for i in range(len(classes)):
+                for j in range(i + 1, len(classes)):
+                    c1, c2 = classes[i], classes[j]
+                    assert is_known_duplicate_pair(c1, c2), (
+                        f"Unexpected collision for triple {triple}: {c1} vs {c2} is not a confirmed duplicate pair!"
+                    )
+                    
+    # Verify all confirmed duplicate pairs map to the EXACT same triple
+    for c1, c2 in CONFIRMED_DUPLICATE_CLASSES:
+        if c1 in class_names and c2 in class_names:
+            t1 = decompose_class_name(c1)
+            t2 = decompose_class_name(c2)
+            assert t1 == t2, f"Confirmed duplicate pair ({c1}, {c2}) did not map to same triple: {t1} vs {t2}"
+            
     # Round-trip check: every class can be decomposed and reconstructed via recombination
     for cname in class_names:
         base, mod, vattu = decompose_class_name(cname)
@@ -112,6 +162,8 @@ def test_full_dataset_decomposition_audit():
         expected_class = label_maps["combination_to_class"][f"{b_idx}_{m_idx}_{v_idx}"]
         assert rec["predicted_class"] == expected_class
         assert not rec["is_fallback"]
+        # Verify the reconstructed class is in the same equivalence group as cname
+        assert cname in get_equivalent_classes(rec["predicted_class"])
 
 
 def test_recombination_constrained_mle_fallback():

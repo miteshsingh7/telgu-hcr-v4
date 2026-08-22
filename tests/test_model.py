@@ -17,9 +17,9 @@ from src.models.losses import WeightedCategoricalCrossentropy, compute_normalize
 
 def test_model_architecture_shapes():
     """Verifies layer shapes and multi-output forward pass."""
-    num_base = 47
+    num_base = 52
     num_mod = 16
-    num_vattu = 32
+    num_vattu = 37
     batch_size = 4
     
     model = build_multitask_effnetv2(

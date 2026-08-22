@@ -23,6 +23,7 @@ from tqdm import tqdm
 from src.data.preprocessing import IMAGE_SIZE
 from src.data.dataset import create_telugu_dataset, load_label_maps
 from src.data.decomposition import recombine_prediction
+from src.data.known_duplicates import get_equivalent_classes
 from src.models.multitask_effnetv2 import build_multitask_effnetv2, parse_model_prediction_outputs
 from src.checkpointing import FullStateCheckpointManager
 
@@ -132,7 +133,7 @@ def evaluate_test_set(test_csv: str = "outputs/test.csv",
     
     # 8. Recombination & 630-Way Constrained MLE Evaluation
     logger.info("Recombining multi-head predictions with Constrained Maximum-Likelihood Decoding...")
-    recombined_classes = []
+    top1_hits = 0
     top5_hits = 0
     fallback_count = 0
     
@@ -143,19 +144,23 @@ def evaluate_test_set(test_csv: str = "outputs/test.csv",
             vattu_probs=vattu_probs_arr[i],
             label_maps=label_maps
         )
-        recombined_classes.append(rec["predicted_class"])
         if rec["is_fallback"]:
             fallback_count += 1
             
-        # Check top-5 with canonical alias resolution
-        top_5_combs = [class_to_comb.get(item["class_name"], item["class_name"]) for item in rec["top_5"]]
-        if true_combs[i] in top_5_combs:
+        equiv_classes = get_equivalent_classes(true_classes[i])
+        
+        # Check top-1
+        if rec["predicted_class"] in equiv_classes or class_to_comb.get(rec["predicted_class"]) == true_combs[i]:
+            top1_hits += 1
+            
+        # Check top-5
+        top_5_classes = {item["class_name"] for item in rec["top_5"]}
+        top_5_combs = {class_to_comb.get(item["class_name"], item["class_name"]) for item in rec["top_5"]}
+        
+        if any(c in top_5_classes for c in equiv_classes) or (true_combs[i] in top_5_combs):
             top5_hits += 1
             
-    # Compute Recombined Accuracies
-    pred_combs = [class_to_comb.get(c, c) for c in recombined_classes]
-    
-    recombined_top1_acc = float(np.mean([t == p for t, p in zip(true_combs, pred_combs)]))
+    recombined_top1_acc = float(top1_hits / total_test_samples)
     recombined_top5_acc = float(top5_hits / total_test_samples)
     fallback_rate = float(fallback_count / total_test_samples)
     

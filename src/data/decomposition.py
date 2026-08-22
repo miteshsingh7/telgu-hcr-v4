@@ -16,12 +16,20 @@ from pathlib import Path
 from typing import Dict, Tuple, List, Any, Optional
 import numpy as np
 
+from collections import defaultdict
+from src.data.known_duplicates import (
+    CONFIRMED_DUPLICATE_CLASSES,
+    get_canonical_class_name,
+    is_known_duplicate_pair
+)
+
 # Initial Reference Primitives (Used for consistent ordering)
 CANONICAL_BASE_LETTERS: List[str] = [
+    "none",   # For standalone vattu characters
     # Achulu (Vowels) - 16
     "అ", "ఆ", "ఇ", "ఈ", "ఉ", "ఊ", "ఋ", "ౠ",
     "ఎ", "ఏ", "ఐ", "ఒ", "ఓ", "ఔ", "అం", "అః",
-    # Hallulu (Consonants) - 36
+    # Hallulu (Consonants) - 35
     "క", "ఖ", "గ", "ఘ", "ఙ",
     "చ", "ఛ", "జ", "ఝ", "ఞ",
     "ట", "ఠ", "డ", "ఢ", "ణ",
@@ -51,102 +59,45 @@ CANONICAL_VOWEL_MODIFIERS: List[str] = [
 ]
 
 CANONICAL_CONJUNCT_MODIFIERS: List[str] = [
-    "none",   # Standard character (no subscript)
-    "k", "kh", "g", "gh", "gna",
-    "c", "ch", "j", "jh", "jna",
-    "t", "th", "d", "dh", "ana",
-    "th_dental", "d_dental", "dh_dental", "n",
-    "p", "ph", "b", "bh", "m",
-    "y", "r", "l", "v", "sh", "sha", "s", "h", "ll", "ks", "rr", "z"
+    "none",
+    "an", "b", "bh", "c", "ch", "d", "da", "dh", "dha",
+    "g", "gh", "h", "ha", "j", "jh", "k", "kh", "ksh",
+    "l", "m", "n", "na", "nn", "p", "ph", "r", "s",
+    "sa", "sh", "t", "th", "tha", "tt", "v", "y", "z"
 ]
 
-# Alias dictionaries with exhaustive coverage for dataset quirks
-CONSONANT_ALIASES = {
-    "kha": "క", "khh": "ఖ", "kh": "ఖ", "ka": "క", "k": "క",
-    "ga": "గ", "g": "గ", "gha": "ఘ", "gh": "ఘ", "gna": "ఙ",
-    "cha": "చ", "ch": "ఛ", "chh": "ఛ", "c": "చ",
-    "ja": "జ", "j": "జ", "jha": "ఝ", "jh": "ఝ", "jna": "ఞ",
-    "ta": "ట", "t": "ట", "tt": "ట", "tha": "ఠ", "th": "ఠ", "thah": "ఠ",
-    "da": "డ", "d": "డ", "dha": "ఢ", "dh": "ఢ", "ana": "ణ", "an": "ణ", "nn": "ణ",
-    "th_dental": "త", "tha_dental": "త", "d_dental": "ద", "da_dental": "ద",
-    "na": "న", "n": "న",
-    "pa": "ప", "p": "ప", "P": "ప", "pha": "ఫ", "ph": "ఫ", "Ph": "ఫ",
-    "ba": "బ", "b": "బ", "bha": "భ", "bh": "భ", "ma": "మ", "m": "మ",
-    "ya": "య", "y": "య",
-    "ra": "ర", "r": "ర", "rr": "ఱ", "RR": "ఱ",
-    "la": "ల", "l": "ల", "ll": "ళ",
-    "va": "వ", "v": "వ",
-    "sha": "ష", "sh": "శ",
-    "sa": "స", "s": "స",
-    "ha": "హ", "h": "హ",
-    "ksh": "క్ష", "ks": "క్ష", "z": "క"
+GUNINTHAM_CONSONANT_MAP: Dict[str, str] = {
+    "RR": "ఱ", "ana": "ణ", "ba": "బ", "bha": "భ",
+    "ch": "చ", "cha": "ఛ", "d": "డ", "da": "ద",
+    "dh": "ఢ", "dha": "ధ", "ga": "గ", "gha": "ఘ",
+    "ha": "హ", "ja": "జ", "jh": "ఝ", "kha": "క",
+    "khh": "ఖ", "ksh": "క్ష", "l": "ల", "ll": "ళ",
+    "ma": "మ", "na": "న", "pa": "ప", "pha": "ఫ",
+    "ra": "ర", "sa": "స", "sh": "ష", "sha": "శ",
+    "ta": "ట", "th": "త", "tha": "థ", "tt": "ఠ",
+    "va": "వ", "ya": "య"
 }
 
-VOWEL_ALIASES = {
+HALLULU_CONSONANT_MAP: Dict[str, str] = {
+    "P": "ప", "Ph": "ఫ", "ana": "ణ", "b": "బ", "bh": "భ",
+    "ch": "చ", "cha": "ఛ", "d": "డ", "da": "ద", "dh": "ఢ", "dha": "ధ",
+    "g": "గ", "gh": "ఘ", "h": "హ", "jh": "జ", "jha": "ఝ", "jna": "ఙ",
+    "ka": "క", "kha": "ఖ", "ks": "క్ష", "l": "ల", "ll": "ళ",
+    "m": "మ", "n": "న", "r": "ర", "rr": "ఱ",
+    "s": "శ", "sa": "స", "sh": "ష",
+    "ta": "ట", "th": "ఠ", "tha": "త", "thah": "థ",
+    "v": "వ", "y": "య"
+}
+
+VOWEL_ALIASES: Dict[str, str] = {
     "a": "అ", "aa": "ఆ", "i": "ఇ", "ii": "ఈ", "u": "ఉ", "uu": "ఊ",
     "ru": "ఋ", "ruu": "ౠ", "e": "ఎ", "ee": "ఏ", "ai": "ఐ",
     "o": "ఒ", "oo": "ఓ", "au": "ఔ", "ao": "ఔ", "am": "అం", "ah": "అః"
 }
 
-MOD_ALIASES = {
-    "a": "none", "aa": "aa", "i": "i", "ii": "ii", "u": "u", "uu": "uu",
-    "ru": "ru", "ruu": "ruu", "e": "e", "ee": "ee", "ai": "ai",
-    "o": "o", "oo": "oo", "au": "au", "ao": "au", "ow": "au", "am": "am", "ah": "ah",
-    "m": "am", "r": "ru", "rrr": "ruu", "R": "ru", "RRA": "aa", "RRI": "i", "RRII": "ii",
-    "RRU": "u", "RRUU": "uu", "rre": "e", "rree": "ee", "rrai": "ai", "rro": "o", "rroo": "oo",
-    "rrow": "au", "rrm": "am", "rrah": "ah", "rru": "u", "rruu": "uu",
-    # Specific folder-alias combinations
-    "an": "none", "ana": "aa", "ani": "i", "anii": "ii", "anu": "u", "anuu": "uu",
-    "ane": "e", "anee": "ee", "anai": "ai", "ano": "o", "anoo": "oo", "anou": "au",
-    "anm": "am", "anah": "ah", "anr": "ru", "anru": "ru",
-    "bm": "am", "bah": "ah", "bhm": "am", "bhah": "ah",
-    "chm": "am", "chah": "ah", "chr": "ru", "chru": "ru", "chuu": "uu", "chow": "au",
-    "dah": "ah", "dm": "am", "dru": "ru", "druu": "ruu",
-    "dhah": "ah", "dhm": "am", "dhru": "ru", "dhruu": "ruu",
-    "gah": "ah", "gm": "am", "gru": "ru", "gruu": "ruu",
-    "ghah": "ah", "ghm": "am", "ghru": "ru", "ghruu": "ruu",
-    "hah": "ah", "hm": "am", "hru": "ru", "hruu": "ruu",
-    "jah": "ah", "jm": "am", "jru": "ru", "jruu": "ruu",
-    "jhah": "ah", "jhm": "am", "jhru": "ru", "jhruu": "ruu",
-    "kah": "ah", "km": "am", "kru": "ru", "kruu": "ruu",
-    "khah": "ah", "khm": "am", "khru": "ru", "khruu": "ruu",
-    "lah": "ah", "lm": "am", "lru": "ru", "lruu": "ruu",
-    "llah": "ah", "llm": "am", "llru": "ru", "llruu": "ruu",
-    "mah": "ah", "mm": "am", "mru": "ru", "mruu": "ruu",
-    "nah": "ah", "nm": "am", "nru": "ru", "nruu": "ruu",
-    "pah": "ah", "pm": "am", "pru": "ru", "pruu": "ruu",
-    "phah": "ah", "phm": "am", "phru": "ru", "phruu": "ruu",
-    "rah": "ah", "rm": "am",
-    "rrah": "ah",
-    "sah": "ah", "sm": "am", "sru": "ru", "sruu": "ruu",
-    "shah": "ah", "shm": "am", "shru": "ru", "shruu": "ruu",
-    "tah": "ah", "tm": "am", "tru": "ru", "truu": "ruu",
-    "thah": "ah", "thm": "am", "thru": "ru", "thruu": "ruu",
-    "vah": "ah", "vm": "am", "vru": "ru", "vruu": "ruu",
-    "yah": "ah", "ym": "am", "yru": "ru", "yruu": "ruu",
-    "zh": "ah", "zm": "am", "zru": "ru", "zruu": "ruu", "z": "none"
-}
-
-VATTU_ALIASES = {
-    "an": "ana", "ana": "ana", "nn": "ana",
-    "b": "b", "ba": "b", "bh": "bh", "bha": "bh",
-    "c": "c", "ca": "c", "ch": "ch", "cha": "ch", "chh": "ch",
-    "d": "d", "da": "d_dental", "dh": "dh", "dha": "dh_dental",
-    "g": "g", "ga": "g", "gh": "gh", "gha": "gh",
-    "h": "h", "ha": "h",
-    "j": "j", "ja": "j", "jh": "jh", "jha": "jh",
-    "k": "k", "ka": "k", "kh": "kh", "kha": "kh", "ksh": "ks", "ks": "ks",
-    "l": "l", "la": "l", "ll": "ll", "lla": "ll",
-    "m": "m", "ma": "m",
-    "n": "n", "na": "n",
-    "p": "p", "pa": "p", "P": "p", "ph": "ph", "pha": "ph", "Ph": "ph",
-    "r": "r", "ra": "r", "rr": "rr", "rra": "rr", "RR": "rr",
-    "s": "s", "sa": "s", "sh": "sh", "sha": "sha",
-    "t": "t", "ta": "t", "tt": "t", "th": "th", "tha": "th_dental", "th_dental": "th_dental",
-    "v": "v", "va": "v",
-    "y": "y", "ya": "y",
-    "z": "z"
-}
+# Backward compatibility alias dictionary
+CONSONANT_ALIASES = {**HALLULU_CONSONANT_MAP, **GUNINTHAM_CONSONANT_MAP}
+VATTU_ALIASES = {k: k for k in CANONICAL_CONJUNCT_MODIFIERS}
 
 
 def _lookup_alias(table: Dict[str, str], key: str, default: Optional[str] = None) -> str:
@@ -158,6 +109,7 @@ def _lookup_alias(table: Dict[str, str], key: str, default: Optional[str] = None
         return table[key_lower]
     if default is not None:
         return default
+    raise KeyError(f"Key '{key}' not found in lookup table.")
     raise KeyError(f"Key '{key}' (or lowercase '{key_lower}') not found in alias table")
 
 
@@ -297,32 +249,33 @@ def decompose_class_name(class_name: str) -> Tuple[str, str, str]:
         (base_letter, vowel_modifier, vattu_modifier) as strings.
     """
     parts = class_name.replace("/", "__").replace("\\", "__").split("__")
-    cat = parts[0].lower()
+    cat = parts[0]
+    cat_lower = cat.lower()
     
-    if cat == "achulu":
+    if cat_lower == "achulu":
         v_key = parts[1] if len(parts) > 1 else "a"
         base_letter = _lookup_alias(VOWEL_ALIASES, v_key)
         modifier = "none"
         vattu = "none"
         
-    elif cat == "hallulu":
+    elif cat_lower == "hallulu":
         c_key = parts[1] if len(parts) > 1 else "ka"
-        base_letter = _lookup_alias(CONSONANT_ALIASES, c_key)
+        base_letter = _lookup_alias(HALLULU_CONSONANT_MAP, c_key)
         modifier = "none"
         vattu = "none"
         
-    elif cat == "guninthamulu":
+    elif cat_lower == "guninthamulu":
         c_key = parts[1] if len(parts) > 1 else "ka"
         v_key = parts[2] if len(parts) > 2 else "a"
-        base_letter = _lookup_alias(CONSONANT_ALIASES, c_key)
+        base_letter = _lookup_alias(GUNINTHAM_CONSONANT_MAP, c_key)
         modifier = parse_gunintham_modifier(c_key, v_key)
         vattu = "none"
         
-    elif cat == "othulu":
+    elif cat_lower == "othulu":
         c_key = parts[1] if len(parts) > 1 else "k"
-        base_letter = _lookup_alias(CONSONANT_ALIASES, c_key)
+        base_letter = "none"
         modifier = "none"
-        vattu = _lookup_alias(VATTU_ALIASES, c_key)
+        vattu = c_key
         
     else:
         raise ValueError(f"Unknown category prefix '{cat}' in class name '{class_name}'")
@@ -371,6 +324,7 @@ def build_and_validate_label_maps(class_names: List[str],
     class_to_combination: Dict[str, str] = {}
     valid_triples_set = set()
     valid_triples: List[List[int]] = []
+    combination_to_all_classes: Dict[str, List[str]] = defaultdict(list)
     
     for cname, base, mod, vattu in decomposed_records:
         b_idx = base_map[base]
@@ -378,11 +332,29 @@ def build_and_validate_label_maps(class_names: List[str],
         v_idx = vattu_map[vattu]
         key = f"{b_idx}_{m_idx}_{v_idx}"
         class_to_combination[cname] = key
-        if key not in combination_to_class:
-            combination_to_class[key] = cname
+        combination_to_all_classes[key].append(cname)
+        
         if (b_idx, m_idx, v_idx) not in valid_triples_set:
             valid_triples_set.add((b_idx, m_idx, v_idx))
             valid_triples.append([b_idx, m_idx, v_idx])
+            
+    # Validate that all collisions are known and confirmed true duplicate pairs
+    for key, classes in combination_to_all_classes.items():
+        if len(classes) > 1:
+            for i in range(len(classes)):
+                for j in range(i + 1, len(classes)):
+                    c1, c2 = classes[i], classes[j]
+                    if not is_known_duplicate_pair(c1, c2):
+                        raise ValueError(
+                            f"Unexpected label collision detected for triple key '{key}':\n"
+                            f"  Classes: {classes}\n"
+                            f"  Pair ({c1}, {c2}) is NOT listed in CONFIRMED_DUPLICATE_CLASSES!"
+                        )
+            # Use deterministic canonical class name
+            canonical_name = get_canonical_class_name(classes[0])
+            combination_to_class[key] = canonical_name
+        else:
+            combination_to_class[key] = classes[0]
             
     label_maps = {
         "num_base_classes": len(base_letters),
