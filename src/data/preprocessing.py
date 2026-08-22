@@ -14,8 +14,19 @@ from tensorflow.keras.applications.efficientnet_v2 import preprocess_input
 IMAGE_SIZE: int = 128
 NUM_CHANNELS: int = 3
 
-# Compute BACKGROUND_FILL_VALUE dynamically from pure white (255.0) via preprocess_input
-# For EfficientNetV2 preprocess_input: x in [0, 255] -> (x / 127.5) - 1.0 -> 255.0 maps to 1.0
+# Compute BACKGROUND_FILL_VALUE dynamically from pure white (255.0) via preprocess_input.
+#
+# NOTE: keras.applications.efficientnet_v2.preprocess_input is an IDENTITY function --
+# it does NOT rescale to [-1, 1] or [0, 1]. EfficientNetV2 models bake normalization
+# into the model itself via an internal Rescaling/Normalization layer, controlled by
+# `include_preprocessing` (default True) in EfficientNetV2B0/EfficientNetV2S. This
+# preprocessing module deliberately leaves images in raw [0, 255] range and relies on
+# the model's own internal preprocessing to normalize them. This is a real dependency
+# between this file and src/models/multitask_effnetv2.py's use of the default
+# `include_preprocessing=True` -- see test_include_preprocessing_default_is_true in
+# tests/test_model.py, which pins this assumption down so a library default change or
+# an accidental include_preprocessing=False elsewhere fails loudly instead of silently
+# degrading training.
 _SAMPLE_WHITE = tf.constant([[[255.0, 255.0, 255.0]]], dtype=tf.float32)
 BACKGROUND_FILL_VALUE: float = float(preprocess_input(_SAMPLE_WHITE)[0, 0, 0].numpy())
 

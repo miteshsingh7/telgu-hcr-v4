@@ -138,6 +138,7 @@ def create_telugu_dataset(csv_path_or_df: Union[str, Path, pd.DataFrame],
                           zoom_factor: float = 0.05,
                           use_cutmix: bool = True,
                           cutmix_alpha: float = 0.4,
+                          cutmix_probability: float = 0.5,
                           label_smoothing: float = 0.1,
                           img_size: int = IMAGE_SIZE,
                           shuffle_buffer: int = 10000) -> Tuple[tf.data.Dataset, int, Dict[str, np.ndarray]]:
@@ -155,6 +156,7 @@ def create_telugu_dataset(csv_path_or_df: Union[str, Path, pd.DataFrame],
         zoom_factor: Zoom fraction (+/- fraction).
         use_cutmix: If True, applies multi-head CutMix blending.
         cutmix_alpha: Beta distribution parameter for CutMix.
+        cutmix_probability: Fraction of training batches CutMix is applied to (default 0.5).
         label_smoothing: Label smoothing factor (applied to one-hot vectors).
         img_size: Image dimension (default 128).
         shuffle_buffer: Buffer size for training shuffle.
@@ -229,7 +231,7 @@ def create_telugu_dataset(csv_path_or_df: Union[str, Path, pd.DataFrame],
             return augmented_imgs, b_labels, m_labels, v_labels
         dataset = dataset.map(_apply_spatial_aug, num_parallel_calls=tf.data.AUTOTUNE)
         
-    # 5. Multi-Head CutMix
+    # 5. Multi-Head CutMix (probabilistic — the model must also see clean, unmixed batches)
     if is_training and use_cutmix:
         @tf.function
         def _apply_batch_cutmix(imgs, b_labels, m_labels, v_labels):
@@ -237,7 +239,15 @@ def create_telugu_dataset(csv_path_or_df: Union[str, Path, pd.DataFrame],
             b_f32 = tf.cast(b_labels, tf.float32)
             m_f32 = tf.cast(m_labels, tf.float32)
             v_f32 = tf.cast(v_labels, tf.float32)
-            return apply_cutmix(imgs_f32, b_f32, m_f32, v_f32, alpha=cutmix_alpha)
+
+            def _mixed():
+                return apply_cutmix(imgs_f32, b_f32, m_f32, v_f32, alpha=cutmix_alpha)
+
+            def _unmixed():
+                return imgs_f32, b_f32, m_f32, v_f32
+
+            apply_this_batch = tf.random.uniform([], minval=0.0, maxval=1.0) < cutmix_probability
+            return tf.cond(apply_this_batch, _mixed, _unmixed)
         dataset = dataset.map(_apply_batch_cutmix, num_parallel_calls=tf.data.AUTOTUNE)
         
     # 6. Format multi-head outputs into named dictionary

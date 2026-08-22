@@ -15,6 +15,7 @@ data:
   label_smoothing: 0.1
   use_cutmix: true
   cutmix_alpha: 0.4
+  cutmix_probability: 0.5
   use_augmentation: true
   rotation_degrees: 5.0
   translation_factor: 0.05

@@ -180,7 +180,53 @@ def test_one_batch_overfit_with_mixed_precision_and_ema():
     tf.keras.mixed_precision.set_global_policy("float32")
 
 
+def test_include_preprocessing_default_is_true():
+    """Pins down the implicit coupling between preprocessing.py (which does NOT
+    normalize pixel values) and the backbone's internal normalization layer.
+
+    preprocessing.py intentionally leaves images in raw [0, 255] range, trusting
+    EfficientNetV2B0/S to normalize internally via include_preprocessing=True (the
+    Keras default). If this default ever changes, or if build_multitask_effnetv2 is
+    ever modified to pass include_preprocessing=False, raw unnormalized pixels would
+    be fed directly into an ImageNet-pretrained backbone with no error thrown --
+    just silently degraded training. This test fails loudly instead.
+    """
+    import inspect
+    from tensorflow.keras.applications import EfficientNetV2B0, EfficientNetV2S
+
+    for backbone_fn in (EfficientNetV2B0, EfficientNetV2S):
+        sig = inspect.signature(backbone_fn)
+        assert "include_preprocessing" in sig.parameters
+        assert sig.parameters["include_preprocessing"].default is True, (
+            f"{backbone_fn.__name__}'s include_preprocessing default changed from True. "
+            f"src/data/preprocessing.py relies on this default to normalize pixel "
+            f"values -- either restore the default, or explicitly pass "
+            f"include_preprocessing=True in build_multitask_effnetv2, or add explicit "
+            f"[0,255]->[-1,1] normalization to preprocess_image()."
+        )
+    print("test_include_preprocessing_default_is_true passed!")
+
+
+def test_model_backbone_contains_internal_normalization():
+    """Confirms the actual constructed model has an internal normalization layer,
+    verifying the include_preprocessing coupling against the real model graph
+    rather than just the library default value."""
+    from src.models.multitask_effnetv2 import build_multitask_effnetv2
+
+    model = build_multitask_effnetv2(variant="B0", num_base=52, num_mod=16, num_vattu=37, weights=None)
+    layer_names = [layer.__class__.__name__.lower() for layer in model.layers]
+    assert any("normalization" in name or "rescaling" in name for name in layer_names), (
+        "Expected an internal Normalization/Rescaling layer near the input of the "
+        "backbone (from include_preprocessing=True). If this is missing, "
+        "preprocess_image()'s raw [0,255] output will be fed unnormalized into the "
+        "backbone."
+    )
+    print("test_model_backbone_contains_internal_normalization passed!")
+
+
 if __name__ == "__main__":
+    test_include_preprocessing_default_is_true()
+    test_model_backbone_contains_internal_normalization()
     test_model_architecture_shapes()
     test_weighted_categorical_crossentropy_soft_targets()
     test_one_batch_overfit_with_mixed_precision_and_ema()

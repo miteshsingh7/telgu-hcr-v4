@@ -210,6 +210,7 @@ def run_training(config_path: str,
         zoom_factor=d_cfg.get("zoom_factor", 0.05),
         use_cutmix=d_cfg.get("use_cutmix", True),
         cutmix_alpha=d_cfg.get("cutmix_alpha", 0.4),
+        cutmix_probability=d_cfg.get("cutmix_probability", 0.5),
         label_smoothing=d_cfg.get("label_smoothing", 0.1),
         img_size=img_size
     )
@@ -356,6 +357,30 @@ def run_training(config_path: str,
     phase2_optimizer.build(model.trainable_variables)
     if hasattr(phase2_optimizer, "iterations"):
         phase2_optimizer.iterations.assign(start_epoch * train_steps)
+
+    # If we are resuming directly into an already-in-progress Phase 2 (not the natural
+    # Phase 1 -> Phase 2 transition within this same run), the earlier `optimizer` object
+    # was already restored via ckpt_manager.restore_state() and holds the real Adam
+    # moment/variance buffers and EMA shadow weights accumulated so far. Transfer those
+    # into the fresh phase2_optimizer instead of leaving it cold-started at zero -- a
+    # cold-started optimizer mid-fine-tune causes a real (if usually recoverable)
+    # instability spike right after every resume.
+    if resuming_phase2 and resume:
+        if len(optimizer.variables) == len(phase2_optimizer.variables):
+            for old_var, new_var in zip(optimizer.variables, phase2_optimizer.variables):
+                new_var.assign(old_var)
+            logger.info(
+                f"Transferred {len(optimizer.variables)} restored optimizer variables "
+                f"(Adam moments + EMA shadow weights) into the Phase 2 optimizer."
+            )
+        else:
+            logger.warning(
+                f"Could not transfer optimizer state into Phase 2 optimizer: variable "
+                f"count mismatch (restored: {len(optimizer.variables)}, "
+                f"fresh: {len(phase2_optimizer.variables)}). Phase 2 optimizer will start "
+                f"with fresh momentum/EMA state — expect a brief instability window "
+                f"after resume."
+            )
         
     # Recompile after modifying layer trainability
     model.compile(
