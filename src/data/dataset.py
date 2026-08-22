@@ -206,7 +206,7 @@ def create_telugu_dataset(csv_path_or_df: Union[str, Path, pd.DataFrame],
         )
         @tf.function
         def _apply_spatial_aug(imgs, b_labels, m_labels, v_labels):
-            augmented_imgs = aug_pipeline(imgs, training=True)
+            augmented_imgs = tf.cast(aug_pipeline(imgs, training=True), tf.float32)
             return augmented_imgs, b_labels, m_labels, v_labels
         dataset = dataset.map(_apply_spatial_aug, num_parallel_calls=tf.data.AUTOTUNE)
         
@@ -214,8 +214,11 @@ def create_telugu_dataset(csv_path_or_df: Union[str, Path, pd.DataFrame],
     if is_training and use_cutmix:
         @tf.function
         def _apply_batch_cutmix(imgs, b_labels, m_labels, v_labels):
-            # Apply CutMix with probability 0.5 or unconditionally
-            return apply_cutmix(imgs, b_labels, m_labels, v_labels, alpha=cutmix_alpha)
+            imgs_f32 = tf.cast(imgs, tf.float32)
+            b_f32 = tf.cast(b_labels, tf.float32)
+            m_f32 = tf.cast(m_labels, tf.float32)
+            v_f32 = tf.cast(v_labels, tf.float32)
+            return apply_cutmix(imgs_f32, b_f32, m_f32, v_f32, alpha=cutmix_alpha)
         dataset = dataset.map(_apply_batch_cutmix, num_parallel_calls=tf.data.AUTOTUNE)
         
     # 6. Format multi-head outputs into named dictionary
