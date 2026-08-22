@@ -38,6 +38,7 @@ def evaluate_test_set(test_csv: str = "outputs/test.csv",
                       label_maps_path: str = "outputs/label_maps.json",
                       checkpoint_dir: str = "checkpoints",
                       checkpoint_tag: str = "best_model",
+                      dataset_root: Optional[str] = None,
                       variant: str = "B0",
                       batch_size: int = 128,
                       output_report_path: str = "outputs/evaluation_report.json") -> Dict[str, Any]:
@@ -46,6 +47,7 @@ def evaluate_test_set(test_csv: str = "outputs/test.csv",
     num_base = label_maps["num_base_classes"]
     num_mod = label_maps["num_modifier_classes"]
     num_vattu = label_maps["num_vattu_classes"]
+    class_to_comb = label_maps["class_to_combination"]
     
     logger.info(f"Loading test split from {test_csv}...")
     df_test = pd.read_csv(test_csv)
@@ -73,6 +75,7 @@ def evaluate_test_set(test_csv: str = "outputs/test.csv",
     test_ds, test_steps, _ = create_telugu_dataset(
         csv_path_or_df=df_test,
         label_maps_or_path=label_maps,
+        dataset_root=dataset_root,
         batch_size=batch_size,
         is_training=False,
         use_augmentation=False,
@@ -102,6 +105,7 @@ def evaluate_test_set(test_csv: str = "outputs/test.csv",
     true_mod = df_test["modifier_idx"].values
     true_vattu = df_test["vattu_idx"].values
     true_classes = df_test["class_name"].values
+    true_combs = [class_to_comb.get(c, c) for c in true_classes]
     
     # 6. Per-Head Metrics
     pred_base = np.argmax(base_probs_arr, axis=1)
@@ -143,15 +147,12 @@ def evaluate_test_set(test_csv: str = "outputs/test.csv",
         if rec["is_fallback"]:
             fallback_count += 1
             
-        # Check top-5
-        top_5_cnames = [item["class_name"] for item in rec["top_5"]]
-        if true_classes[i] in top_5_cnames:
+        # Check top-5 with canonical alias resolution
+        top_5_combs = [class_to_comb.get(item["class_name"], item["class_name"]) for item in rec["top_5"]]
+        if true_combs[i] in top_5_combs:
             top5_hits += 1
             
     # Compute Recombined Accuracies
-    # Map both true and predicted to canonical combination keys to handle duplicate folder aliases
-    class_to_comb = label_maps["class_to_combination"]
-    true_combs = [class_to_comb.get(c, c) for c in true_classes]
     pred_combs = [class_to_comb.get(c, c) for c in recombined_classes]
     
     recombined_top1_acc = float(np.mean([t == p for t, p in zip(true_combs, pred_combs)]))
@@ -216,6 +217,7 @@ if __name__ == "__main__":
     parser.add_argument("--label_maps", type=str, default="outputs/label_maps.json", help="Path to label_maps.json")
     parser.add_argument("--checkpoint_dir", type=str, default="checkpoints", help="Path to checkpoints directory")
     parser.add_argument("--checkpoint_tag", type=str, default="best_model", help="Tag name of checkpoint to load")
+    parser.add_argument("--dataset_root", type=str, default=None, help="Dataset root directory override for path remapping")
     parser.add_argument("--variant", type=str, default="B0", help="EfficientNetV2 variant (B0 or S)")
     parser.add_argument("--batch_size", type=int, default=128, help="Inference batch size")
     parser.add_argument("--output_report", type=str, default="outputs/evaluation_report.json", help="Report output path")
@@ -226,6 +228,7 @@ if __name__ == "__main__":
         label_maps_path=args.label_maps,
         checkpoint_dir=args.checkpoint_dir,
         checkpoint_tag=args.checkpoint_tag,
+        dataset_root=args.dataset_root,
         variant=args.variant,
         batch_size=args.batch_size,
         output_report_path=args.output_report

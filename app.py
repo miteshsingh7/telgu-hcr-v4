@@ -188,8 +188,8 @@ def main():
                 
             # Preprocessing Preview
             with st.expander("Show Normalized Model Input (128x128 3-ch)"):
-                # Denormalize for display
-                disp_img = (preprocessed_img * 127.5 + 127.5).clip(0, 255).astype(np.uint8)
+                # Preprocessed image is in [0, 255]
+                disp_img = np.clip(preprocessed_img, 0, 255).astype(np.uint8)
                 st.image(disp_img, caption="Square-Padded, Bilinear-Resized 128x128 Input", width=128)
                 
         else:

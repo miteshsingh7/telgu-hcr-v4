@@ -96,8 +96,14 @@ class WeightedCategoricalCrossentropy(tf.keras.losses.Loss):
 
     def get_config(self) -> Dict[str, Any]:
         config = super().get_config()
+        weights_list = None
+        if self.class_weights is not None:
+            try:
+                weights_list = self.class_weights.numpy().tolist()
+            except Exception:
+                weights_list = tf.keras.backend.get_value(self.class_weights).tolist()
         config.update({
-            "class_weights": self.class_weights.numpy().tolist() if self.class_weights is not None else None,
+            "class_weights": weights_list,
             "label_smoothing": self.label_smoothing,
             "from_logits": self.from_logits
         })

@@ -101,16 +101,12 @@ def apply_cutmix(images: tf.Tensor,
     indices = tf.random.shuffle(tf.range(batch_size))
     shuffled_images = tf.gather(images, indices)
     
-    # 7. Construct spatial mask: 1.0 where original image stays, 0.0 where cut from shuffled image
-    mask_top = tf.ones([tf.shape(images)[0], y1, tf.cast(w, tf.int32), tf.shape(images)[3]], dtype=tf.float32)
-    mask_bottom = tf.ones([tf.shape(images)[0], tf.cast(h, tf.int32) - y2, tf.cast(w, tf.int32), tf.shape(images)[3]], dtype=tf.float32)
-    
-    middle_left = tf.ones([tf.shape(images)[0], y2 - y1, x1, tf.shape(images)[3]], dtype=tf.float32)
-    middle_cut = tf.zeros([tf.shape(images)[0], y2 - y1, x2 - x1, tf.shape(images)[3]], dtype=tf.float32)
-    middle_right = tf.ones([tf.shape(images)[0], y2 - y1, tf.cast(w, tf.int32) - x2, tf.shape(images)[3]], dtype=tf.float32)
-    
-    middle_strip = tf.concat([middle_left, middle_cut, middle_right], axis=2)
-    mask = tf.concat([mask_top, middle_strip, mask_bottom], axis=1)
+    # 7. Construct spatial mask: 1.0 where original image stays, 0.0 where cut patch is placed
+    y_coords = tf.range(tf.cast(h, tf.int32))[:, None]
+    x_coords = tf.range(tf.cast(w, tf.int32))[None, :]
+    in_box = (y_coords >= y1) & (y_coords < y2) & (x_coords >= x1) & (x_coords < x2)
+    mask_2d = tf.cast(~in_box, tf.float32)
+    mask = mask_2d[None, :, :, None]
     
     mixed_images = images * mask + shuffled_images * (1.0 - mask)
     

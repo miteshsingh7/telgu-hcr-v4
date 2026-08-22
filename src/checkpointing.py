@@ -66,7 +66,8 @@ class FullStateCheckpointManager:
             Path to saved checkpoint directory.
         """
         metrics = metrics or {}
-        tag_name = tag or (f"best_model" if is_best else f"epoch_{epoch:03d}")
+        epoch_tag = f"epoch_{epoch:03d}"
+        tag_name = tag or epoch_tag
         target_dir = self.checkpoint_dir / tag_name
         tmp_dir = self.checkpoint_dir / f".tmp_{tag_name}_{os.getpid()}"
         
@@ -104,11 +105,38 @@ class FullStateCheckpointManager:
             with open(tmp_dir / "state.json", "w", encoding="utf-8") as f:
                 json.dump(state_meta, f, indent=2)
                 
-            # 4. Atomic directory swap
+            # 4. Atomic directory swap for epoch checkpoint
             if target_dir.exists():
                 shutil.rmtree(target_dir)
             tmp_dir.rename(target_dir)
             logger.info(f"Successfully saved checkpoint to: {target_dir}")
+            
+            # 5. If is_best, also copy atomically to best_model
+            if is_best:
+                best_dir = self.checkpoint_dir / "best_model"
+                tmp_best = self.checkpoint_dir / f".tmp_best_{os.getpid()}"
+                if tmp_best.exists():
+                    shutil.rmtree(tmp_best)
+                shutil.copytree(target_dir, tmp_best)
+                if best_dir.exists():
+                    shutil.rmtree(best_dir)
+                tmp_best.rename(best_dir)
+                logger.info(f"Updated best_model checkpoint: {self.monitor} = {current_metric_val}")
+                
+            # 6. Manage max_to_keep
+            if self.max_to_keep > 0:
+                def _get_epoch_num(d):
+                    try:
+                        return int(d.name.split('_')[-1])
+                    except Exception:
+                        return -1
+                all_epoch_dirs = sorted([
+                    d for d in self.checkpoint_dir.iterdir() 
+                    if d.is_dir() and d.name.startswith("epoch_")
+                ], key=_get_epoch_num)
+                if len(all_epoch_dirs) > self.max_to_keep:
+                    for old_dir in all_epoch_dirs[:-self.max_to_keep]:
+                        shutil.rmtree(old_dir)
             
             # Update best metric
             if current_metric_val is not None and self._is_better(current_metric_val):
@@ -138,12 +166,18 @@ class FullStateCheckpointManager:
         Returns:
             (restored_epoch, state_metadata_dict)
         """
+        def _get_epoch_num(d):
+            try:
+                return int(d.name.split('_')[-1])
+            except Exception:
+                return -1
+                
         if checkpoint_path_or_tag is None:
             # Find latest checkpoint
             epoch_dirs = sorted([
                 d for d in self.checkpoint_dir.iterdir() 
                 if d.is_dir() and d.name.startswith("epoch_")
-            ])
+            ], key=_get_epoch_num)
             if not epoch_dirs:
                 best_dir = self.checkpoint_dir / "best_model"
                 if best_dir.exists():

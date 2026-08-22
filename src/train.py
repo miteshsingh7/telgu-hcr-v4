@@ -62,22 +62,24 @@ class TimingExtrapolationCallback(tf.keras.callbacks.Callback):
         # Extrapolate when sufficient epochs are measured
         if len(self.epoch_times) == self.timing_epochs:
             total_epochs = self.total_warmup + self.total_finetune
-            projected_seconds = total_epochs * avg_sec
-            projected_hours = projected_seconds / 3600.0
+            remaining_epochs = max(0, total_epochs - (epoch + 1))
+            projected_remaining_hours = (remaining_epochs * avg_sec) / 3600.0
+            projected_total_hours = (total_epochs * avg_sec) / 3600.0
             
             logger.info("=" * 70)
             logger.info("KAGGLE RUNTIME BUDGET EXTRAPOLATION REPORT:")
-            logger.info(f"  Measured speed:       {avg_sec:.1f} sec/epoch ({avg_sec/60.0:.2f} min/epoch)")
-            logger.info(f"  Total planned epochs: {total_epochs} ({self.total_warmup} warmup + {self.total_finetune} fine-tune)")
-            logger.info(f"  Projected runtime:    {projected_hours:.2f} hours (Session budget limit: {self.max_hours:.1f}h)")
+            logger.info(f"  Measured speed:          {avg_sec:.1f} sec/epoch ({avg_sec/60.0:.2f} min/epoch)")
+            logger.info(f"  Total planned epochs:    {total_epochs} ({self.total_warmup} warmup + {self.total_finetune} fine-tune)")
+            logger.info(f"  Remaining epochs:        {remaining_epochs}")
+            logger.info(f"  Est. remaining duration: {projected_remaining_hours:.2f} hours (Total: {projected_total_hours:.2f}h | Limit: {self.max_hours:.1f}h)")
             
-            if projected_hours > self.max_hours:
+            if projected_remaining_hours > self.max_hours:
                 logger.warning(
-                    f"  [ALERT] Projected training duration ({projected_hours:.2f}h) exceeds safe session budget ({self.max_hours:.1f}h)! "
+                    f"  [ALERT] Projected remaining duration ({projected_remaining_hours:.2f}h) exceeds safe session budget ({self.max_hours:.1f}h)! "
                     f"Consider lowering finetune_epochs or using EfficientNetV2B0."
                 )
             else:
-                logger.info(f"  [OK] Training fits comfortably within {self.max_hours:.1f}h session limit.")
+                logger.info(f"  [OK] Remaining training fits comfortably within session limits.")
             logger.info("=" * 70)
 
 
@@ -158,6 +160,7 @@ def create_lr_schedule(base_lr: float,
 def run_training(config_path: str,
                  resume: bool = False,
                  resume_path: Optional[str] = None,
+                 dataset_root: Optional[str] = None,
                  custom_epochs: Optional[int] = None,
                  custom_batch_size: Optional[int] = None,
                  custom_variant: Optional[str] = None):
@@ -173,6 +176,7 @@ def run_training(config_path: str,
     variant = custom_variant or m_cfg["variant"]
     batch_size = custom_batch_size or d_cfg["batch_size"]
     img_size = m_cfg["img_size"]
+    effective_data_root = dataset_root or d_cfg.get("dataset_root", None)
     
     warmup_epochs = t_cfg["warmup_epochs"]
     finetune_epochs = custom_epochs or t_cfg["finetune_epochs"]
@@ -195,6 +199,7 @@ def run_training(config_path: str,
     train_ds, train_steps, class_weights = create_telugu_dataset(
         csv_path_or_df=d_cfg["train_csv"],
         label_maps_or_path=label_maps,
+        dataset_root=effective_data_root,
         batch_size=batch_size,
         is_training=True,
         use_augmentation=d_cfg.get("use_augmentation", True),
@@ -208,11 +213,14 @@ def run_training(config_path: str,
     val_ds, val_steps, _ = create_telugu_dataset(
         csv_path_or_df=d_cfg["val_csv"],
         label_maps_or_path=label_maps,
+        dataset_root=effective_data_root,
         batch_size=batch_size,
         is_training=False,
         use_augmentation=False,
         use_cutmix=False,
         label_smoothing=0.0,
+        img_size=img_size
+    )
         img_size=img_size
     )
     logger.info(f"Dataset ready: {train_steps} train steps/epoch, {val_steps} val steps/epoch (batch={batch_size}).")
@@ -354,6 +362,7 @@ if __name__ == "__main__":
     parser.add_argument("--config", type=str, default="configs/multitask_effnetv2.yaml", help="Path to config YAML")
     parser.add_argument("--resume", action="store_true", help="Resume from latest checkpoint")
     parser.add_argument("--resume_path", type=str, default=None, help="Specific checkpoint tag or path to resume")
+    parser.add_argument("--dataset_root", type=str, default=None, help="Dataset root directory override for path remapping")
     parser.add_argument("--epochs", type=int, default=None, help="Override finetune epochs")
     parser.add_argument("--batch_size", type=int, default=None, help="Override batch size")
     parser.add_argument("--variant", type=str, default=None, help="Override model variant (B0 or S)")
@@ -363,6 +372,7 @@ if __name__ == "__main__":
         config_path=args.config,
         resume=args.resume,
         resume_path=args.resume_path,
+        dataset_root=args.dataset_root,
         custom_epochs=args.epochs,
         custom_batch_size=args.batch_size,
         custom_variant=args.variant

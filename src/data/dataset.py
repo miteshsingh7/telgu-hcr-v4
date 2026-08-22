@@ -46,8 +46,71 @@ def compute_head_weights_from_df(df: pd.DataFrame,
     }
 
 
+def resolve_dataset_root(candidate_paths: Optional[list] = None) -> Optional[Path]:
+    """Finds existing dataset root among standard candidate locations."""
+    defaults = [
+        Path("/kaggle/input/telugu-handwritten-character-dataset/Final Dataset of Telugu Handwritten Chararcters/Test1"),
+        Path("/kaggle/input/telugu-hcr/Final Dataset of Telugu Handwritten Chararcters/Test1"),
+        Path("/kaggle/input/telugu-dataset/Test1"),
+        Path("data/Final Dataset of Telugu Handwritten Chararcters/Test1"),
+        Path("data/Test1"),
+    ]
+    candidates = (candidate_paths or []) + defaults
+    for p in candidates:
+        if p and Path(p).exists():
+            return Path(p)
+    return None
+
+
+def remap_file_paths(file_paths: np.ndarray, dataset_root: Optional[Union[str, Path]] = None) -> np.ndarray:
+    """Remaps file paths if the saved paths do not exist on the current machine (e.g. on Kaggle/Colab)."""
+    if len(file_paths) == 0:
+        return file_paths
+        
+    sample_path = Path(file_paths[0])
+    if sample_path.exists():
+        return file_paths
+        
+    target_root = Path(dataset_root) if dataset_root else resolve_dataset_root()
+    if target_root is None or not target_root.exists():
+        # Path does not exist and no fallback found; return as is (will raise standard error on read)
+        return file_paths
+        
+    # Extract relative path starting from known categories or 'Test1'
+    known_cats = ("achulu", "hallulu", "guninthamulu", "othulu")
+    remapped = []
+    
+    for fp in file_paths:
+        p_str = str(fp).replace("\\", "/")
+        p_lower = p_str.lower()
+        
+        # Find where the category begins
+        idx = -1
+        for cat in known_cats:
+            pos = p_lower.find(f"/{cat}/")
+            if pos != -1:
+                idx = pos + 1
+                break
+            # Check without leading slash
+            if p_lower.startswith(f"{cat}/"):
+                idx = 0
+                break
+                
+        if idx != -1:
+            rel_part = p_str[idx:]
+            new_path = str(target_root / rel_part)
+        else:
+            # Fallback to filename or original path
+            new_path = str(target_root / Path(p_str).name)
+            
+        remapped.append(new_path)
+        
+    return np.array(remapped, dtype=object)
+
+
 def create_telugu_dataset(csv_path_or_df: Union[str, Path, pd.DataFrame],
                           label_maps_or_path: Union[str, Path, Dict[str, Any]],
+                          dataset_root: Optional[Union[str, Path]] = None,
                           batch_size: int = 128,
                           is_training: bool = True,
                           use_augmentation: bool = True,
@@ -61,6 +124,7 @@ def create_telugu_dataset(csv_path_or_df: Union[str, Path, pd.DataFrame],
     Args:
         csv_path_or_df: Path to CSV or pandas DataFrame with file_path and head index columns.
         label_maps_or_path: Label maps dictionary or path to label_maps.json.
+        dataset_root: Optional override path for dataset root (auto-remaps paths on Kaggle/Colab).
         batch_size: Batch size (default 128).
         is_training: If True, shuffles and applies augmentations/CutMix.
         use_augmentation: If True, applies spatial rotation/translation/zoom.
@@ -83,7 +147,8 @@ def create_telugu_dataset(csv_path_or_df: Union[str, Path, pd.DataFrame],
     else:
         df = csv_path_or_df.copy()
         
-    file_paths = df["file_path"].astype(str).values
+    raw_paths = df["file_path"].astype(str).values
+    file_paths = remap_file_paths(raw_paths, dataset_root=dataset_root)
     base_indices = df["base_idx"].astype(np.int32).values
     mod_indices = df["modifier_idx"].astype(np.int32).values
     vattu_indices = df["vattu_idx"].astype(np.int32).values
