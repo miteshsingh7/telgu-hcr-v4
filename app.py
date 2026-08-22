@@ -1,6 +1,7 @@
 """Telugu Handwritten Character Recognizer — Streamlit App.
 
-Faithful implementation of the Matte Technical Utility design system and reference layout.
+Exact implementation of Matte Technical Utility design mockup.
+Forced Light Theme, Zero Dark Artifacts, Perfect Single-Screen Fit.
 """
 
 import sys
@@ -86,21 +87,24 @@ st.set_page_config(
 )
 
 
-# Global CSS injection to match reference design exactly
+# Global CSS: Pure Matte Palette, No Dark Artifacts, Single Viewport Fit
 st.markdown("""
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-sans/style.css">
 <style>
-    :root {
-        --bg-main: #fbf9f4;
-        --surface: #edebe6;
-        --surface-low: #f5f3ee;
-        --surface-lowest: #ffffff;
-        --outline: #8a8882;
-        --outline-variant: #c9c7c2;
-        --primary: #a03d00;
-        --primary-container: #c1541a;
-        --on-surface: #1c1c1b;
-        --on-surface-variant: #574239;
+    /* Reset all Streamlit base colors to Light Matte Greige */
+    :root, [data-theme="dark"], [data-theme="light"], .stApp {
+        --bg-main: #fbf9f4 !important;
+        --surface: #edebe6 !important;
+        --surface-low: #f5f3ee !important;
+        --surface-lowest: #ffffff !important;
+        --outline: #8a8882 !important;
+        --outline-variant: #c9c7c2 !important;
+        --primary: #a03d00 !important;
+        --primary-container: #c1541a !important;
+        --on-surface: #1c1c1b !important;
+        --on-surface-variant: #574239 !important;
+        background-color: #fbf9f4 !important;
+        color: #1c1c1b !important;
     }
 
     * {
@@ -108,34 +112,38 @@ st.markdown("""
         box-sizing: border-box;
     }
 
-    .stApp {
-        background-color: var(--bg-main) !important;
-        color: var(--on-surface) !important;
-        min-height: 100vh !important;
-    }
-
+    /* Remove default Streamlit headers, margins, borders */
     header[data-testid="stHeader"], #MainMenu, footer {
         display: none !important;
     }
 
-    .block-container {
-        max-width: 100% !important;
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
+    /* Fix Streamlit main container to 100vh no scroll */
+    .stApp {
+        background: #fbf9f4 !important;
+        height: 100vh !important;
+        overflow: hidden !important;
     }
 
-    /* Top Full-Width Navbar */
+    .block-container {
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    div[data-testid="stVerticalBlock"] {
+        gap: 0.25rem !important;
+    }
+
+    /* Top Navbar */
     .top-navbar {
-        background-color: var(--bg-main);
-        border-bottom: 1px solid var(--outline-variant);
+        background-color: #fbf9f4;
+        border-bottom: 1px solid #c9c7c2;
         width: 100%;
-        padding: 12px 24px;
+        padding: 10px 24px;
     }
 
     .top-navbar-inner {
-        max-width: 1200px;
+        max-width: 1100px;
         margin: 0 auto;
         display: flex;
         justify-content: space-between;
@@ -149,106 +157,114 @@ st.markdown("""
     }
 
     .brand-title {
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 700;
         letter-spacing: -0.01em;
-        color: var(--on-surface);
+        color: #1c1c1b;
         margin: 0;
     }
 
     .brand-subtitle {
-        font-size: 14px;
-        color: var(--on-surface-variant);
+        font-size: 13px;
+        color: #574239;
         margin: 0;
     }
 
     .top-navbar-right a {
         font-size: 12px;
         font-weight: 700;
-        color: var(--primary);
-        border-bottom: 1px solid var(--primary);
+        color: #a03d00;
+        border-bottom: 1.5px solid #a03d00;
         padding-bottom: 2px;
         text-decoration: none;
     }
 
-    /* Main Column Container */
-    .main-column {
-        max-width: 480px;
-        margin: 16px auto 24px auto;
-        padding: 0 12px;
+    /* Main Column */
+    .app-main {
+        max-width: 440px;
+        margin: 8px auto 0 auto;
+        padding: 0 10px;
     }
 
     /* Tools Bar */
     .tools-bar {
-        background-color: var(--surface-lowest);
-        border: 1px solid var(--outline-variant);
+        background-color: #ffffff;
+        border: 1px solid #c9c7c2;
         border-radius: 4px;
-        padding: 6px 12px;
+        padding: 4px 10px;
+        margin-bottom: 4px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 8px;
     }
 
-    .tools-label {
-        font-size: 12px;
-        font-weight: 500;
-        color: var(--on-surface);
-    }
-
-    /* Canvas Frame */
+    /* Canvas Component Styling */
     iframe[data-testid="stCustomComponentV1"] {
         display: block !important;
         margin: 0 auto !important;
-        border: 1px solid var(--outline-variant) !important;
+        border: 1px solid #c9c7c2 !important;
         border-radius: 4px !important;
         background-color: #ffffff !important;
-        width: 100% !important;
-        aspect-ratio: 1 / 1 !important;
+        width: 250px !important;
+        height: 250px !important;
+        box-shadow: none !important;
     }
 
-    /* Predict Button Override */
+    /* Predict Button */
     div.stButton > button[kind="primary"] {
-        background-color: var(--primary-container) !important;
+        background-color: #c1541a !important;
         color: #ffffff !important;
-        border: 1px solid var(--primary-container) !important;
+        border: 1px solid #c1541a !important;
         border-radius: 4px !important;
         font-weight: 600 !important;
-        font-size: 14px !important;
-        padding: 10px 20px !important;
+        font-size: 13.5px !important;
+        padding: 8px 16px !important;
         width: 100% !important;
         cursor: pointer !important;
-        margin-top: 8px !important;
-        margin-bottom: 12px !important;
-        transition: background-color 0.15s ease !important;
+        margin-top: 4px !important;
+        margin-bottom: 4px !important;
     }
 
     div.stButton > button[kind="primary"]:hover {
         background-color: #a84614 !important;
     }
 
-    /* Results Header */
-    .results-heading {
-        font-size: 16px;
-        font-weight: 600;
-        color: var(--on-surface);
-        margin-top: 12px;
-        margin-bottom: 8px;
+    /* Clear Button */
+    div.stButton > button[kind="secondary"] {
+        background-color: #ffffff !important;
+        color: #1c1c1b !important;
+        border: 1px solid #c9c7c2 !important;
+        border-radius: 4px !important;
+        font-size: 11px !important;
+        padding: 2px 8px !important;
     }
 
-    /* Predictions Grid */
+    div.stButton > button[kind="secondary"]:hover {
+        background-color: #f5f3ee !important;
+    }
+
+    /* Top Predictions Title */
+    .predictions-title {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: #1c1c1b;
+        margin-top: 4px;
+        margin-bottom: 4px;
+    }
+
+    /* 3-Card Grid */
     .predictions-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-        margin-bottom: 20px;
+        gap: 6px;
+        margin-bottom: 4px;
     }
 
     .pred-card {
-        background-color: var(--surface-lowest);
-        border: 1px solid var(--outline-variant);
+        background-color: #ffffff;
+        border: 1px solid #c9c7c2;
         border-radius: 4px;
-        height: 108px;
+        height: 84px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -257,7 +273,7 @@ st.markdown("""
     }
 
     .pred-card.primary {
-        border: 1px solid var(--primary-container);
+        border: 1.5px solid #c1541a;
     }
 
     .pred-glyph {
@@ -265,77 +281,78 @@ st.markdown("""
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 36px;
+        font-size: 28px;
         font-weight: 600;
         font-family: 'Suranna', 'Gautami', 'Geist', sans-serif !important;
-        color: var(--on-surface);
+        color: #1c1c1b;
         line-height: 1;
-        padding-top: 4px;
+        padding-top: 2px;
     }
 
     .pred-glyph.secondary {
-        opacity: 0.8;
+        opacity: 0.75;
     }
 
     .pred-glyph.tertiary {
-        opacity: 0.6;
+        opacity: 0.55;
     }
 
     .pred-bottom-bar {
-        background-color: var(--surface-low);
-        border-top: 1px solid var(--outline-variant);
-        padding: 3px 8px;
+        background-color: #f5f3ee;
+        border-top: 1px solid #c9c7c2;
+        padding: 2px 6px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 11px;
+        font-size: 9.5px;
         font-weight: 600;
     }
 
     .pred-bottom-bar .tag {
-        color: var(--on-surface);
+        color: #1c1c1b;
     }
 
     .pred-bottom-bar .pct-primary {
-        color: var(--primary-container);
+        color: #c1541a;
         font-weight: 700;
     }
 
     .pred-bottom-bar .pct-secondary {
-        color: var(--on-surface-variant);
+        color: #574239;
     }
 
     .pred-progress-stripe {
         position: absolute;
         bottom: 0;
         left: 0;
-        height: 3.5px;
-        background-color: var(--primary-container);
+        height: 3px;
+        background-color: #c1541a;
     }
 
-    /* Bottom Full-Width Footer */
+    /* Footer */
     .bottom-footer {
-        background-color: var(--bg-main);
-        border-top: 1px solid var(--outline-variant);
+        background-color: #fbf9f4;
+        border-top: 1px solid #c9c7c2;
         width: 100%;
-        padding: 12px 24px;
-        margin-top: 24px;
+        padding: 8px 24px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
     }
 
     .bottom-footer-inner {
-        max-width: 1200px;
+        max-width: 1100px;
         margin: 0 auto;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 600;
-        color: var(--on-surface);
+        color: #1c1c1b;
     }
 
     .bottom-footer a {
-        font-size: 11px;
-        color: var(--primary);
+        color: #a03d00;
         text-decoration: underline;
     }
 </style>
@@ -400,13 +417,12 @@ def run_inference(image_input: Any,
 
 
 def main():
-    # Session state initialization
     if "canvas_key" not in st.session_state:
         st.session_state.canvas_key = 0
     if "last_results" not in st.session_state:
         st.session_state.last_results = None
 
-    # 1. Top Navigation Bar
+    # 1. Top Navbar
     st.markdown("""
     <header class="top-navbar">
         <div class="top-navbar-inner">
@@ -421,57 +437,56 @@ def main():
     </header>
     """, unsafe_allow_html=True)
     
-    # 2. Main Centered Column Container
-    st.markdown('<div class="main-column">', unsafe_allow_html=True)
+    # 2. Main Content
+    st.markdown('<div class="app-main">', unsafe_allow_html=True)
     
     model, label_maps = load_system_assets()
     
-    # 3. Tools Bar (Brush Size + Clear)
+    # 3. Tools Bar
     col_tools_left, col_tools_right = st.columns([1.5, 1], vertical_alignment="center")
     
     with col_tools_left:
-        brush_size = st.slider("Brush Size", min_value=3, max_value=20, value=6, step=1)
+        brush_size = st.slider("Brush Size", min_value=3, max_value=20, value=6, step=1, label_visibility="collapsed")
         
     with col_tools_right:
-        if st.button("Clear Canvas", key="btn_clear", use_container_width=True):
+        if st.button("Clear", key="btn_clear_canvas", use_container_width=True):
             st.session_state.canvas_key += 1
             st.session_state.last_results = None
             st.rerun()
             
     image_to_process = None
     
-    # 4. Canvas
+    # 4. Canvas (250x250 square with clean soft border)
     if CANVAS_AVAILABLE:
         canvas_result = st_canvas(
             fill_color="rgba(255, 255, 255, 0.0)",
             stroke_width=brush_size,
             stroke_color="#000000",
             background_color="#FFFFFF",
-            width=450,
-            height=450,
+            width=250,
+            height=250,
             drawing_mode="freedraw",
-            key=f"telugu_canvas_{st.session_state.canvas_key}"
+            key=f"canvas_session_{st.session_state.canvas_key}"
         )
         if canvas_result.image_data is not None:
             img_array = canvas_result.image_data.astype(np.uint8)
             if np.mean(img_array[..., :3]) < 254.0:
                 image_to_process = img_array
     else:
-        uploaded_file = st.file_uploader("Upload Telugu Character Image", type=["png", "jpg", "jpeg", "bmp"])
+        uploaded_file = st.file_uploader("Upload Image", type=["png", "jpg", "jpeg", "bmp"], label_visibility="collapsed")
         if uploaded_file is not None:
             image_to_process = Image.open(uploaded_file)
-            st.image(image_to_process, width=200)
             
     # 5. Predict Button
     predict_clicked = st.button("Predict", type="primary", use_container_width=True)
     
     if predict_clicked and image_to_process is not None:
-        with st.spinner("Analyzing..."):
+        with st.spinner("Decoding..."):
             rec_result, preprocessed_img = run_inference(image_to_process, model, label_maps)
             st.session_state.last_results = (rec_result, preprocessed_img)
             
-    # 6. Results Section (Top Predictions)
-    st.markdown('<div class="results-heading">Top Predictions</div>', unsafe_allow_html=True)
+    # 6. Top Predictions
+    st.markdown('<div class="predictions-title">Top Predictions</div>', unsafe_allow_html=True)
     
     if st.session_state.last_results is not None:
         rec_result, preprocessed_img = st.session_state.last_results
@@ -515,7 +530,6 @@ def main():
                 <div class="pred-progress-stripe" style="width: {stripe_w};"></div>
             </div>
             """)
-            
         cards_html.append('</div>')
         st.markdown("\n".join(cards_html), unsafe_allow_html=True)
         
@@ -541,9 +555,9 @@ def main():
         </div>
         """, unsafe_allow_html=True)
         
-    st.markdown('</div>', unsafe_allow_html=True) # Close main-column
+    st.markdown('</div>', unsafe_allow_html=True) # Close app-main
     
-    # 7. Bottom Full-Width Footer
+    # 7. Bottom Fixed Footer
     st.markdown("""
     <footer class="bottom-footer">
         <div class="bottom-footer-inner">
