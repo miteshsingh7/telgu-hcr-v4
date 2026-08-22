@@ -22,7 +22,7 @@ if str(APP_DIR) not in sys.path:
     sys.path.insert(0, str(APP_DIR))
 
 from src.data.preprocessing import preprocess_image, IMAGE_SIZE
-from src.data.decomposition import recombine_prediction, load_label_maps if hasattr(sys.modules.get('src.data.decomposition'), 'load_label_maps') else None
+from src.data.decomposition import recombine_prediction
 from src.models.multitask_effnetv2 import build_multitask_effnetv2, parse_model_prediction_outputs
 from src.checkpointing import FullStateCheckpointManager
 
