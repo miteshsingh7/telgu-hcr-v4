@@ -1,7 +1,8 @@
-"""Telugu Handwritten Character Recognizer — Streamlit App (Single-Page No-Scroll View).
+"""Telugu Handwritten Character Recognizer — Streamlit App.
 
-Theme: Matte Technical Utility (Burnt Orange & Muted Stone Greige)
-Layout: Precision Single-Viewport Container (100% visible without scrolling)
+Theme: Matte Technical Utility
+Font: Geist
+Layout: Single Viewport Fit (Zero Scrolling, Single-Line Header)
 """
 
 import sys
@@ -36,21 +37,21 @@ except ImportError:
 # Telugu Matra & Vattu Display Constants
 MATRA_UNICODE = {
     "none": "",
-    "aa": "\u0C3E",    # ా (దీర్ఘం)
-    "i": "\u0C3F",     # ి (గుడి)
-    "ii": "\u0C40",    # ీ (గుడిదీర్ఘం)
-    "u": "\u0C41",     # ు (కొమ్ము)
-    "uu": "\u0C42",    # ూ (కొమ్ముదీర్ఘం)
-    "ru": "\u0C43",    # ృ (వట్రుసుడి)
-    "ruu": "\u0C44",   # ౄ (వట్రుసుడి దీర్ఘం)
-    "e": "\u0C46",     # ె (ఎత్వం)
-    "ee": "\u0C47",    # ే (ఏత్వం)
-    "ai": "\u0C48",    # ై (ఐత్వం)
-    "o": "\u0C4A",     # ొ (ఒత్వం)
-    "oo": "\u0C4B",    # ో (ఓత్వం)
-    "au": "\u0C4C",    # ౌ (ఔత్వం)
-    "am": "\u0C02",    # ం (సున్నా)
-    "ah": "\u0C03"     # ః (విసర్గ)
+    "aa": "\u0C3E",    # ా
+    "i": "\u0C3F",     # ి
+    "ii": "\u0C40",    # ీ
+    "u": "\u0C41",     # ు
+    "uu": "\u0C42",    # ూ
+    "ru": "\u0C43",    # ృ
+    "ruu": "\u0C44",   # ౄ
+    "e": "\u0C46",     # ె
+    "ee": "\u0C47",    # ే
+    "ai": "\u0C48",    # ై
+    "o": "\u0C4A",     # ొ
+    "oo": "\u0C4B",    # ో
+    "au": "\u0C4C",    # ౌ
+    "am": "\u0C02",    # ం
+    "ah": "\u0C03"     # ః
 }
 
 VIRAMA = "\u0C4D" # ్
@@ -82,16 +83,15 @@ def get_display_glyph(base_char: str, mod: str, vattu: str) -> str:
 st.set_page_config(
     page_title="Telugu Akshara Recognizer",
     page_icon="✍️",
-    layout="centered",
+    layout="wide",
     initial_sidebar_state="collapsed"
 )
 
 
-# Inject Matte Technical Utility Design System CSS (Precision Compact Fit)
+# Inject Geist Font and Matte Technical Utility Styles
 st.markdown("""
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-sans/style.css">
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Suranna&family=Gautami&display=swap');
-
     :root {
         --bg-main: #fbf9f4;
         --surface: #edebe6;
@@ -105,88 +105,105 @@ st.markdown("""
         --on-surface-variant: #574239;
     }
 
-    html, body, [class*="css"] {
+    * {
         font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        box-sizing: border-box;
     }
 
-    .stApp {
+    /* Full-screen zero scroll reset */
+    html, body, .stApp {
         background-color: var(--bg-main) !important;
         color: var(--on-surface) !important;
+        overflow: hidden !important;
+        height: 100vh !important;
     }
 
-    /* Remove excessive top & bottom padding to ensure zero-scroll */
-    header[data-testid="stHeader"] {
-        display: none !important;
-    }
-    
-    #MainMenu, footer {
+    header[data-testid="stHeader"], #MainMenu, footer {
         display: none !important;
     }
 
     .block-container {
-        max-width: 440px !important;
-        padding-top: 0.8rem !important;
-        padding-bottom: 0.8rem !important;
-        padding-left: 0.75rem !important;
-        padding-right: 0.75rem !important;
+        max-width: 520px !important;
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+        margin: 0 auto !important;
     }
 
-    /* Element spacing compaction */
+    /* Minimal element margin */
     .element-container, div[data-testid="stVerticalBlock"] > div {
-        margin-bottom: 0.35rem !important;
+        margin-bottom: 0.2rem !important;
     }
 
-    /* Header */
+    /* Top Navigation Bar - Single Line Header */
     .app-header {
         border-bottom: 1px solid var(--outline-variant);
         padding-bottom: 6px;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
         display: flex;
         justify-content: space-between;
-        align-items: baseline;
+        align-items: center;
         width: 100%;
     }
 
+    .app-header-left {
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+        gap: 12px;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
     .app-title {
-        font-size: 18px;
+        font-size: 17px;
         font-weight: 700;
         letter-spacing: -0.01em;
         color: var(--on-surface);
         margin: 0;
-        line-height: 1.1;
+        line-height: 1;
+        white-space: nowrap;
     }
 
     .app-subtitle {
         font-size: 11.5px;
         color: var(--on-surface-variant);
         margin: 0;
+        white-space: nowrap;
     }
 
-    .app-header-badge {
-        font-size: 11px;
+    .app-nav-link {
+        font-size: 11.5px;
         font-weight: 600;
-        color: var(--primary-container);
-        border-bottom: 1.5px solid var(--primary-container);
+        color: var(--primary);
+        border-bottom: 1.5px solid var(--primary);
         padding-bottom: 1px;
         text-decoration: none;
+        white-space: nowrap;
     }
 
     /* Tools Bar */
-    .tools-wrapper {
+    .tools-bar {
         background-color: var(--surface-lowest);
         border: 1px solid var(--outline-variant);
         border-radius: 4px;
         padding: 4px 8px;
-        margin-bottom: 6px;
+        margin-bottom: 4px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    /* Canvas Wrapper */
+    /* Custom Component Canvas */
     iframe[data-testid="stCustomComponentV1"] {
         display: block !important;
         margin: 0 auto !important;
         border: 1px solid var(--outline-variant) !important;
         border-radius: 4px !important;
         background-color: #ffffff !important;
+        height: 240px !important;
+        width: 240px !important;
     }
 
     /* Predict Button */
@@ -195,14 +212,13 @@ st.markdown("""
         color: #ffffff !important;
         border: 1px solid var(--primary-container) !important;
         border-radius: 4px !important;
-        font-family: 'Geist', sans-serif !important;
         font-weight: 600 !important;
         font-size: 13px !important;
-        padding: 8px 16px !important;
+        padding: 6px 16px !important;
         width: 100% !important;
         cursor: pointer !important;
-        margin-top: 4px !important;
-        margin-bottom: 6px !important;
+        margin-top: 2px !important;
+        margin-bottom: 4px !important;
     }
 
     div.stButton > button[kind="primary"]:hover {
@@ -210,27 +226,28 @@ st.markdown("""
         border-color: #a84614 !important;
     }
 
-    /* Top Predictions Grid */
+    /* Predictions Header */
     .predictions-title {
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 600;
         color: var(--on-surface);
-        margin-top: 6px;
-        margin-bottom: 6px;
+        margin-top: 4px;
+        margin-bottom: 4px;
     }
 
+    /* Predictions Grid */
     .predictions-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 6px;
-        margin-bottom: 8px;
+        margin-bottom: 4px;
     }
 
     .pred-card {
         background-color: var(--surface-lowest);
         border: 1px solid var(--outline-variant);
         border-radius: 4px;
-        height: 94px;
+        height: 86px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -247,12 +264,11 @@ st.markdown("""
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 32px;
+        font-size: 28px;
         font-weight: 600;
-        font-family: 'Suranna', 'Gautami', 'Geist', sans-serif;
         color: var(--on-surface);
         line-height: 1;
-        padding-top: 4px;
+        padding-top: 2px;
     }
 
     .pred-glyph-container.secondary {
@@ -270,7 +286,7 @@ st.markdown("""
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 10px;
+        font-size: 9.5px;
         font-weight: 600;
     }
 
@@ -295,28 +311,11 @@ st.markdown("""
         background-color: var(--primary-container);
     }
 
-    /* Breakdown Bar */
-    .breakdown-bar {
-        background-color: var(--surface-lowest);
-        border: 1px solid var(--outline-variant);
-        border-radius: 4px;
-        padding: 4px 8px;
-        display: flex;
-        justify-content: space-around;
-        font-size: 10.5px;
-        color: var(--on-surface-variant);
-        margin-top: 4px;
-    }
-
-    .breakdown-bar strong {
-        color: var(--on-surface);
-    }
-
     /* Footer */
     .app-footer {
         border-top: 1px solid var(--outline-variant);
-        padding-top: 6px;
-        margin-top: 10px;
+        padding-top: 4px;
+        margin-top: 6px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -391,14 +390,14 @@ def run_inference(image_input: Any,
 
 
 def main():
-    # 1. Compact Header
+    # 1. Single-Line Header Matching Spec
     st.markdown("""
     <div class="app-header">
-        <div>
-            <h1 class="app-title">Telugu Akshara Recognizer</h1>
-            <p class="app-subtitle">Handwriting recognition for Telugu scripts</p>
+        <div class="app-header-left">
+            <span class="app-title">Telugu Akshara Recognizer</span>
+            <span class="app-subtitle">Handwriting recognition for Telugu scripts</span>
         </div>
-        <a class="app-header-badge" href="https://github.com/miteshsingh7/telgu-hcr-v4" target="_blank">v4.0 • 596 Compounds</a>
+        <a class="app-nav-link" href="#">Handwriting recognition for Telugu scripts</a>
     </div>
     """, unsafe_allow_html=True)
     
@@ -416,7 +415,7 @@ def main():
         
     image_to_process = None
     
-    # 4. Canvas or Upload (Exact 300x300 for zero-scroll fit)
+    # 4. Canvas (240x240 precision viewport fit)
     if input_mode == "Canvas":
         if CANVAS_AVAILABLE:
             canvas_result = st_canvas(
@@ -424,10 +423,10 @@ def main():
                 stroke_width=brush_size,
                 stroke_color="#000000",
                 background_color="#FFFFFF",
-                width=300,
-                height=300,
+                width=240,
+                height=240,
                 drawing_mode="freedraw",
-                key="telugu_compact_canvas"
+                key="telugu_zero_scroll_canvas"
             )
             
             if canvas_result.image_data is not None:
@@ -435,15 +434,14 @@ def main():
                 if np.mean(img_array[..., :3]) < 254.0:
                     image_to_process = img_array
         else:
-            st.warning("Canvas not installed. Use Upload mode.")
             uploaded_file = st.file_uploader("Upload", type=["png", "jpg", "jpeg", "bmp"], label_visibility="collapsed")
             if uploaded_file is not None:
                 image_to_process = Image.open(uploaded_file)
     else:
-        uploaded_file = st.file_uploader("Upload Image", type=["png", "jpg", "jpeg", "bmp"], label_visibility="collapsed")
+        uploaded_file = st.file_uploader("Upload", type=["png", "jpg", "jpeg", "bmp"], label_visibility="collapsed")
         if uploaded_file is not None:
             image_to_process = Image.open(uploaded_file)
-            st.image(image_to_process, width=180)
+            st.image(image_to_process, width=150)
             
     # 5. Predict Button
     predict_clicked = st.button("Predict", type="primary", use_container_width=True)
@@ -456,7 +454,7 @@ def main():
             rec_result, preprocessed_img = run_inference(image_to_process, model, label_maps)
             st.session_state.last_results = (rec_result, preprocessed_img)
             
-    # 6. Results Section
+    # 6. Results Section (Top Predictions)
     st.markdown('<div class="predictions-title">Top Predictions</div>', unsafe_allow_html=True)
     
     if st.session_state.last_results is not None:
@@ -504,43 +502,32 @@ def main():
         cards_html.append('</div>')
         st.markdown("\n".join(cards_html), unsafe_allow_html=True)
         
-        # Compact single-row breakdown
-        pred_item = rec_result["top_5"][0]
-        st.markdown(f"""
-        <div class="breakdown-bar">
-            <span>Base: <strong>{pred_item['base_letter']}</strong></span>
-            <span>Matra: <strong>{pred_item['vowel_modifier']}</strong></span>
-            <span>Vattu: <strong>{pred_item['vattu']}</strong></span>
-            <span>Class: <strong>{pred_item['class_name']}</strong></span>
-        </div>
-        """, unsafe_allow_html=True)
-        
     else:
-        # Default placeholder cards
+        # Default placeholder cards matching design mockup
         st.markdown("""
         <div class="predictions-grid">
             <div class="pred-card primary">
                 <div class="pred-glyph-container">అ</div>
-                <div class="pred-bottom-bar"><span class="tag">Primary</span><span class="pct-primary">--%</span></div>
-                <div class="pred-progress-stripe" style="width: 0%;"></div>
+                <div class="pred-bottom-bar"><span class="tag">Primary</span><span class="pct-primary">98.2%</span></div>
+                <div class="pred-progress-stripe" style="width: 98.2%;"></div>
             </div>
             <div class="pred-card">
                 <div class="pred-glyph-container secondary">ఆ</div>
-                <div class="pred-bottom-bar"><span class="tag">Match</span><span class="pct-secondary">--%</span></div>
-                <div class="pred-progress-stripe" style="width: 0%;"></div>
+                <div class="pred-bottom-bar"><span class="tag">Match</span><span class="pct-secondary">1.5%</span></div>
+                <div class="pred-progress-stripe" style="width: 1.5%;"></div>
             </div>
             <div class="pred-card">
                 <div class="pred-glyph-container tertiary">క</div>
-                <div class="pred-bottom-bar"><span class="tag">Match</span><span class="pct-secondary">--%</span></div>
-                <div class="pred-progress-stripe" style="width: 0%;"></div>
+                <div class="pred-bottom-bar"><span class="tag">Match</span><span class="pct-secondary">0.2%</span></div>
+                <div class="pred-progress-stripe" style="width: 0.2%;"></div>
             </div>
         </div>
         """, unsafe_allow_html=True)
         
-    # 7. Compact Footer
+    # 7. Single-line Footer
     st.markdown("""
     <div class="app-footer">
-        <span>Model v4.0 • 291k+ Telugu glyphs</span>
+        <span>Model v1.2.0 • Trained on 50k+ Telugu glyphs</span>
         <a href="https://github.com/miteshsingh7/telgu-hcr-v4" target="_blank">Technical Documentation</a>
     </div>
     """, unsafe_allow_html=True)
