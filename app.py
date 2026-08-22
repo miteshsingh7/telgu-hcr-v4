@@ -1,12 +1,7 @@
-"""Telugu Handwritten Character Recognizer — Streamlit App.
+"""Telugu Handwritten Character Recognizer — Streamlit App (Single-Page No-Scroll View).
 
 Theme: Matte Technical Utility (Burnt Orange & Muted Stone Greige)
-Features:
-  - Interactive Drawing Canvas with brush size and clear controls
-  - Single Source of Truth Preprocessing (Square-Padded, Bilinear 128x128)
-  - Constrained Maximum-Likelihood Decoding across 596 Telugu Compounds
-  - Top 3 Prediction Cards with dynamic Telugu Unicode Glyphs and confidence bars
-  - Technical Component Breakdown (Base Akshara + Vowel Modifier + Subscript Vattu)
+Layout: Precision Single-Viewport Container (100% visible without scrolling)
 """
 
 import sys
@@ -73,7 +68,6 @@ VATTU_CONSONANT = {
 def get_display_glyph(base_char: str, mod: str, vattu: str) -> str:
     """Combines primitives into an authentic Telugu Unicode grapheme string."""
     if base_char == "none":
-        # Isolated vattu
         c = VATTU_CONSONANT.get(vattu, "క")
         return f"{VIRAMA}{c}"
     
@@ -93,12 +87,11 @@ st.set_page_config(
 )
 
 
-# Inject Matte Technical Utility Design System CSS
+# Inject Matte Technical Utility Design System CSS (Precision Compact Fit)
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Suranna&family=Gautami&display=swap');
 
-    /* Global reset & Matte Palette */
     :root {
         --bg-main: #fbf9f4;
         --surface: #edebe6;
@@ -112,99 +105,91 @@ st.markdown("""
         --on-surface-variant: #574239;
     }
 
-    .stApp {
-        background-color: var(--bg-main) !important;
-        color: var(--on-surface) !important;
+    html, body, [class*="css"] {
         font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     }
 
-    /* Hide standard Streamlit header and decoration */
+    .stApp {
+        background-color: var(--bg-main) !important;
+        color: var(--on-surface) !important;
+    }
+
+    /* Remove excessive top & bottom padding to ensure zero-scroll */
     header[data-testid="stHeader"] {
-        background: transparent !important;
-        height: 2rem !important;
+        display: none !important;
     }
     
     #MainMenu, footer {
-        visibility: hidden !important;
+        display: none !important;
     }
 
-    /* Main Container max width */
     .block-container {
-        max-width: 520px !important;
-        padding-top: 1.5rem !important;
-        padding-bottom: 2rem !important;
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
+        max-width: 440px !important;
+        padding-top: 0.8rem !important;
+        padding-bottom: 0.8rem !important;
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
     }
 
-    /* Custom Header */
+    /* Element spacing compaction */
+    .element-container, div[data-testid="stVerticalBlock"] > div {
+        margin-bottom: 0.35rem !important;
+    }
+
+    /* Header */
     .app-header {
         border-bottom: 1px solid var(--outline-variant);
-        padding-bottom: 16px;
-        margin-bottom: 24px;
+        padding-bottom: 6px;
+        margin-bottom: 8px;
         display: flex;
         justify-content: space-between;
         align-items: baseline;
         width: 100%;
     }
 
-    .app-header-left {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-    }
-
     .app-title {
-        font-size: 22px;
+        font-size: 18px;
         font-weight: 700;
         letter-spacing: -0.01em;
         color: var(--on-surface);
         margin: 0;
-        line-height: 1.2;
+        line-height: 1.1;
     }
 
     .app-subtitle {
-        font-size: 13px;
+        font-size: 11.5px;
         color: var(--on-surface-variant);
         margin: 0;
     }
 
     .app-header-badge {
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 600;
         color: var(--primary-container);
-        border-bottom: 2px solid var(--primary-container);
-        padding-bottom: 2px;
+        border-bottom: 1.5px solid var(--primary-container);
+        padding-bottom: 1px;
         text-decoration: none;
     }
 
     /* Tools Bar */
-    .tools-bar {
+    .tools-wrapper {
         background-color: var(--surface-lowest);
         border: 1px solid var(--outline-variant);
         border-radius: 4px;
-        padding: 8px 12px;
-        margin-bottom: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        padding: 4px 8px;
+        margin-bottom: 6px;
     }
 
     /* Canvas Wrapper */
-    .canvas-container {
-        width: 100%;
-        aspect-ratio: 1 / 1;
-        background-color: var(--surface-lowest);
-        border: 1px solid var(--outline-variant);
-        border-radius: 4px;
-        overflow: hidden;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    iframe[data-testid="stCustomComponentV1"] {
+        display: block !important;
+        margin: 0 auto !important;
+        border: 1px solid var(--outline-variant) !important;
+        border-radius: 4px !important;
+        background-color: #ffffff !important;
     }
 
-    /* Predict Button Override */
+    /* Predict Button */
     div.stButton > button[kind="primary"] {
         background-color: var(--primary-container) !important;
         color: #ffffff !important;
@@ -212,11 +197,12 @@ st.markdown("""
         border-radius: 4px !important;
         font-family: 'Geist', sans-serif !important;
         font-weight: 600 !important;
-        font-size: 14px !important;
-        padding: 12px 24px !important;
+        font-size: 13px !important;
+        padding: 8px 16px !important;
         width: 100% !important;
         cursor: pointer !important;
-        transition: all 0.15s ease-in-out !important;
+        margin-top: 4px !important;
+        margin-bottom: 6px !important;
     }
 
     div.stButton > button[kind="primary"]:hover {
@@ -224,43 +210,27 @@ st.markdown("""
         border-color: #a84614 !important;
     }
 
-    /* Secondary Action Buttons */
-    div.stButton > button[kind="secondary"] {
-        background-color: transparent !important;
-        color: var(--on-surface) !important;
-        border: 1px solid var(--outline-variant) !important;
-        border-radius: 4px !important;
-        font-family: 'Geist', sans-serif !important;
-        font-size: 12px !important;
-        font-weight: 500 !important;
-        padding: 4px 10px !important;
-    }
-
-    div.stButton > button[kind="secondary"]:hover {
-        background-color: var(--surface-low) !important;
-    }
-
     /* Top Predictions Grid */
     .predictions-title {
-        font-size: 18px;
+        font-size: 14px;
         font-weight: 600;
         color: var(--on-surface);
-        margin-top: 24px;
-        margin-bottom: 12px;
+        margin-top: 6px;
+        margin-bottom: 6px;
     }
 
     .predictions-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-        margin-bottom: 24px;
+        gap: 6px;
+        margin-bottom: 8px;
     }
 
     .pred-card {
         background-color: var(--surface-lowest);
         border: 1px solid var(--outline-variant);
         border-radius: 4px;
-        height: 128px;
+        height: 94px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -269,7 +239,7 @@ st.markdown("""
     }
 
     .pred-card.primary {
-        border: 1px solid var(--primary-container);
+        border: 1.5px solid var(--primary-container);
     }
 
     .pred-glyph-container {
@@ -277,12 +247,12 @@ st.markdown("""
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 40px;
+        font-size: 32px;
         font-weight: 600;
         font-family: 'Suranna', 'Gautami', 'Geist', sans-serif;
         color: var(--on-surface);
         line-height: 1;
-        padding-top: 8px;
+        padding-top: 4px;
     }
 
     .pred-glyph-container.secondary {
@@ -296,11 +266,11 @@ st.markdown("""
     .pred-bottom-bar {
         background-color: var(--surface-low);
         border-top: 1px solid var(--outline-variant);
-        padding: 4px 8px;
+        padding: 2px 6px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 600;
     }
 
@@ -321,41 +291,36 @@ st.markdown("""
         position: absolute;
         bottom: 0;
         left: 0;
-        height: 4px;
+        height: 3px;
         background-color: var(--primary-container);
-        transition: width 0.3s ease;
     }
 
-    /* Breakdown Section */
-    .breakdown-box {
+    /* Breakdown Bar */
+    .breakdown-bar {
         background-color: var(--surface-lowest);
         border: 1px solid var(--outline-variant);
         border-radius: 4px;
-        padding: 12px 16px;
-        margin-top: 12px;
-        font-size: 13px;
-    }
-
-    .breakdown-item {
+        padding: 4px 8px;
         display: flex;
-        justify-content: space-between;
-        padding: 4px 0;
-        border-bottom: 1px solid var(--surface-low);
+        justify-content: space-around;
+        font-size: 10.5px;
+        color: var(--on-surface-variant);
+        margin-top: 4px;
     }
 
-    .breakdown-item:last-child {
-        border-bottom: none;
+    .breakdown-bar strong {
+        color: var(--on-surface);
     }
 
-    /* Custom Footer */
+    /* Footer */
     .app-footer {
         border-top: 1px solid var(--outline-variant);
-        padding-top: 16px;
-        margin-top: 32px;
+        padding-top: 6px;
+        margin-top: 10px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 500;
         color: var(--on-surface-variant);
     }
@@ -400,7 +365,6 @@ def load_system_assets(checkpoint_dir: str = "checkpoints",
         dummy_opt = tf.keras.optimizers.AdamW()
         restored_epoch, meta = ckpt_manager.restore_state(model, dummy_opt, checkpoint_path_or_tag="best_model")
     except Exception:
-        # If no checkpoint exists locally (e.g. running demo before download), run uninitialized demo
         pass
         
     return model, label_maps
@@ -427,22 +391,22 @@ def run_inference(image_input: Any,
 
 
 def main():
-    # 1. Header
+    # 1. Compact Header
     st.markdown("""
     <div class="app-header">
-        <div class="app-header-left">
+        <div>
             <h1 class="app-title">Telugu Akshara Recognizer</h1>
             <p class="app-subtitle">Handwriting recognition for Telugu scripts</p>
         </div>
-        <a class="app-header-badge" href="#documentation">v4.0 • EfficientNetV2</a>
+        <a class="app-header-badge" href="https://github.com/miteshsingh7/telgu-hcr-v4" target="_blank">v4.0 • 596 Compounds</a>
     </div>
     """, unsafe_allow_html=True)
     
-    # 2. Load Model Assets
+    # 2. Load Assets
     model, label_maps = load_system_assets()
     
-    # 3. Canvas Tools Controls
-    col_tools_left, col_tools_right = st.columns([1.2, 1], vertical_alignment="center")
+    # 3. Compact Tools Bar
+    col_tools_left, col_tools_right = st.columns([1.1, 1], vertical_alignment="center")
     
     with col_tools_left:
         brush_size = st.slider("Brush Size", min_value=4, max_value=24, value=12, step=2, label_visibility="collapsed")
@@ -452,6 +416,7 @@ def main():
         
     image_to_process = None
     
+    # 4. Canvas or Upload (Exact 300x300 for zero-scroll fit)
     if input_mode == "Canvas":
         if CANVAS_AVAILABLE:
             canvas_result = st_canvas(
@@ -459,50 +424,46 @@ def main():
                 stroke_width=brush_size,
                 stroke_color="#000000",
                 background_color="#FFFFFF",
-                width=480,
-                height=480,
+                width=300,
+                height=300,
                 drawing_mode="freedraw",
-                key="telugu_akshara_canvas"
+                key="telugu_compact_canvas"
             )
             
             if canvas_result.image_data is not None:
                 img_array = canvas_result.image_data.astype(np.uint8)
-                # Check for drawn strokes (non-white pixels)
                 if np.mean(img_array[..., :3]) < 254.0:
                     image_to_process = img_array
         else:
-            st.warning("Canvas package not detected. Switching to Upload mode.")
-            uploaded_file = st.file_uploader("Upload Image", type=["png", "jpg", "jpeg", "bmp"], label_visibility="collapsed")
+            st.warning("Canvas not installed. Use Upload mode.")
+            uploaded_file = st.file_uploader("Upload", type=["png", "jpg", "jpeg", "bmp"], label_visibility="collapsed")
             if uploaded_file is not None:
                 image_to_process = Image.open(uploaded_file)
     else:
-        uploaded_file = st.file_uploader("Upload a scanned Telugu character image", type=["png", "jpg", "jpeg", "bmp"], label_visibility="collapsed")
+        uploaded_file = st.file_uploader("Upload Image", type=["png", "jpg", "jpeg", "bmp"], label_visibility="collapsed")
         if uploaded_file is not None:
             image_to_process = Image.open(uploaded_file)
-            st.image(image_to_process, caption="Uploaded Character", use_container_width=True)
+            st.image(image_to_process, width=180)
             
-    # 4. Predict Action Button
+    # 5. Predict Button
     predict_clicked = st.button("Predict", type="primary", use_container_width=True)
     
-    # Session state caching for prediction results
     if "last_results" not in st.session_state:
         st.session_state.last_results = None
         
     if predict_clicked and image_to_process is not None:
-        with st.spinner("Decoding Akshara..."):
+        with st.spinner("Decoding..."):
             rec_result, preprocessed_img = run_inference(image_to_process, model, label_maps)
             st.session_state.last_results = (rec_result, preprocessed_img)
             
-    # 5. Render Results (Mock initial state or real predictions)
+    # 6. Results Section
     st.markdown('<div class="predictions-title">Top Predictions</div>', unsafe_allow_html=True)
     
     if st.session_state.last_results is not None:
         rec_result, preprocessed_img = st.session_state.last_results
         top_candidates = rec_result["top_5"][:3]
         
-        # Build cards
         cards_html = ['<div class="predictions-grid">']
-        
         for idx, item in enumerate(top_candidates):
             cname = item["class_name"]
             b_char = item["base_letter"]
@@ -510,7 +471,6 @@ def main():
             v_code = item["vattu"]
             prob = item["probability"]
             pct_str = f"{prob * 100:.1f}%"
-            
             glyph = get_display_glyph(b_char, m_code, v_code)
             
             if idx == 0:
@@ -541,75 +501,46 @@ def main():
                 <div class="pred-progress-stripe" style="width: {stripe_width};"></div>
             </div>
             """)
-            
         cards_html.append('</div>')
         st.markdown("\n".join(cards_html), unsafe_allow_html=True)
         
-        # 6. Technical Component Breakdown
+        # Compact single-row breakdown
         pred_item = rec_result["top_5"][0]
         st.markdown(f"""
-        <div class="breakdown-box">
-            <div class="breakdown-item">
-                <span style="color: var(--on-surface-variant);">Decoded Akshara</span>
-                <strong>{get_display_glyph(pred_item['base_letter'], pred_item['vowel_modifier'], pred_item['vattu'])} (<code>{pred_item['class_name']}</code>)</strong>
-            </div>
-            <div class="breakdown-item">
-                <span style="color: var(--on-surface-variant);">Base Akshara</span>
-                <strong>{pred_item['base_letter']}</strong>
-            </div>
-            <div class="breakdown-item">
-                <span style="color: var(--on-surface-variant);">Vowel Modifier (గుణింతం)</span>
-                <strong>{pred_item['vowel_modifier']}</strong>
-            </div>
-            <div class="breakdown-item">
-                <span style="color: var(--on-surface-variant);">Subscript Conjunct (వత్తు)</span>
-                <strong>{pred_item['vattu']}</strong>
-            </div>
-            <div class="breakdown-item">
-                <span style="color: var(--on-surface-variant);">Decoding Policy</span>
-                <span>{'Constrained MLE Fallback' if rec_result.get('is_fallback') else 'Greedy Joint Max'}</span>
-            </div>
+        <div class="breakdown-bar">
+            <span>Base: <strong>{pred_item['base_letter']}</strong></span>
+            <span>Matra: <strong>{pred_item['vowel_modifier']}</strong></span>
+            <span>Vattu: <strong>{pred_item['vattu']}</strong></span>
+            <span>Class: <strong>{pred_item['class_name']}</strong></span>
         </div>
         """, unsafe_allow_html=True)
         
     else:
-        # Initial Placeholder Cards matching design mock
+        # Default placeholder cards
         st.markdown("""
         <div class="predictions-grid">
-            <!-- Card 1 -->
             <div class="pred-card primary">
                 <div class="pred-glyph-container">అ</div>
-                <div class="pred-bottom-bar">
-                    <span class="tag">Primary</span>
-                    <span class="pct-primary">--%</span>
-                </div>
+                <div class="pred-bottom-bar"><span class="tag">Primary</span><span class="pct-primary">--%</span></div>
                 <div class="pred-progress-stripe" style="width: 0%;"></div>
             </div>
-            <!-- Card 2 -->
             <div class="pred-card">
                 <div class="pred-glyph-container secondary">ఆ</div>
-                <div class="pred-bottom-bar">
-                    <span class="tag">Match</span>
-                    <span class="pct-secondary">--%</span>
-                </div>
+                <div class="pred-bottom-bar"><span class="tag">Match</span><span class="pct-secondary">--%</span></div>
                 <div class="pred-progress-stripe" style="width: 0%;"></div>
             </div>
-            <!-- Card 3 -->
             <div class="pred-card">
                 <div class="pred-glyph-container tertiary">క</div>
-                <div class="pred-bottom-bar">
-                    <span class="tag">Match</span>
-                    <span class="pct-secondary">--%</span>
-                </div>
+                <div class="pred-bottom-bar"><span class="tag">Match</span><span class="pct-secondary">--%</span></div>
                 <div class="pred-progress-stripe" style="width: 0%;"></div>
             </div>
         </div>
         """, unsafe_allow_html=True)
         
-    # 7. Footer
+    # 7. Compact Footer
     st.markdown("""
-    <div class="app-footer" id="documentation">
-        <span>Model v4.0 • 291k+ Telugu glyphs • 596 Unique Compounds</span>
+    <div class="app-footer">
+        <span>Model v4.0 • 291k+ Telugu glyphs</span>
         <a href="https://github.com/miteshsingh7/telgu-hcr-v4" target="_blank">Technical Documentation</a>
     </div>
     """, unsafe_allow_html=True)
