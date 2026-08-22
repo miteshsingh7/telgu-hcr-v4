@@ -224,8 +224,6 @@ def run_training(config_path: str,
         label_smoothing=0.0,
         img_size=img_size
     )
-        img_size=img_size
-    )
     logger.info(f"Dataset ready: {train_steps} train steps/epoch, {val_steps} val steps/epoch (batch={batch_size}).")
     
     # 4. Instantiate Checkpoint Manager
