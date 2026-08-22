@@ -8,6 +8,7 @@ Side-by-Side 2-Column Matte Technical Utility Layout:
 import sys
 import json
 import logging
+import textwrap
 from pathlib import Path
 from typing import Dict, Any, Optional, Tuple, List
 
@@ -446,7 +447,7 @@ def main():
         st.session_state.last_results = None
 
     # 1. Top Navbar
-    st.markdown("""
+    st.markdown(textwrap.dedent("""
     <div class="top-nav-bar">
         <div class="top-nav-left">
             <span class="brand-title">Telugu Akshara Recognizer</span>
@@ -456,7 +457,7 @@ def main():
             <a href="#">Handwriting recognition for Telugu scripts</a>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """).strip(), unsafe_allow_html=True)
     
     model, label_maps = load_system_assets()
     
@@ -570,22 +571,20 @@ def main():
                     
                 stripe_w = f"{max(1.0, min(100.0, prob * 100)):.1f}%"
                 
-                cards_html.append(f"""
-                <div class="{card_class}">
-                    <div class="{glyph_class}">{glyph}</div>
-                    <div class="pred-bottom-bar-row">
-                        <span class="tag">{tag_name}</span>
-                        <span class="{pct_class}">{pct_str}</span>
-                    </div>
-                    <div class="pred-progress-stripe-row" style="width: {stripe_w};"></div>
-                </div>
-                """)
+                cards_html.append(f"""<div class="{card_class}">
+<div class="{glyph_class}">{glyph}</div>
+<div class="pred-bottom-bar-row">
+<span class="tag">{tag_name}</span>
+<span class="{pct_class}">{pct_str}</span>
+</div>
+<div class="pred-progress-stripe-row" style="width: {stripe_w};"></div>
+</div>""")
             cards_html.append('</div>')
             st.markdown("\n".join(cards_html), unsafe_allow_html=True)
             
         else:
             # Default placeholder cards matching the 2-column reference design
-            st.markdown("""
+            st.markdown(textwrap.dedent("""
             <div class="predictions-vertical-stack">
                 <div class="pred-card-row primary">
                     <div class="pred-glyph-large">అ</div>
@@ -612,16 +611,17 @@ def main():
                     <div class="pred-progress-stripe-row" style="width: 0.2%;"></div>
                 </div>
             </div>
-            """, unsafe_allow_html=True)
+            """).strip(), unsafe_allow_html=True)
             
     # 3. Bottom Footer
-    st.markdown("""
+    st.markdown(textwrap.dedent("""
     <div class="bottom-footer">
         <span>Model v1.2.0 • Trained on 50k+ Telugu glyphs</span>
         <a href="#">Technical Documentation</a>
     </div>
-    """, unsafe_allow_html=True)
+    """).strip(), unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
     main()
+
