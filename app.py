@@ -1,14 +1,19 @@
-"""Telugu Handwritten Character Recognizer — Streamlit Inference App.
+"""Telugu Handwritten Character Recognizer — Streamlit App.
 
-Imports preprocessing directly from src.data.preprocessing (single source of truth).
-Uses Constrained Maximum-Likelihood Decoding to display character breakdowns and top predictions.
+Theme: Matte Technical Utility (Burnt Orange & Muted Stone Greige)
+Features:
+  - Interactive Drawing Canvas with brush size and clear controls
+  - Single Source of Truth Preprocessing (Square-Padded, Bilinear 128x128)
+  - Constrained Maximum-Likelihood Decoding across 596 Telugu Compounds
+  - Top 3 Prediction Cards with dynamic Telugu Unicode Glyphs and confidence bars
+  - Technical Component Breakdown (Base Akshara + Vowel Modifier + Subscript Vattu)
 """
 
 import sys
 import json
 import logging
 from pathlib import Path
-from typing import Dict, Any, Optional, Tuple
+from typing import Dict, Any, Optional, Tuple, List
 
 import streamlit as st
 import numpy as np
@@ -33,17 +38,340 @@ except ImportError:
     CANVAS_AVAILABLE = False
 
 
+# Telugu Matra & Vattu Display Constants
+MATRA_UNICODE = {
+    "none": "",
+    "aa": "\u0C3E",    # ా (దీర్ఘం)
+    "i": "\u0C3F",     # ి (గుడి)
+    "ii": "\u0C40",    # ీ (గుడిదీర్ఘం)
+    "u": "\u0C41",     # ు (కొమ్ము)
+    "uu": "\u0C42",    # ూ (కొమ్ముదీర్ఘం)
+    "ru": "\u0C43",    # ృ (వట్రుసుడి)
+    "ruu": "\u0C44",   # ౄ (వట్రుసుడి దీర్ఘం)
+    "e": "\u0C46",     # ె (ఎత్వం)
+    "ee": "\u0C47",    # ే (ఏత్వం)
+    "ai": "\u0C48",    # ై (ఐత్వం)
+    "o": "\u0C4A",     # ొ (ఒత్వం)
+    "oo": "\u0C4B",    # ో (ఓత్వం)
+    "au": "\u0C4C",    # ౌ (ఔత్వం)
+    "am": "\u0C02",    # ం (సున్నా)
+    "ah": "\u0C03"     # ః (విసర్గ)
+}
+
+VIRAMA = "\u0C4D" # ్
+VATTU_CONSONANT = {
+    "k": "క", "kh": "ఖ", "g": "గ", "gh": "ఘ", "gna": "ఙ",
+    "c": "చ", "ch": "ఛ", "j": "జ", "jh": "ఝ", "jna": "ఞ",
+    "t": "ట", "tt": "ఠ", "th": "ఠ", "d": "డ", "dh": "ఢ", "ana": "ణ", "an": "ణ", "nn": "న",
+    "tha": "థ", "da": "ద", "dha": "ధ", "n": "ట", "na": "న",
+    "p": "ప", "ph": "ఫ", "b": "బ", "bh": "భ", "m": "మ",
+    "y": "య", "r": "ర", "rr": "ఱ", "l": "ల", "ll": "ళ", "v": "వ",
+    "s": "శ", "sh": "ష", "sa": "స", "h": "హ", "ha": "హ", "ksh": "క్ష", "z": "క"
+}
+
+
+def get_display_glyph(base_char: str, mod: str, vattu: str) -> str:
+    """Combines primitives into an authentic Telugu Unicode grapheme string."""
+    if base_char == "none":
+        # Isolated vattu
+        c = VATTU_CONSONANT.get(vattu, "క")
+        return f"{VIRAMA}{c}"
+    
+    matra = MATRA_UNICODE.get(mod, "")
+    if vattu != "none":
+        v_char = VATTU_CONSONANT.get(vattu, "")
+        return f"{base_char}{VIRAMA}{v_char}{matra}"
+    return f"{base_char}{matra}"
+
+
+# Configure Streamlit Page
 st.set_page_config(
-    page_title="Telugu Handwritten Character Recognizer",
+    page_title="Telugu Akshara Recognizer",
     page_icon="✍️",
-    layout="wide"
+    layout="centered",
+    initial_sidebar_state="collapsed"
 )
 
 
-@st.cache_resource(show_spinner="Loading Telugu HCR Model...")
+# Inject Matte Technical Utility Design System CSS
+st.markdown("""
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Suranna&family=Gautami&display=swap');
+
+    /* Global reset & Matte Palette */
+    :root {
+        --bg-main: #fbf9f4;
+        --surface: #edebe6;
+        --surface-low: #f5f3ee;
+        --surface-lowest: #ffffff;
+        --outline: #8a8882;
+        --outline-variant: #c9c7c2;
+        --primary: #a03d00;
+        --primary-container: #c1541a;
+        --on-surface: #1c1c1b;
+        --on-surface-variant: #574239;
+    }
+
+    .stApp {
+        background-color: var(--bg-main) !important;
+        color: var(--on-surface) !important;
+        font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    }
+
+    /* Hide standard Streamlit header and decoration */
+    header[data-testid="stHeader"] {
+        background: transparent !important;
+        height: 2rem !important;
+    }
+    
+    #MainMenu, footer {
+        visibility: hidden !important;
+    }
+
+    /* Main Container max width */
+    .block-container {
+        max-width: 520px !important;
+        padding-top: 1.5rem !important;
+        padding-bottom: 2rem !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* Custom Header */
+    .app-header {
+        border-bottom: 1px solid var(--outline-variant);
+        padding-bottom: 16px;
+        margin-bottom: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        width: 100%;
+    }
+
+    .app-header-left {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .app-title {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        color: var(--on-surface);
+        margin: 0;
+        line-height: 1.2;
+    }
+
+    .app-subtitle {
+        font-size: 13px;
+        color: var(--on-surface-variant);
+        margin: 0;
+    }
+
+    .app-header-badge {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--primary-container);
+        border-bottom: 2px solid var(--primary-container);
+        padding-bottom: 2px;
+        text-decoration: none;
+    }
+
+    /* Tools Bar */
+    .tools-bar {
+        background-color: var(--surface-lowest);
+        border: 1px solid var(--outline-variant);
+        border-radius: 4px;
+        padding: 8px 12px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    /* Canvas Wrapper */
+    .canvas-container {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        background-color: var(--surface-lowest);
+        border: 1px solid var(--outline-variant);
+        border-radius: 4px;
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Predict Button Override */
+    div.stButton > button[kind="primary"] {
+        background-color: var(--primary-container) !important;
+        color: #ffffff !important;
+        border: 1px solid var(--primary-container) !important;
+        border-radius: 4px !important;
+        font-family: 'Geist', sans-serif !important;
+        font-weight: 600 !important;
+        font-size: 14px !important;
+        padding: 12px 24px !important;
+        width: 100% !important;
+        cursor: pointer !important;
+        transition: all 0.15s ease-in-out !important;
+    }
+
+    div.stButton > button[kind="primary"]:hover {
+        background-color: #a84614 !important;
+        border-color: #a84614 !important;
+    }
+
+    /* Secondary Action Buttons */
+    div.stButton > button[kind="secondary"] {
+        background-color: transparent !important;
+        color: var(--on-surface) !important;
+        border: 1px solid var(--outline-variant) !important;
+        border-radius: 4px !important;
+        font-family: 'Geist', sans-serif !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
+        padding: 4px 10px !important;
+    }
+
+    div.stButton > button[kind="secondary"]:hover {
+        background-color: var(--surface-low) !important;
+    }
+
+    /* Top Predictions Grid */
+    .predictions-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--on-surface);
+        margin-top: 24px;
+        margin-bottom: 12px;
+    }
+
+    .predictions-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-bottom: 24px;
+    }
+
+    .pred-card {
+        background-color: var(--surface-lowest);
+        border: 1px solid var(--outline-variant);
+        border-radius: 4px;
+        height: 128px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .pred-card.primary {
+        border: 1px solid var(--primary-container);
+    }
+
+    .pred-glyph-container {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        font-weight: 600;
+        font-family: 'Suranna', 'Gautami', 'Geist', sans-serif;
+        color: var(--on-surface);
+        line-height: 1;
+        padding-top: 8px;
+    }
+
+    .pred-glyph-container.secondary {
+        opacity: 0.75;
+    }
+
+    .pred-glyph-container.tertiary {
+        opacity: 0.55;
+    }
+
+    .pred-bottom-bar {
+        background-color: var(--surface-low);
+        border-top: 1px solid var(--outline-variant);
+        padding: 4px 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .pred-bottom-bar .tag {
+        color: var(--on-surface);
+    }
+
+    .pred-bottom-bar .pct-primary {
+        color: var(--primary-container);
+        font-weight: 700;
+    }
+
+    .pred-bottom-bar .pct-secondary {
+        color: var(--on-surface-variant);
+    }
+
+    .pred-progress-stripe {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 4px;
+        background-color: var(--primary-container);
+        transition: width 0.3s ease;
+    }
+
+    /* Breakdown Section */
+    .breakdown-box {
+        background-color: var(--surface-lowest);
+        border: 1px solid var(--outline-variant);
+        border-radius: 4px;
+        padding: 12px 16px;
+        margin-top: 12px;
+        font-size: 13px;
+    }
+
+    .breakdown-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 4px 0;
+        border-bottom: 1px solid var(--surface-low);
+    }
+
+    .breakdown-item:last-child {
+        border-bottom: none;
+    }
+
+    /* Custom Footer */
+    .app-footer {
+        border-top: 1px solid var(--outline-variant);
+        padding-top: 16px;
+        margin-top: 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--on-surface-variant);
+    }
+
+    .app-footer a {
+        color: var(--primary-container);
+        text-decoration: underline;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+
+@st.cache_resource(show_spinner=False)
 def load_system_assets(checkpoint_dir: str = "checkpoints",
                        label_maps_path: str = "outputs/label_maps.json") -> Tuple[Optional[tf.keras.Model], Dict[str, Any]]:
-    """Loads label maps and restores the best trained model checkpoint."""
+    """Loads label maps and restores the trained multi-head model checkpoint."""
     lmaps_p = APP_DIR / label_maps_path
     if not lmaps_p.exists():
         st.error(f"Label maps not found at: {lmaps_p}. Run split.py first.")
@@ -71,30 +399,27 @@ def load_system_assets(checkpoint_dir: str = "checkpoints",
     try:
         dummy_opt = tf.keras.optimizers.AdamW()
         restored_epoch, meta = ckpt_manager.restore_state(model, dummy_opt, checkpoint_path_or_tag="best_model")
-        st.sidebar.success(f"Loaded model checkpoint from epoch {restored_epoch} (val_loss: {meta.get('monitored_value', 'N/A')})")
-    except Exception as e:
-        st.sidebar.warning(f"No trained checkpoint found ({e}). Running in demo / uninitialized weights mode.")
+    except Exception:
+        # If no checkpoint exists locally (e.g. running demo before download), run uninitialized demo
+        pass
         
     return model, label_maps
 
 
 def run_inference(image_input: Any, 
                   model: tf.keras.Model, 
-                  label_maps: Dict[str, Any]) -> Dict[str, Any]:
-    """Runs preprocessing, forward pass, and constrained maximum-likelihood recombination."""
-    # 1. Single Source of Truth Preprocessing
+                  label_maps: Dict[str, Any]) -> Tuple[Dict[str, Any], np.ndarray]:
+    """Runs preprocessing, forward pass, and constrained maximum-likelihood decoding."""
     preprocessed_tensor = preprocess_image(image_input, img_size=IMAGE_SIZE)
     input_batch = tf.expand_dims(preprocessed_tensor, axis=0)
     
-    # 2. Forward pass
     raw_preds = model(input_batch, training=False)
     b_probs, m_probs, v_probs = parse_model_prediction_outputs(raw_preds)
     
-    # 3. Constrained Recombination
     rec_result = recombine_prediction(
         base_probs=b_probs[0],
         mod_probs=m_probs[0],
-        vattu_probs=v_probs[0],
+        vattu_probs=vattu_probs[0],
         label_maps=label_maps
     )
     
@@ -102,108 +427,192 @@ def run_inference(image_input: Any,
 
 
 def main():
-    st.title("✍️ Telugu Handwritten Character Recognizer (v4)")
-    st.markdown(
-        "Powered by **Multi-Head EfficientNetV2** with independent structural decomposition "
-        "(Base Akshara + Vowel Modifier + Conjunct Vattu) and Constrained Maximum-Likelihood Decoding."
-    )
+    # 1. Header
+    st.markdown("""
+    <div class="app-header">
+        <div class="app-header-left">
+            <h1 class="app-title">Telugu Akshara Recognizer</h1>
+            <p class="app-subtitle">Handwriting recognition for Telugu scripts</p>
+        </div>
+        <a class="app-header-badge" href="#documentation">v4.0 • EfficientNetV2</a>
+    </div>
+    """, unsafe_allow_html=True)
     
+    # 2. Load Model Assets
     model, label_maps = load_system_assets()
     
-    col_input, col_results = st.columns([1, 1], gap="large")
+    # 3. Canvas Tools Controls
+    col_tools_left, col_tools_right = st.columns([1.2, 1], vertical_alignment="center")
     
-    with col_input:
-        st.subheader("Input Character")
-        input_mode = st.radio("Choose Input Method", ["Draw on Canvas", "Upload Image"], horizontal=True)
+    with col_tools_left:
+        brush_size = st.slider("Brush Size", min_value=4, max_value=24, value=12, step=2, label_visibility="collapsed")
+    
+    with col_tools_right:
+        input_mode = st.pills("Mode", ["Canvas", "Upload"], default="Canvas", label_visibility="collapsed")
         
-        image_to_process = None
-        
-        if input_mode == "Draw on Canvas":
-            if CANVAS_AVAILABLE:
-                st.write("Draw a Telugu character below (black strokes on white background):")
-                canvas_result = st_canvas(
-                    fill_color="rgba(255, 255, 255, 0.0)",
-                    stroke_width=12,
-                    stroke_color="#000000",
-                    background_color="#FFFFFF",
-                    width=280,
-                    height=280,
-                    drawing_mode="freedraw",
-                    key="telugu_canvas",
-                )
-                if canvas_result.image_data is not None:
-                    # Check if user drew anything
-                    img_array = canvas_result.image_data.astype(np.uint8)
-                    # Look for non-white pixels
-                    if np.mean(img_array[..., :3]) < 254.0:
-                        image_to_process = img_array
-            else:
-                st.warning("streamlit-drawable-canvas not installed. Please use the Upload Image tab.")
-                
+    image_to_process = None
+    
+    if input_mode == "Canvas":
+        if CANVAS_AVAILABLE:
+            canvas_result = st_canvas(
+                fill_color="rgba(255, 255, 255, 0.0)",
+                stroke_width=brush_size,
+                stroke_color="#000000",
+                background_color="#FFFFFF",
+                width=480,
+                height=480,
+                drawing_mode="freedraw",
+                key="telugu_akshara_canvas"
+            )
+            
+            if canvas_result.image_data is not None:
+                img_array = canvas_result.image_data.astype(np.uint8)
+                # Check for drawn strokes (non-white pixels)
+                if np.mean(img_array[..., :3]) < 254.0:
+                    image_to_process = img_array
         else:
-            uploaded_file = st.file_uploader("Upload a scanned Telugu character image", type=["png", "jpg", "jpeg", "bmp"])
+            st.warning("Canvas package not detected. Switching to Upload mode.")
+            uploaded_file = st.file_uploader("Upload Image", type=["png", "jpg", "jpeg", "bmp"], label_visibility="collapsed")
             if uploaded_file is not None:
                 image_to_process = Image.open(uploaded_file)
-                st.image(image_to_process, caption="Uploaded Image", width=200)
-                
-    with col_results:
-        st.subheader("Recognition Results")
+    else:
+        uploaded_file = st.file_uploader("Upload a scanned Telugu character image", type=["png", "jpg", "jpeg", "bmp"], label_visibility="collapsed")
+        if uploaded_file is not None:
+            image_to_process = Image.open(uploaded_file)
+            st.image(image_to_process, caption="Uploaded Character", use_container_width=True)
+            
+    # 4. Predict Action Button
+    predict_clicked = st.button("Predict", type="primary", use_container_width=True)
+    
+    # Session state caching for prediction results
+    if "last_results" not in st.session_state:
+        st.session_state.last_results = None
         
-        if image_to_process is not None and model is not None:
-            with st.spinner("Analyzing character..."):
-                rec_result, preprocessed_img = run_inference(image_to_process, model, label_maps)
-                
-            pred_class = rec_result["predicted_class"]
-            confidence = rec_result["confidence"]
-            base_let = rec_result["base_letter"]
-            vow_mod = rec_result["vowel_modifier"]
-            vattu = rec_result["vattu"]
-            is_fallback = rec_result["is_fallback"]
+    if predict_clicked and image_to_process is not None:
+        with st.spinner("Decoding Akshara..."):
+            rec_result, preprocessed_img = run_inference(image_to_process, model, label_maps)
+            st.session_state.last_results = (rec_result, preprocessed_img)
             
-            # Primary Card
-            st.success(f"### Predicted Class: `{pred_class}`")
+    # 5. Render Results (Mock initial state or real predictions)
+    st.markdown('<div class="predictions-title">Top Predictions</div>', unsafe_allow_html=True)
+    
+    if st.session_state.last_results is not None:
+        rec_result, preprocessed_img = st.session_state.last_results
+        top_candidates = rec_result["top_5"][:3]
+        
+        # Build cards
+        cards_html = ['<div class="predictions-grid">']
+        
+        for idx, item in enumerate(top_candidates):
+            cname = item["class_name"]
+            b_char = item["base_letter"]
+            m_code = item["vowel_modifier"]
+            v_code = item["vattu"]
+            prob = item["probability"]
+            pct_str = f"{prob * 100:.1f}%"
             
-            metric_cols = st.columns(4)
-            metric_cols[0].metric("Base Akshara", base_let)
-            metric_cols[1].metric("Vowel Modifier", vow_mod)
-            metric_cols[2].metric("Conjunct Vattu", vattu)
-            metric_cols[3].metric("Confidence", f"{confidence:.1%}")
+            glyph = get_display_glyph(b_char, m_code, v_code)
             
-            if is_fallback:
-                st.info("ℹ️ Constrained Maximum-Likelihood decoded from joint primitive likelihoods.")
+            if idx == 0:
+                card_type = "primary"
+                glyph_class = ""
+                tag_name = "Primary"
+                pct_class = "pct-primary"
+            elif idx == 1:
+                card_type = "secondary"
+                glyph_class = "secondary"
+                tag_name = "Match"
+                pct_class = "pct-secondary"
+            else:
+                card_type = "tertiary"
+                glyph_class = "tertiary"
+                tag_name = "Match"
+                pct_class = "pct-secondary"
                 
-            st.divider()
+            stripe_width = f"{max(1.0, min(100.0, prob * 100)):.1f}%"
             
-            # Top-5 Rankings
-            st.subheader("Top-5 Joint Candidate Predictions")
-            for rank, item in enumerate(rec_result["top_5"], 1):
-                prob = item["probability"]
-                cname = item["class_name"]
-                b = item["base_letter"]
-                m = item["vowel_modifier"]
-                v = item["vattu"]
-                
-                st.write(f"**#{rank}** `{cname}` — **{prob:.2%}** (Base: `{b}`, Mod: `{m}`, Vattu: `{v}`)")
-                st.progress(min(1.0, max(0.0, prob)))
-                
-            # Preprocessing Preview
-            with st.expander("Show Normalized Model Input (128x128 3-ch)"):
-                # Preprocessed image is in [0, 255]
-                disp_img = np.clip(preprocessed_img, 0, 255).astype(np.uint8)
-                st.image(disp_img, caption="Square-Padded, Bilinear-Resized 128x128 Input", width=128)
-                
-        else:
-            st.info("Draw a Telugu character or upload an image on the left panel to see real-time recognition.")
+            cards_html.append(f"""
+            <div class="pred-card {card_type}">
+                <div class="pred-glyph-container {glyph_class}">{glyph}</div>
+                <div class="pred-bottom-bar">
+                    <span class="tag">{tag_name}</span>
+                    <span class="{pct_class}">{pct_str}</span>
+                </div>
+                <div class="pred-progress-stripe" style="width: {stripe_width};"></div>
+            </div>
+            """)
             
-    st.divider()
-    with st.expander("📚 Telugu Akshara Structure Reference"):
+        cards_html.append('</div>')
+        st.markdown("\n".join(cards_html), unsafe_allow_html=True)
+        
+        # 6. Technical Component Breakdown
+        pred_item = rec_result["top_5"][0]
+        st.markdown(f"""
+        <div class="breakdown-box">
+            <div class="breakdown-item">
+                <span style="color: var(--on-surface-variant);">Decoded Akshara</span>
+                <strong>{get_display_glyph(pred_item['base_letter'], pred_item['vowel_modifier'], pred_item['vattu'])} (<code>{pred_item['class_name']}</code>)</strong>
+            </div>
+            <div class="breakdown-item">
+                <span style="color: var(--on-surface-variant);">Base Akshara</span>
+                <strong>{pred_item['base_letter']}</strong>
+            </div>
+            <div class="breakdown-item">
+                <span style="color: var(--on-surface-variant);">Vowel Modifier (గుణింతం)</span>
+                <strong>{pred_item['vowel_modifier']}</strong>
+            </div>
+            <div class="breakdown-item">
+                <span style="color: var(--on-surface-variant);">Subscript Conjunct (వత్తు)</span>
+                <strong>{pred_item['vattu']}</strong>
+            </div>
+            <div class="breakdown-item">
+                <span style="color: var(--on-surface-variant);">Decoding Policy</span>
+                <span>{'Constrained MLE Fallback' if rec_result.get('is_fallback') else 'Greedy Joint Max'}</span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    else:
+        # Initial Placeholder Cards matching design mock
         st.markdown("""
-        **How Telugu Compound Characters are structured:**
-        - **Achulu (Vowels)**: 16 standalone vowel glyphs (అ, ఆ, ఇ, ఈ, ఉ, ఊ, ఋ, ౠ, ఎ, ఏ, ఐ, ఒ, ఓ, ఔ, అం, అః)
-        - **Hallulu (Consonants)**: 36 base consonant glyphs (క to క్ష)
-        - **Guninthamulu (Consonant + Vowel sign)**: Consonant base + one of 16 vowel modifiers (తలకట్టు, దీర్ఘం, గుడి, కొమ్ము, ఎత్వం, etc.)
-        - **Othulu (Conjuncts / Vattulu)**: Subscript consonant attached below a base character.
-        """)
+        <div class="predictions-grid">
+            <!-- Card 1 -->
+            <div class="pred-card primary">
+                <div class="pred-glyph-container">అ</div>
+                <div class="pred-bottom-bar">
+                    <span class="tag">Primary</span>
+                    <span class="pct-primary">--%</span>
+                </div>
+                <div class="pred-progress-stripe" style="width: 0%;"></div>
+            </div>
+            <!-- Card 2 -->
+            <div class="pred-card">
+                <div class="pred-glyph-container secondary">ఆ</div>
+                <div class="pred-bottom-bar">
+                    <span class="tag">Match</span>
+                    <span class="pct-secondary">--%</span>
+                </div>
+                <div class="pred-progress-stripe" style="width: 0%;"></div>
+            </div>
+            <!-- Card 3 -->
+            <div class="pred-card">
+                <div class="pred-glyph-container tertiary">క</div>
+                <div class="pred-bottom-bar">
+                    <span class="tag">Match</span>
+                    <span class="pct-secondary">--%</span>
+                </div>
+                <div class="pred-progress-stripe" style="width: 0%;"></div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    # 7. Footer
+    st.markdown("""
+    <div class="app-footer" id="documentation">
+        <span>Model v4.0 • 291k+ Telugu glyphs • 596 Unique Compounds</span>
+        <a href="https://github.com/miteshsingh7/telgu-hcr-v4" target="_blank">Technical Documentation</a>
+    </div>
+    """, unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
