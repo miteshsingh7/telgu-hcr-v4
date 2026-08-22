@@ -410,6 +410,13 @@ def crop_to_content(img: Any, pad: int = 20) -> Any:
     y_min, y_max = int(np.min(y_indices)), int(np.max(y_indices))
     x_min, x_max = int(np.min(x_indices)), int(np.max(x_indices))
     
+    h_box = y_max - y_min + 1
+    w_box = x_max - x_min + 1
+    max_box = max(h_box, w_box)
+    
+    # 15% proportional margin to match empirical 0.78 dataset fill ratio
+    pad = max(10, int(max_box * 0.15))
+    
     h, w = img_arr.shape[:2]
     y_min = max(0, y_min - pad)
     y_max = min(h, y_max + pad)
