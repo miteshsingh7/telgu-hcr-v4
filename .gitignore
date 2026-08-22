@@ -35,9 +35,9 @@ checkpoints/
 *.swp
 *.swo
 
-# Outputs (keep frozen split CSVs and label maps, ignore temporary run logs/evaluation artifacts if needed)
+# Outputs (keep frozen split CSVs and label maps, ignore everything else)
+outputs/*
 !outputs/train.csv
 !outputs/val.csv
 !outputs/test.csv
 !outputs/label_maps.json
-outputs/test_checkpoints/

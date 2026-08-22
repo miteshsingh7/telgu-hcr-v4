@@ -59,7 +59,7 @@ VATTU_CONSONANT = {
     "k": "క", "kh": "ఖ", "g": "గ", "gh": "ఘ", "gna": "ఙ",
     "c": "చ", "ch": "ఛ", "j": "జ", "jh": "ఝ", "jna": "ఞ",
     "t": "ట", "tt": "ఠ", "th": "ఠ", "d": "డ", "dh": "ఢ", "ana": "ణ", "an": "ణ", "nn": "న",
-    "tha": "థ", "da": "ద", "dha": "ధ", "n": "ట", "na": "న",
+    "tha": "థ", "da": "ద", "dha": "ధ", "n": "న", "na": "న",
     "p": "ప", "ph": "ఫ", "b": "బ", "bh": "భ", "m": "మ",
     "y": "య", "r": "ర", "rr": "ఱ", "l": "ల", "ll": "ళ", "v": "వ",
     "s": "శ", "sh": "ష", "sa": "స", "h": "హ", "ha": "హ", "ksh": "క్ష", "z": "క"
@@ -427,48 +427,76 @@ def main():
     # 2. Side-by-Side 2-Column Layout
     col_left, col_right = st.columns([1.1, 1], gap="large")
     
-    # --- LEFT COLUMN: Tools + Canvas + Predict ---
+    # --- LEFT COLUMN: Tools + Canvas/Upload + Predict ---
     with col_left:
-        # Tools Bar
-        c_slider, c_clear = st.columns([2.5, 1], vertical_alignment="center")
-        with c_slider:
-            brush_size = st.slider("Brush Size", min_value=2, max_value=20, value=5, step=1)
-        with c_clear:
-            if st.button("Clear", key="btn_clear_left", use_container_width=True):
-                st.session_state.canvas_key += 1
-                st.session_state.last_results = None
-                st.rerun()
-                
+        # Input Mode Selector
+        input_mode = st.radio(
+            "Input Mode",
+            ["✍️ Draw on Canvas", "📁 Upload Image (JPEG/PNG)"],
+            horizontal=True,
+            label_visibility="collapsed"
+        )
+        
         image_to_process = None
         
-        # Canvas (Aspect square 450x450)
-        if CANVAS_AVAILABLE:
-            canvas_result = st_canvas(
-                fill_color="rgba(255, 255, 255, 0.0)",
-                stroke_width=brush_size,
-                stroke_color="#000000",
-                background_color="#FFFFFF",
-                width=450,
-                height=450,
-                drawing_mode="freedraw",
-                key=f"canvas_left_{st.session_state.canvas_key}"
-            )
-            if canvas_result.image_data is not None:
-                img_array = canvas_result.image_data.astype(np.uint8)
-                if np.mean(img_array[..., :3]) < 254.0:
-                    image_to_process = img_array
+        if input_mode == "✍️ Draw on Canvas":
+            # Tools Bar
+            c_slider, c_clear = st.columns([2.5, 1], vertical_alignment="center")
+            with c_slider:
+                brush_size = st.slider("Brush Size", min_value=2, max_value=20, value=5, step=1)
+            with c_clear:
+                if st.button("Clear", key="btn_clear_left", use_container_width=True):
+                    st.session_state.canvas_key += 1
+                    st.session_state.last_results = None
+                    st.rerun()
+                    
+            # Canvas (Aspect square 450x450)
+            if CANVAS_AVAILABLE:
+                canvas_result = st_canvas(
+                    fill_color="rgba(255, 255, 255, 0.0)",
+                    stroke_width=brush_size,
+                    stroke_color="#000000",
+                    background_color="#FFFFFF",
+                    width=450,
+                    height=450,
+                    drawing_mode="freedraw",
+                    key=f"canvas_left_{st.session_state.canvas_key}"
+                )
+                if canvas_result.image_data is not None:
+                    img_array = canvas_result.image_data.astype(np.uint8)
+                    if np.mean(img_array[..., :3]) < 254.0:
+                        image_to_process = img_array
+            else:
+                st.info("Canvas component not installed. Please use the image upload option.")
         else:
-            uploaded_file = st.file_uploader("Upload Image", type=["png", "jpg", "jpeg", "bmp"])
+            # Upload Image Mode
+            uploaded_file = st.file_uploader(
+                "Upload a Telugu handwritten character image", 
+                type=["png", "jpg", "jpeg", "bmp", "webp"]
+            )
             if uploaded_file is not None:
-                image_to_process = Image.open(uploaded_file)
-                
+                pil_img = Image.open(uploaded_file).convert("RGB")
+                image_to_process = np.array(pil_img)
+                st.image(pil_img, caption="Uploaded Character", width=300)
+            else:
+                # Clear stale predictions when uploaded file is removed
+                if st.session_state.last_results is not None:
+                    st.session_state.last_results = None
+
         # Predict Button
         predict_clicked = st.button("Predict", type="primary", use_container_width=True)
         
-        if predict_clicked and image_to_process is not None:
-            with st.spinner("Analyzing character..."):
-                rec_result, preprocessed_img = run_inference(image_to_process, model, label_maps)
-                st.session_state.last_results = (rec_result, preprocessed_img)
+        if predict_clicked:
+            if image_to_process is not None:
+                try:
+                    with st.spinner("Analyzing character..."):
+                        rec_result, preprocessed_img = run_inference(image_to_process, model, label_maps)
+                        st.session_state.last_results = (rec_result, preprocessed_img)
+                except Exception as e:
+                    st.error(f"Prediction failed: {e}")
+                    logging.getLogger(__name__).exception("Inference error")
+            else:
+                st.warning("Please draw a character or upload an image first.")
                 
     # --- RIGHT COLUMN: Top Predictions (3 Stacked Horizontal Cards) ---
     with col_right:

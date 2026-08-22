@@ -115,12 +115,20 @@ class FullStateCheckpointManager:
             if is_best:
                 best_dir = self.checkpoint_dir / "best_model"
                 tmp_best = self.checkpoint_dir / f".tmp_best_{os.getpid()}"
+                backup_best = self.checkpoint_dir / f".backup_best_{os.getpid()}"
                 if tmp_best.exists():
                     shutil.rmtree(tmp_best)
+                if backup_best.exists():
+                    shutil.rmtree(backup_best)
                 shutil.copytree(target_dir, tmp_best)
+                # Swap: move old best to backup first, then promote new best.
+                # This eliminates the window where no best_model exists.
                 if best_dir.exists():
-                    shutil.rmtree(best_dir)
+                    best_dir.rename(backup_best)
                 tmp_best.rename(best_dir)
+                # Clean up backup only after new best is safely in place
+                if backup_best.exists():
+                    shutil.rmtree(backup_best)
                 logger.info(f"Updated best_model checkpoint: {self.monitor} = {current_metric_val}")
                 
             # 6. Manage max_to_keep

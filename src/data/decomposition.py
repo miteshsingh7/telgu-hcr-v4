@@ -98,6 +98,8 @@ VOWEL_ALIASES: Dict[str, str] = {
 # Backward compatibility alias dictionary
 CONSONANT_ALIASES = {**HALLULU_CONSONANT_MAP, **GUNINTHAM_CONSONANT_MAP}
 VATTU_ALIASES = {k: k for k in CANONICAL_CONJUNCT_MODIFIERS}
+# Additional known Othulu directory-name aliases
+VATTU_ALIASES["ks"] = "ksh"
 
 
 def _lookup_alias(table: Dict[str, str], key: str, default: Optional[str] = None) -> str:
@@ -109,7 +111,6 @@ def _lookup_alias(table: Dict[str, str], key: str, default: Optional[str] = None
         return table[key_lower]
     if default is not None:
         return default
-    raise KeyError(f"Key '{key}' not found in lookup table.")
     raise KeyError(f"Key '{key}' (or lowercase '{key_lower}') not found in alias table")
 
 
@@ -275,7 +276,7 @@ def decompose_class_name(class_name: str) -> Tuple[str, str, str]:
         c_key = parts[1] if len(parts) > 1 else "k"
         base_letter = "none"
         modifier = "none"
-        vattu = c_key
+        vattu = _lookup_alias(VATTU_ALIASES, c_key)
         
     else:
         raise ValueError(f"Unknown category prefix '{cat}' in class name '{class_name}'")

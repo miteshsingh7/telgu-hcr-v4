@@ -54,9 +54,12 @@ def pad_to_square(image: tf.Tensor, pad_value: float = 255.0) -> tf.Tensor:
     pad_left = pad_w // 2
     pad_right = pad_w - pad_left
     
-    if tf.rank(image) == 2:
-        image = tf.expand_dims(image, axis=-1)
-        
+    image = tf.cond(
+        tf.equal(tf.rank(image), 2),
+        lambda: tf.expand_dims(image, axis=-1),
+        lambda: image
+    )
+    
     paddings = [[pad_top, pad_bottom], [pad_left, pad_right], [0, 0]]
     padded = tf.pad(image, paddings, mode="CONSTANT", constant_values=pad_value)
     return padded

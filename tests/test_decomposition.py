@@ -55,7 +55,7 @@ def test_individual_decompositions():
     
     # Othulu (isolated subscripts)
     assert decompose_class_name("othulu__v") == ("none", "none", "v")
-    assert decompose_class_name("othulu__ks") == ("none", "none", "ks")
+    assert decompose_class_name("othulu__ks") == ("none", "none", "ksh")  # 'ks' normalizes to 'ksh'
     assert decompose_class_name("othulu__an") == ("none", "none", "an")
     assert decompose_class_name("othulu__nn") == ("none", "none", "nn")
 

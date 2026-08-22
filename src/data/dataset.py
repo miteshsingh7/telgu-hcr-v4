@@ -181,7 +181,7 @@ def create_telugu_dataset(csv_path_or_df: Union[str, Path, pd.DataFrame],
     vattu_indices = df["vattu_idx"].astype(np.int32).values
     
     num_samples = len(file_paths)
-    steps_per_epoch = num_samples // batch_size if is_training else int(np.ceil(num_samples / batch_size))
+    steps_per_epoch = max(1, num_samples // batch_size) if is_training else max(1, int(np.ceil(num_samples / batch_size)))
     
     class_weights = compute_head_weights_from_df(df, label_maps)
     

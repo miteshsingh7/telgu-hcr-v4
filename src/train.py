@@ -238,13 +238,25 @@ def run_training(config_path: str,
         mode="min"
     )
     
-    # Check if resuming directly into Phase 2
+    # Check if resuming directly into Phase 2 by inspecting the ACTUAL
+    # checkpoint that will be restored (not hardcoded best_model).
     resuming_phase2 = False
     if resume:
-        latest_meta_path = checkpoint_dir / "best_model" / "state.json"
-        if latest_meta_path.exists():
+        # Resolve which checkpoint directory to inspect
+        if resume_path:
+            resume_meta_path = checkpoint_dir / resume_path / "state.json"
+        else:
+            # Default: ckpt_manager will pick the latest epoch checkpoint
+            epoch_dirs = sorted(
+                [d for d in checkpoint_dir.iterdir() if d.is_dir() and d.name.startswith("epoch_")],
+                key=lambda d: int(d.name.split("_")[-1]) if d.name.split("_")[-1].isdigit() else -1,
+                reverse=True
+            )
+            resume_meta_path = epoch_dirs[0] / "state.json" if epoch_dirs else checkpoint_dir / "best_model" / "state.json"
+        
+        if resume_meta_path.exists():
             try:
-                with open(latest_meta_path, "r", encoding="utf-8") as f:
+                with open(resume_meta_path, "r", encoding="utf-8") as f:
                     saved_meta = json.load(f)
                     if saved_meta.get("epoch", 0) >= warmup_epochs:
                         resuming_phase2 = True
@@ -367,11 +379,19 @@ def run_training(config_path: str,
     # instability spike right after every resume.
     if resuming_phase2 and resume:
         if len(optimizer.variables) == len(phase2_optimizer.variables):
+            transferred = 0
             for old_var, new_var in zip(optimizer.variables, phase2_optimizer.variables):
+                # Skip the iterations counter — we already set it correctly
+                # at line 371 for the LR schedule. The restored value would
+                # overwrite that with the old optimizer's stale step count.
+                if 'iteration' in getattr(old_var, 'name', '').lower():
+                    continue
                 new_var.assign(old_var)
+                transferred += 1
             logger.info(
-                f"Transferred {len(optimizer.variables)} restored optimizer variables "
-                f"(Adam moments + EMA shadow weights) into the Phase 2 optimizer."
+                f"Transferred {transferred} restored optimizer variables "
+                f"(Adam moments + EMA shadow weights) into the Phase 2 optimizer "
+                f"(skipped iterations counter to preserve LR schedule)."
             )
         else:
             logger.warning(

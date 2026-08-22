@@ -2,6 +2,13 @@
 
 Generates a frozen, reproducible 80/10/10 train/val/test split across all classes
 and exports train.csv, val.csv, test.csv, and label_maps.json.
+
+WARNING — DATA LEAKAGE LIMITATION:
+    This module performs a class-stratified random split WITHOUT writer-identity
+    awareness. In handwritten character recognition, images from the same writer
+    may appear in both train and test splits, artificially inflating validation
+    accuracy. If writer IDs become available, the split should be refactored to
+    group by writer ID to produce honest generalization metrics.
 """
 
 import json
