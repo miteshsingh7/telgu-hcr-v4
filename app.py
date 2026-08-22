@@ -1,7 +1,6 @@
 """Telugu Handwritten Character Recognizer — Streamlit App.
 
-Exact implementation of Matte Technical Utility design mockup.
-Forced Light Theme, Zero Dark Artifacts, Perfect Single-Screen Fit.
+Exact 1-to-1 implementation of the Matte Technical Utility reference design.
 """
 
 import sys
@@ -78,16 +77,16 @@ def get_display_glyph(base_char: str, mod: str, vattu: str) -> str:
     return f"{base_char}{matra}"
 
 
-# Configure Streamlit Page
+# Configure Streamlit Page: Centered layout with controlled width
 st.set_page_config(
     page_title="Telugu Akshara Recognizer",
     page_icon="✍️",
-    layout="wide",
+    layout="centered",
     initial_sidebar_state="collapsed"
 )
 
 
-# Global CSS: Pure Matte Palette, No Dark Artifacts, Single Viewport Fit
+# Global CSS injection matching the reference mockup
 st.markdown("""
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/fonts/geist-sans/style.css">
 <style>
@@ -112,101 +111,94 @@ st.markdown("""
         box-sizing: border-box;
     }
 
-    /* Remove default Streamlit headers, margins, borders */
+    /* Hide standard Streamlit header and footer */
     header[data-testid="stHeader"], #MainMenu, footer {
         display: none !important;
     }
 
-    /* Fix Streamlit main container to 100vh no scroll */
-    .stApp {
-        background: #fbf9f4 !important;
-        height: 100vh !important;
-        overflow: hidden !important;
-    }
-
+    /* Constrain main block to exactly 480px centered column */
     .block-container {
-        max-width: 100% !important;
-        padding: 0 !important;
-        margin: 0 !important;
+        max-width: 480px !important;
+        padding-top: 16px !important;
+        padding-bottom: 24px !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        margin: 0 auto !important;
     }
 
     div[data-testid="stVerticalBlock"] {
-        gap: 0.25rem !important;
+        gap: 0.5rem !important;
     }
 
     /* Top Navbar */
-    .top-navbar {
-        background-color: #fbf9f4;
-        border-bottom: 1px solid #c9c7c2;
-        width: 100%;
-        padding: 10px 24px;
-    }
-
-    .top-navbar-inner {
-        max-width: 1100px;
-        margin: 0 auto;
+    .top-nav-bar {
         display: flex;
         justify-content: space-between;
         align-items: baseline;
+        border-bottom: 1px solid #c9c7c2;
+        padding-bottom: 10px;
+        margin-bottom: 12px;
+        width: 100%;
     }
 
-    .top-navbar-left {
+    .top-nav-left {
         display: flex;
         align-items: baseline;
-        gap: 16px;
+        gap: 12px;
     }
 
     .brand-title {
-        font-size: 18px;
+        font-size: 19px;
         font-weight: 700;
         letter-spacing: -0.01em;
         color: #1c1c1b;
         margin: 0;
+        white-space: nowrap;
     }
 
     .brand-subtitle {
         font-size: 13px;
         color: #574239;
         margin: 0;
+        white-space: nowrap;
     }
 
-    .top-navbar-right a {
+    .top-nav-right a {
         font-size: 12px;
         font-weight: 700;
         color: #a03d00;
         border-bottom: 1.5px solid #a03d00;
         padding-bottom: 2px;
         text-decoration: none;
+        white-space: nowrap;
     }
 
-    /* Main Column */
-    .app-main {
-        max-width: 440px;
-        margin: 8px auto 0 auto;
-        padding: 0 10px;
+    /* Tools Bar container */
+    div[data-testid="stHorizontalBlock"] {
+        background-color: #ffffff !important;
+        border: 1px solid #c9c7c2 !important;
+        border-radius: 4px !important;
+        padding: 6px 12px !important;
+        align-items: center !important;
+        margin-bottom: 4px !important;
     }
 
-    /* Tools Bar */
-    .tools-bar {
-        background-color: #ffffff;
-        border: 1px solid #c9c7c2;
-        border-radius: 4px;
-        padding: 4px 10px;
-        margin-bottom: 4px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    /* Slider styling */
+    .stSlider {
+        margin-bottom: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
     }
 
-    /* Canvas Component Styling */
+    /* Canvas Frame */
     iframe[data-testid="stCustomComponentV1"] {
         display: block !important;
         margin: 0 auto !important;
         border: 1px solid #c9c7c2 !important;
         border-radius: 4px !important;
         background-color: #ffffff !important;
-        width: 250px !important;
-        height: 250px !important;
+        width: 100% !important;
+        max-width: 456px !important;
         box-shadow: none !important;
     }
 
@@ -217,54 +209,58 @@ st.markdown("""
         border: 1px solid #c1541a !important;
         border-radius: 4px !important;
         font-weight: 600 !important;
-        font-size: 13.5px !important;
-        padding: 8px 16px !important;
+        font-size: 14px !important;
+        height: 44px !important;
         width: 100% !important;
         cursor: pointer !important;
-        margin-top: 4px !important;
-        margin-bottom: 4px !important;
+        margin-top: 6px !important;
+        margin-bottom: 8px !important;
+        transition: background-color 0.15s ease !important;
     }
 
     div.stButton > button[kind="primary"]:hover {
         background-color: #a84614 !important;
     }
 
-    /* Clear Button */
+    /* Secondary Clear Button */
     div.stButton > button[kind="secondary"] {
         background-color: #ffffff !important;
         color: #1c1c1b !important;
         border: 1px solid #c9c7c2 !important;
         border-radius: 4px !important;
-        font-size: 11px !important;
-        padding: 2px 8px !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
+        padding: 4px 12px !important;
+        height: 32px !important;
     }
 
     div.stButton > button[kind="secondary"]:hover {
         background-color: #f5f3ee !important;
     }
 
-    /* Top Predictions Title */
-    .predictions-title {
-        font-size: 13.5px;
+    /* Predictions Heading */
+    .predictions-heading {
+        font-size: 16px;
         font-weight: 600;
         color: #1c1c1b;
-        margin-top: 4px;
-        margin-bottom: 4px;
+        margin-top: 10px;
+        margin-bottom: 8px;
     }
 
-    /* 3-Card Grid */
+    /* Predictions Grid */
     .predictions-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 6px;
-        margin-bottom: 4px;
+        gap: 8px;
+        margin-bottom: 16px;
+        width: 100%;
     }
 
     .pred-card {
         background-color: #ffffff;
         border: 1px solid #c9c7c2;
         border-radius: 4px;
-        height: 84px;
+        height: 110px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -281,30 +277,30 @@ st.markdown("""
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 28px;
+        font-size: 38px;
         font-weight: 600;
         font-family: 'Suranna', 'Gautami', 'Geist', sans-serif !important;
         color: #1c1c1b;
         line-height: 1;
-        padding-top: 2px;
+        padding-top: 6px;
     }
 
     .pred-glyph.secondary {
-        opacity: 0.75;
+        opacity: 0.8;
     }
 
     .pred-glyph.tertiary {
-        opacity: 0.55;
+        opacity: 0.6;
     }
 
     .pred-bottom-bar {
         background-color: #f5f3ee;
         border-top: 1px solid #c9c7c2;
-        padding: 2px 6px;
+        padding: 4px 8px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 9.5px;
+        font-size: 11px;
         font-weight: 600;
     }
 
@@ -325,35 +321,28 @@ st.markdown("""
         position: absolute;
         bottom: 0;
         left: 0;
-        height: 3px;
+        height: 4px;
         background-color: #c1541a;
     }
 
     /* Footer */
     .bottom-footer {
-        background-color: #fbf9f4;
         border-top: 1px solid #c9c7c2;
-        width: 100%;
-        padding: 8px 24px;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-    }
-
-    .bottom-footer-inner {
-        max-width: 1100px;
-        margin: 0 auto;
+        padding-top: 12px;
+        margin-top: 16px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 11px;
+        font-size: 11.5px;
         font-weight: 600;
         color: #1c1c1b;
+        width: 100%;
     }
 
     .bottom-footer a {
         color: #a03d00;
         text-decoration: underline;
+        font-size: 11px;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -422,33 +411,28 @@ def main():
     if "last_results" not in st.session_state:
         st.session_state.last_results = None
 
-    # 1. Top Navbar
+    # 1. Top Navbar (One line)
     st.markdown("""
-    <header class="top-navbar">
-        <div class="top-navbar-inner">
-            <div class="top-navbar-left">
-                <span class="brand-title">Telugu Akshara Recognizer</span>
-                <span class="brand-subtitle">Handwriting recognition for Telugu scripts</span>
-            </div>
-            <nav class="top-navbar-right">
-                <a href="#">Handwriting recognition for Telugu scripts</a>
-            </nav>
+    <div class="top-nav-bar">
+        <div class="top-nav-left">
+            <span class="brand-title">Telugu Akshara Recognizer</span>
+            <span class="brand-subtitle">Handwriting recognition for Telugu scripts</span>
         </div>
-    </header>
+        <div class="top-nav-right">
+            <a href="#">Handwriting recognition for Telugu scripts</a>
+        </div>
+    </div>
     """, unsafe_allow_html=True)
-    
-    # 2. Main Content
-    st.markdown('<div class="app-main">', unsafe_allow_html=True)
     
     model, label_maps = load_system_assets()
     
-    # 3. Tools Bar
-    col_tools_left, col_tools_right = st.columns([1.5, 1], vertical_alignment="center")
+    # 2. Tools Bar (Brush Slider + Clear)
+    col_brush, col_clear = st.columns([2.5, 1], vertical_alignment="center")
     
-    with col_tools_left:
-        brush_size = st.slider("Brush Size", min_value=3, max_value=20, value=6, step=1, label_visibility="collapsed")
+    with col_brush:
+        brush_size = st.slider("Brush Size", min_value=2, max_value=20, value=6, step=1)
         
-    with col_tools_right:
+    with col_clear:
         if st.button("Clear", key="btn_clear_canvas", use_container_width=True):
             st.session_state.canvas_key += 1
             st.session_state.last_results = None
@@ -456,15 +440,15 @@ def main():
             
     image_to_process = None
     
-    # 4. Canvas (250x250 square with clean soft border)
+    # 3. Canvas (Full 456px width inside the 480px container)
     if CANVAS_AVAILABLE:
         canvas_result = st_canvas(
             fill_color="rgba(255, 255, 255, 0.0)",
             stroke_width=brush_size,
             stroke_color="#000000",
             background_color="#FFFFFF",
-            width=250,
-            height=250,
+            width=456,
+            height=456,
             drawing_mode="freedraw",
             key=f"canvas_session_{st.session_state.canvas_key}"
         )
@@ -473,11 +457,11 @@ def main():
             if np.mean(img_array[..., :3]) < 254.0:
                 image_to_process = img_array
     else:
-        uploaded_file = st.file_uploader("Upload Image", type=["png", "jpg", "jpeg", "bmp"], label_visibility="collapsed")
+        uploaded_file = st.file_uploader("Upload Image", type=["png", "jpg", "jpeg", "bmp"])
         if uploaded_file is not None:
             image_to_process = Image.open(uploaded_file)
             
-    # 5. Predict Button
+    # 4. Predict Button
     predict_clicked = st.button("Predict", type="primary", use_container_width=True)
     
     if predict_clicked and image_to_process is not None:
@@ -485,8 +469,8 @@ def main():
             rec_result, preprocessed_img = run_inference(image_to_process, model, label_maps)
             st.session_state.last_results = (rec_result, preprocessed_img)
             
-    # 6. Top Predictions
-    st.markdown('<div class="predictions-title">Top Predictions</div>', unsafe_allow_html=True)
+    # 5. Results Section (Top Predictions)
+    st.markdown('<div class="predictions-heading">Top Predictions</div>', unsafe_allow_html=True)
     
     if st.session_state.last_results is not None:
         rec_result, preprocessed_img = st.session_state.last_results
@@ -555,18 +539,12 @@ def main():
         </div>
         """, unsafe_allow_html=True)
         
-    st.markdown('</div>', unsafe_allow_html=True) # Close app-main
-    
-    # 7. Bottom Fixed Footer
+    # 6. Bottom Footer
     st.markdown("""
-    <footer class="bottom-footer">
-        <div class="bottom-footer-inner">
-            <span>Model v1.2.0 • Trained on 50k+ Telugu glyphs</span>
-            <nav>
-                <a href="#">Technical Documentation</a>
-            </nav>
-        </div>
-    </footer>
+    <div class="bottom-footer">
+        <span>Model v1.2.0 • Trained on 50k+ Telugu glyphs</span>
+        <a href="#">Technical Documentation</a>
+    </div>
     """, unsafe_allow_html=True)
 
 
