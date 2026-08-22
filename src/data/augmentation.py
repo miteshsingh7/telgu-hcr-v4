@@ -18,6 +18,7 @@ def build_augmentation_pipeline(img_size: int = IMAGE_SIZE,
     """Builds standard spatial augmentation pipeline for Telugu handwritten glyphs.
     
     Uses BACKGROUND_FILL_VALUE from preprocessing.py for all edge padding.
+    Explicitly maintains float32 tensor dtype for tf.data pipeline stability.
     """
     rot_factor = rotation_degrees / 360.0
     
@@ -26,6 +27,7 @@ def build_augmentation_pipeline(img_size: int = IMAGE_SIZE,
             factor=(-rot_factor, rot_factor),
             fill_mode="constant",
             fill_value=BACKGROUND_FILL_VALUE,
+            dtype="float32",
             name="aug_rotation"
         ),
         layers.RandomTranslation(
@@ -33,6 +35,7 @@ def build_augmentation_pipeline(img_size: int = IMAGE_SIZE,
             width_factor=(-translation_factor, translation_factor),
             fill_mode="constant",
             fill_value=BACKGROUND_FILL_VALUE,
+            dtype="float32",
             name="aug_translation"
         ),
         layers.RandomZoom(
@@ -40,6 +43,7 @@ def build_augmentation_pipeline(img_size: int = IMAGE_SIZE,
             width_factor=(-zoom_factor, zoom_factor),
             fill_mode="constant",
             fill_value=BACKGROUND_FILL_VALUE,
+            dtype="float32",
             name="aug_zoom"
         ),
     ], name="telugu_augmentation_pipeline")
@@ -60,8 +64,10 @@ def apply_cutmix(images: tf.Tensor,
                  alpha: float = 0.4) -> Tuple[tf.Tensor, tf.Tensor, tf.Tensor, tf.Tensor]:
     """Applies batch-level CutMix mixing image patches and all 3 multi-head label targets.
     
+    Dynamically casts masks and interpolation weights to match image and label dtypes.
+    
     Args:
-        images: (B, H, W, C) float32 image batch.
+        images: (B, H, W, C) float32/float16 image batch.
         base_labels: (B, num_base) float32 probability/smoothed label vectors.
         mod_labels: (B, num_mod) float32 probability/smoothed label vectors.
         vattu_labels: (B, num_vattu) float32 probability/smoothed label vectors.
@@ -95,28 +101,31 @@ def apply_cutmix(images: tf.Tensor,
     # 5. Compute exact adjusted lambda based on actual cut area
     actual_cut_area = tf.cast((x2 - x1) * (y2 - y1), tf.float32)
     total_area = h * w
-    lam_adjusted = 1.0 - (actual_cut_area / (total_area + 1e-8))
+    lam_adjusted_f32 = 1.0 - (actual_cut_area / (total_area + 1e-8))
+    lam_adjusted = tf.cast(lam_adjusted_f32, base_labels.dtype)
     
     # 6. Shuffle indices across batch
     indices = tf.random.shuffle(tf.range(batch_size))
     shuffled_images = tf.gather(images, indices)
     
-    # 7. Construct spatial mask: 1.0 where original image stays, 0.0 where cut patch is placed
+    # 7. Construct spatial mask matching images.dtype
     y_coords = tf.range(tf.cast(h, tf.int32))[:, None]
     x_coords = tf.range(tf.cast(w, tf.int32))[None, :]
     in_box = (y_coords >= y1) & (y_coords < y2) & (x_coords >= x1) & (x_coords < x2)
-    mask_2d = tf.cast(~in_box, tf.float32)
+    mask_2d = tf.cast(~in_box, images.dtype)
     mask = mask_2d[None, :, :, None]
     
-    mixed_images = images * mask + shuffled_images * (1.0 - mask)
+    one_img = tf.cast(1.0, images.dtype)
+    mixed_images = images * mask + shuffled_images * (one_img - mask)
     
     # 8. Mix all three label heads simultaneously with the exact same adjusted lambda
     shuffled_base = tf.gather(base_labels, indices)
     shuffled_mod = tf.gather(mod_labels, indices)
     shuffled_vattu = tf.gather(vattu_labels, indices)
     
-    mixed_base = lam_adjusted * base_labels + (1.0 - lam_adjusted) * shuffled_base
-    mixed_mod = lam_adjusted * mod_labels + (1.0 - lam_adjusted) * shuffled_mod
-    mixed_vattu = lam_adjusted * vattu_labels + (1.0 - lam_adjusted) * shuffled_vattu
+    one_lbl = tf.cast(1.0, base_labels.dtype)
+    mixed_base = lam_adjusted * base_labels + (one_lbl - lam_adjusted) * shuffled_base
+    mixed_mod = lam_adjusted * mod_labels + (one_lbl - lam_adjusted) * shuffled_mod
+    mixed_vattu = lam_adjusted * vattu_labels + (one_lbl - lam_adjusted) * shuffled_vattu
     
     return mixed_images, mixed_base, mixed_mod, mixed_vattu
