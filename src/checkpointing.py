@@ -215,6 +215,13 @@ class FullStateCheckpointManager:
         opt_path = target_dir / "optimizer_state.pkl"
         if opt_path.exists():
             try:
+                # Ensure optimizer variable slots are built against model trainable variables
+                if hasattr(optimizer, "build") and not getattr(optimizer, "built", False):
+                    try:
+                        optimizer.build(model.trainable_variables)
+                    except Exception as b_err:
+                        logger.debug(f"Optimizer build notice: {b_err}")
+                        
                 with open(opt_path, "rb") as f:
                     opt_state = pickle.load(f)
                     
@@ -223,12 +230,21 @@ class FullStateCheckpointManager:
                 if hasattr(optimizer, "iterations"):
                     optimizer.iterations.assign(saved_iters)
                     
-                # Restore optimizer variables if variable slots are initialized
+                # Restore optimizer variables (moments, EMA shadow weights)
                 saved_var_values = opt_state.get("variable_values", [])
-                if saved_var_values and len(optimizer.variables) == len(saved_var_values):
-                    for var, val in zip(optimizer.variables, saved_var_values):
-                        var.assign(val)
-                logger.info(f"  Restored optimizer state at iteration {saved_iters}.")
+                if saved_var_values:
+                    # If optimizer variables length matches, assign directly
+                    if len(optimizer.variables) == len(saved_var_values):
+                        for var, val in zip(optimizer.variables, saved_var_values):
+                            var.assign(val)
+                        logger.info(f"  Restored all {len(saved_var_values)} optimizer variables & moments at iteration {saved_iters}.")
+                    else:
+                        logger.warning(
+                            f"  Optimizer variable count mismatch (current: {len(optimizer.variables)}, saved: {len(saved_var_values)}). "
+                            f"Restored iterations counter ({saved_iters})."
+                        )
+                else:
+                    logger.info(f"  Restored optimizer iteration counter: {saved_iters}.")
             except Exception as opt_err:
                 logger.warning(f"  Could not fully restore optimizer variables: {opt_err}. Progress will continue with restored weights.")
                 

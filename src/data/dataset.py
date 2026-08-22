@@ -114,6 +114,9 @@ def create_telugu_dataset(csv_path_or_df: Union[str, Path, pd.DataFrame],
                           batch_size: int = 128,
                           is_training: bool = True,
                           use_augmentation: bool = True,
+                          rotation_degrees: float = 5.0,
+                          translation_factor: float = 0.05,
+                          zoom_factor: float = 0.05,
                           use_cutmix: bool = True,
                           cutmix_alpha: float = 0.4,
                           label_smoothing: float = 0.1,
@@ -128,6 +131,9 @@ def create_telugu_dataset(csv_path_or_df: Union[str, Path, pd.DataFrame],
         batch_size: Batch size (default 128).
         is_training: If True, shuffles and applies augmentations/CutMix.
         use_augmentation: If True, applies spatial rotation/translation/zoom.
+        rotation_degrees: Rotation angle range (+/- degrees).
+        translation_factor: Translation fraction (+/- fraction).
+        zoom_factor: Zoom fraction (+/- fraction).
         use_cutmix: If True, applies multi-head CutMix blending.
         cutmix_alpha: Beta distribution parameter for CutMix.
         label_smoothing: Label smoothing factor (applied to one-hot vectors).
@@ -192,7 +198,12 @@ def create_telugu_dataset(csv_path_or_df: Union[str, Path, pd.DataFrame],
     
     # 4. Spatial Augmentations
     if is_training and use_augmentation:
-        aug_pipeline = build_augmentation_pipeline(img_size=img_size)
+        aug_pipeline = build_augmentation_pipeline(
+            img_size=img_size,
+            rotation_degrees=rotation_degrees,
+            translation_factor=translation_factor,
+            zoom_factor=zoom_factor
+        )
         @tf.function
         def _apply_spatial_aug(imgs, b_labels, m_labels, v_labels):
             augmented_imgs = aug_pipeline(imgs, training=True)

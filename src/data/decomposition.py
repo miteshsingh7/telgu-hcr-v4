@@ -167,11 +167,11 @@ def parse_gunintham_modifier(c_key: str, v_key: str) -> str:
     v = v_key.lower()
     
     # 1. Visarga (ah)
-    if v.endswith('aha') or v.endswith('ah') or v in ('gaha', 'ghaha', 'kaha', 'khaha', 'taha', 'rrah', 'anah'):
+    if v.endswith('aha') or v.endswith('ah') or v in ('gaha', 'ghaha', 'kaha', 'khaha', 'taha', 'rrah', 'anah', 'bah', 'bhah', 'chah', 'dah', 'dhah', 'hah', 'jah', 'jhah', 'kshah', 'lah', 'llah', 'mah', 'nah', 'pah', 'phah', 'rah', 'sah', 'shah', 'thah', 'vah', 'yah', 'zh'):
         return 'ah'
         
     # 2. Sunna (am)
-    if v.endswith('am') or (v.endswith('m') and not v.endswith('rm')) or v in (
+    if v.endswith('am') or (v.endswith('m') and v not in ('m', 'rm', 'rrm')) or v in (
         'anm', 'bm', 'bhm', 'chm', 'dm', 'dhm', 'gm', 'ghm', 'hm', 'jm', 'jhm', 
         'km', 'khm', 'ksham', 'lm', 'llm', 'mm', 'nm', 'pm', 'phm', 'rm', 'rrm', 
         'sm', 'shm', 'tm', 'thm', 'vm', 'ym', 'zm'
@@ -190,22 +190,44 @@ def parse_gunintham_modifier(c_key: str, v_key: str) -> str:
     if v.endswith('ai') or v in ('anai', 'rrai'):
         return 'ai'
         
+    # Explicit folder maps for consonants with irregular naming patterns
+    if c == 'rr':
+        rr_map = {'rr': 'none', 'rra': 'aa', 'rri': 'i', 'rrii': 'ii', 'rru': 'u', 'rruu': 'uu', 'r': 'ru', 'rrr': 'ruu', 'rre': 'e', 'rree': 'ee', 'rrai': 'ai', 'rro': 'o', 'rroo': 'oo', 'rrow': 'au', 'rrm': 'am', 'rrah': 'ah'}
+        if v in rr_map:
+            return rr_map[v]
+            
+    if c == 'ra':
+        ra_map = {'r': 'none', 'ra': 'aa', 'ri': 'i', 'rii': 'ii', 'ru': 'u', 'ruu': 'uu', 'rr': 'ru', 'rru': 'ruu', 're': 'e', 'ree': 'ee', 'rai': 'ai', 'ro': 'o', 'roo': 'oo', 'rou': 'au', 'rm': 'am', 'rah': 'ah'}
+        if v in ra_map:
+            return ra_map[v]
+            
+    if c == 'cha':
+        cha_map = {'ch': 'none', 'cha': 'aa', 'chi': 'i', 'chii': 'ii', 'chu': 'u', 'chuu': 'uu', 'chru': 'ru', 'chruu': 'ruu', 'che': 'e', 'chee': 'ee', 'chai': 'ai', 'cho': 'o', 'choo': 'oo', 'chow': 'au', 'chm': 'am', 'chah': 'ah'}
+        if v in cha_map:
+            return cha_map[v]
+        
     # 5. Vatrusudi Dirgham (ruu)
-    if v.endswith('ruu') or v.endswith('rrr') or v in (
-        'bruu', 'bhruu', 'chruu', 'druu', 'dhruu', 'gruu', 'ghruu', 'hruu', 'jruu', 
-        'jhruu', 'kruu', 'khruu', 'kshruu', 'lruu', 'llruu', 'mruu', 'nruu', 'pruu', 
-        'phruu', 'rruu', 'sruu', 'shruu', 'truu', 'thruu', 'vruu', 'yruu'
-    ):
+    if v in ('rrr', 'rruu', 'druu', 'dhruu', 'gruu', 'ghruu', 'hruu', 'jruu', 'jhruu', 'kruu', 'khruu', 'kshruu', 'lruu', 'llruu', 'mruu', 'nruu', 'pruu', 'phruu', 'sruu', 'shruu', 'truu', 'thruu', 'vruu', 'yruu', 'bruu', 'bhruu', 'chruu'):
+        return 'ruu'
+    if c in ('an', 'ana', 'ch', 'dh', 'dha', 'ja', 'jh', 'ksh', 'l', 'll', 'ma', 'na', 'pa', 'pha', 'sa', 'sh', 'sha', 'th', 'tha', 'tt', 'va', 'ya') and v in ('anru', 'chru', 'dhru', 'jru', 'jhru', 'kshru', 'lru', 'llru', 'mru', 'nru', 'pru', 'phru', 'sru', 'shru', 'thru', 'tru', 'vru', 'yru'):
+        return 'ruu'
+    if c == 'd' and v == 'dru':
+        return 'ruu'
+    if v.endswith('ruu'):
         return 'ruu'
         
     # 6. Vatrusudi (ru)
-    if v.endswith('ru') or v in (
-        'r', 'ru', 'R', 'anr', 'anru', 'chr', 'dr', 'dhr', 'jr', 'jhr', 'kshr', 
-        'lr', 'mr', 'nr', 'pr', 'rr', 'sr', 'shr', 'tr', 'thr', 'vr', 'yr', 
-        'bru', 'bhru', 'chru', 'dru', 'dhru', 'gru', 'ghru', 'hru', 'jru', 'jhru', 
-        'kru', 'khru', 'kshru', 'lru', 'llru', 'mru', 'nru', 'pru', 'phru', 'rru', 
-        'sru', 'shru', 'tru', 'thru', 'vru', 'yru'
+    if v in (
+        'r', 'anr', 'chr', 'dr', 'dhr', 'jr', 'jhr', 'kshr', 
+        'lr', 'mr', 'nr', 'pr', 'sr', 'shr', 'tr', 'thr', 'vr', 'yr', 
+        'bru', 'bhru', 'gru', 'ghru', 'hru', 'kru', 'khru', 'dru'
     ):
+        return 'ru'
+    if c in ('ba', 'bha', 'ga', 'gha', 'ha', 'kha', 'khh', 'ta', 'da') and v in ('bru', 'bhru', 'gru', 'ghru', 'hru', 'kru', 'khru', 'tru', 'dru'):
+        return 'ru'
+    if c in ('an', 'ana', 'ch', 'dh', 'dha', 'ja', 'jh', 'ksh', 'l', 'll', 'ma', 'na', 'pa', 'pha', 'sa', 'sh', 'sha', 'th', 'tha', 'tt', 'va', 'ya') and v in ('anr', 'chr', 'dhr', 'jr', 'jhr', 'kshr', 'lr', 'mr', 'nr', 'pr', 'sr', 'shr', 'thr', 'tr', 'vr', 'yr'):
+        return 'ru'
+    if v.endswith('ru') and v not in ('anu', 'chu', 'kshu'):
         return 'ru'
         
     # 7. Gudi Dirgham (ii)
@@ -217,11 +239,11 @@ def parse_gunintham_modifier(c_key: str, v_key: str) -> str:
         return 'i'
         
     # 9. Kommu Dirgham (uu)
-    if v.endswith('uu') or v in ('rruu', 'anuu'):
+    if v.endswith('uu') or v in ('rruu', 'anuu', 'chuu', 'kshuu', 'buu', 'bhuu', 'duu', 'guu', 'ghuu', 'huu', 'juu', 'jhuu', 'kuu', 'khuu', 'luu', 'muu', 'nuu', 'puu', 'ruu', 'suu', 'shuu', 'tuu', 'vuu', 'yuu'):
         return 'uu'
         
     # 10. Kommu (u)
-    if v.endswith('u') or v in ('rru', 'anu'):
+    if v.endswith('u') or v in ('rru', 'anu', 'chu', 'kshu', 'bu', 'bhu', 'du', 'gu', 'ghu', 'hu', 'ju', 'jhu', 'ku', 'khu', 'lu', 'mu', 'nu', 'pu', 'ru', 'su', 'shu', 'tu', 'vu', 'yu'):
         return 'u'
         
     # 11. Etwam Dirgham (ee)
@@ -233,21 +255,33 @@ def parse_gunintham_modifier(c_key: str, v_key: str) -> str:
         return 'e'
         
     # 13. Otwam Dirgham (oo)
-    if v.endswith('oo') or v in ('rroo', 'anoo'):
+    if v.endswith('oo') or v in ('rroo', 'anoo', 'yoo'):
         return 'oo'
         
     # 14. Otwam (o)
     if v.endswith('o') or v in ('rro', 'ano'):
         return 'o'
         
-    # 15. Double 'aa' / Dirgham forms vs Talakattu 'none'
-    if v in ('gaa', 'ghaa', 'kaa', 'khaa', 'taa', 'daa', 'rra', 'ana', 'ksha', 'tha', 'bha', 'dha', 'jha', 'sha', 'rra'):
-        return 'aa'
-    if v.endswith('aa'):
-        return 'aa'
-    if v in ('b', 'bh', 'ch', 'd', 'dh', 'g', 'gh', 'h', 'j', 'jh', 'k', 'kh', 'ksh', 'l', 'm', 'n', 'p', 'r', 'rr', 's', 'sh', 't', 'th', 'v', 'y', 'an'):
+    # 15. Base Talakattu ('none') vs Dirgham ('aa')
+    double_a_bases = {'ga': ('ga', 'gaa'), 'gha': ('gha', 'ghaa'), 'kha': ('ka', 'kaa'), 'khh': ('kha', 'khaa'), 'ta': ('ta', 'taa'), 'da': ('da', 'daa')}
+    if c in double_a_bases:
+        base_v, dirgham_v = double_a_bases[c]
+        if v == base_v:
+            return 'none'
+        if v == dirgham_v:
+            return 'aa'
+            
+    # Folders where shorter name is 'none' and longer name with 'a' is 'aa'
+    if v in ('b', 'bh', 'ch', 'd', 'dh', 'h', 'j', 'jh', 'k', 'kh', 'ksh', 'l', 'm', 'n', 'p', 'r', 'rr', 's', 'sh', 't', 'th', 'v', 'y', 'an'):
         return 'none'
-    if v.endswith('a'):
+        
+    if v in ('ba', 'bha', 'cha', 'da', 'dha', 'ha', 'ja', 'jha', 'ka', 'kha', 'ksha', 'la', 'ma', 'na', 'pa', 'ra', 'rra', 'sa', 'sha', 'ta', 'tha', 'va', 'ya', 'ana'):
+        return 'aa'
+        
+    if v_key in ('RRA',):
+        return 'aa'
+        
+    if v.endswith('aa'):
         return 'aa'
         
     return 'none'

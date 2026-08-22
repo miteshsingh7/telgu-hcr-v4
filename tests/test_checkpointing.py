@@ -105,6 +105,9 @@ def test_checkpoint_save_and_restore(tmp_path=None):
     for p1, p2 in zip(pred1, pred2):
         assert np.allclose(p1.numpy(), p2.numpy(), atol=1e-5)
         
+    # Check optimizer iterations counter was restored
+    assert int(opt2.iterations.numpy()) == 2
+        
     print("Checkpoint save and restore test passed perfectly!")
     
     # Clean up test checkpoints

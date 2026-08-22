@@ -4,14 +4,12 @@ Generates a frozen, reproducible 80/10/10 train/val/test split across all classe
 and exports train.csv, val.csv, test.csv, and label_maps.json.
 """
 
-import os
 import json
 import argparse
 from pathlib import Path
 from typing import List, Dict, Any, Tuple
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
 
 from src.data.decomposition import (
     decompose_class_name,
@@ -19,7 +17,7 @@ from src.data.decomposition import (
 )
 
 
-def collect_dataset_images(dataset_root: str) -> Tuple[List[Dict[str, Any]], List[str]]:
+def collect_dataset_images(dataset_root: str, relative_paths: bool = True) -> Tuple[List[Dict[str, Any]], List[str]]:
     """Recursively collects all images and extracts canonical class names."""
     root = Path(dataset_root)
     if not root.exists():
@@ -46,8 +44,9 @@ def collect_dataset_images(dataset_root: str) -> Tuple[List[Dict[str, Any]], Lis
                     class_set.add(class_name)
                     for img_file in sorted(v_dir.iterdir()):
                         if img_file.is_file() and img_file.suffix.lower() in valid_extensions:
+                            fp = str(img_file.relative_to(root)) if relative_paths else str(img_file.resolve())
                             records.append({
-                                "file_path": str(img_file.resolve()),
+                                "file_path": fp,
                                 "class_name": class_name,
                                 "category": cat
                             })
@@ -59,8 +58,9 @@ def collect_dataset_images(dataset_root: str) -> Tuple[List[Dict[str, Any]], Lis
                 class_set.add(class_name)
                 for img_file in sorted(c_dir.iterdir()):
                     if img_file.is_file() and img_file.suffix.lower() in valid_extensions:
+                        fp = str(img_file.relative_to(root)) if relative_paths else str(img_file.resolve())
                         records.append({
-                            "file_path": str(img_file.resolve()),
+                            "file_path": fp,
                             "class_name": class_name,
                             "category": cat
                         })
@@ -73,13 +73,14 @@ def create_frozen_splits(dataset_root: str,
                          train_ratio: float = 0.8,
                          val_ratio: float = 0.1,
                          test_ratio: float = 0.1,
+                         relative_paths: bool = True,
                          seed: int = 42) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Generates stratified train/val/test CSV splits and saves label maps."""
     out_dir = Path(output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     
     print(f"Scanning dataset from: {dataset_root}")
-    records, class_names = collect_dataset_images(dataset_root)
+    records, class_names = collect_dataset_images(dataset_root, relative_paths=relative_paths)
     print(f"Found {len(records):,} total images across {len(class_names)} classes.")
     
     # 1. Build and freeze label maps empirically
@@ -89,6 +90,7 @@ def create_frozen_splits(dataset_root: str,
     print(f"Vocabulary: {label_maps['num_base_classes']} base, "
           f"{label_maps['num_modifier_classes']} modifier, "
           f"{label_maps['num_vattu_classes']} vattu primitives.")
+    print(f"Unique structural compound combinations: {label_maps['num_unique_combinations']} (across {len(class_names)} folders).")
     
     # 2. Enrich records with decomposed indices
     df = pd.DataFrame(records)
@@ -172,7 +174,8 @@ if __name__ == "__main__":
                         default="/Users/miteshsingh/Documents/projects/telugu-hcr-v3/data/Final Dataset of Telugu Handwritten Chararcters/Test1",
                         help="Path to raw dataset root")
     parser.add_argument("--output_dir", type=str, default="outputs", help="Output directory for CSVs and JSON")
+    parser.add_argument("--absolute_paths", action="store_true", help="Store absolute file paths instead of relative")
     parser.add_argument("--seed", type=int, default=42, help="Random seed for reproducibility")
     args = parser.parse_args()
     
-    create_frozen_splits(dataset_root=args.data_dir, output_dir=args.output_dir, seed=args.seed)
+    create_frozen_splits(dataset_root=args.data_dir, output_dir=args.output_dir, relative_paths=not args.absolute_paths, seed=args.seed)

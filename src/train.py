@@ -203,6 +203,9 @@ def run_training(config_path: str,
         batch_size=batch_size,
         is_training=True,
         use_augmentation=d_cfg.get("use_augmentation", True),
+        rotation_degrees=d_cfg.get("rotation_degrees", 5.0),
+        translation_factor=d_cfg.get("translation_factor", 0.05),
+        zoom_factor=d_cfg.get("zoom_factor", 0.05),
         use_cutmix=d_cfg.get("use_cutmix", True),
         cutmix_alpha=d_cfg.get("cutmix_alpha", 0.4),
         label_smoothing=d_cfg.get("label_smoothing", 0.1),
@@ -349,10 +352,21 @@ def run_training(config_path: str,
         callbacks=callbacks
     )
     
-    # 12. Finalize EMA weights for final best checkpoint
-    if hasattr(optimizer, "finalize_variable_values"):
+    # 12. Finalize EMA weights for final model checkpoint
+    if hasattr(optimizer, "finalize_variable_values") and t_cfg.get("use_ema", True):
         logger.info("Finalizing EMA shadow weights into model parameters...")
         optimizer.finalize_variable_values(model.trainable_variables)
+        logger.info("Evaluating model with finalized EMA weights on validation set...")
+        final_val_eval = model.evaluate(val_ds, steps=val_steps, verbose=0, return_dict=True)
+        logger.info(f"Final EMA validation metrics: {final_val_eval}")
+        ckpt_manager.save_state(
+            model=model,
+            optimizer=optimizer,
+            epoch=total_epochs,
+            metrics=final_val_eval,
+            is_best=True,
+            tag="best_model"
+        )
         
     logger.info("Training completed successfully!")
 

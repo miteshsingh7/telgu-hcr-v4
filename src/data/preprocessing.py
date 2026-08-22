@@ -52,14 +52,14 @@ def pad_to_square(image: tf.Tensor, pad_value: float = 255.0) -> tf.Tensor:
 
 
 def _ensure_single_channel_grayscale(img: tf.Tensor) -> tf.Tensor:
-    """Converts 2D/3D/4D image tensors of arbitrary channel count to single-channel (H, W, 1)."""
+    """Converts 2D/3D image tensors of arbitrary channel count to single-channel (H, W, 1)."""
     shape = tf.shape(img)
     rank = tf.rank(img)
     
     if rank == 2:
         return tf.expand_dims(img, axis=-1)
         
-    c = shape[-1]
+    c = img.shape[-1] if img.shape[-1] is not None else shape[-1]
     if c == 1:
         return img
     elif c == 3:
@@ -70,11 +70,9 @@ def _ensure_single_channel_grayscale(img: tf.Tensor) -> tf.Tensor:
         blended = rgb * alpha + 255.0 * (1.0 - alpha)
         return tf.image.rgb_to_grayscale(blended)
     else:
-        # Fallback to first channel
         return tf.slice(img, [0, 0, 0], [shape[0], shape[1], 1])
 
 
-@tf.function
 def preprocess_image(raw_image_bytes_or_array: Union[tf.Tensor, np.ndarray, bytes], 
                      img_size: int = IMAGE_SIZE) -> tf.Tensor:
     """The ONLY place image preprocessing logic is allowed to live.

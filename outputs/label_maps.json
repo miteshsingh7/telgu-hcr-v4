@@ -2,7 +2,7 @@
   "num_base_classes": 47,
   "num_modifier_classes": 16,
   "num_vattu_classes": 32,
-  "num_unique_combinations": 504,
+  "num_unique_combinations": 527,
   "base_letters": [
     "అ",
     "ఆ",
@@ -210,7 +210,9 @@
     "38_1_0": "Guninthamulu__RR__RRA",
     "38_2_0": "Guninthamulu__RR__RRI",
     "38_3_0": "Guninthamulu__RR__RRII",
-    "38_7_0": "Guninthamulu__RR__RRUU",
+    "38_4_0": "Guninthamulu__RR__RRU",
+    "38_5_0": "Guninthamulu__RR__RRUU",
+    "38_0_0": "Guninthamulu__RR__rr",
     "38_15_0": "Guninthamulu__RR__rrah",
     "38_10_0": "Guninthamulu__RR__rrai",
     "38_8_0": "Guninthamulu__RR__rre",
@@ -219,6 +221,7 @@
     "38_11_0": "Guninthamulu__RR__rro",
     "38_12_0": "Guninthamulu__RR__rroo",
     "38_13_0": "Guninthamulu__RR__rrow",
+    "38_7_0": "Guninthamulu__RR__rrr",
     "29_0_0": "Guninthamulu__ana__an",
     "29_1_0": "Guninthamulu__ana__ana",
     "29_15_0": "Guninthamulu__ana__anah",
@@ -232,6 +235,7 @@
     "29_12_0": "Guninthamulu__ana__anoo",
     "29_13_0": "Guninthamulu__ana__anou",
     "29_6_0": "Guninthamulu__ana__anr",
+    "29_7_0": "Guninthamulu__ana__anru",
     "29_4_0": "Guninthamulu__ana__anu",
     "29_5_0": "Guninthamulu__ana__anuu",
     "33_0_0": "Guninthamulu__ba__b",
@@ -279,6 +283,7 @@
     "21_12_0": "Guninthamulu__ch__choo",
     "21_13_0": "Guninthamulu__ch__chou",
     "21_6_0": "Guninthamulu__ch__chr",
+    "21_7_0": "Guninthamulu__ch__chru",
     "21_4_0": "Guninthamulu__ch__chu",
     "21_5_0": "Guninthamulu__ch__chuu",
     "20_0_0": "Guninthamulu__cha__ch",
@@ -310,9 +315,9 @@
     "27_12_0": "Guninthamulu__d__doo",
     "27_13_0": "Guninthamulu__d__dou",
     "27_6_0": "Guninthamulu__d__dr",
+    "27_7_0": "Guninthamulu__d__dru",
     "27_4_0": "Guninthamulu__d__du",
     "27_5_0": "Guninthamulu__d__duu",
-    "27_7_0": "Guninthamulu__da__druu",
     "28_0_0": "Guninthamulu__dh__dh",
     "28_1_0": "Guninthamulu__dh__dha",
     "28_15_0": "Guninthamulu__dh__dhah",
@@ -326,9 +331,11 @@
     "28_12_0": "Guninthamulu__dh__dhoo",
     "28_13_0": "Guninthamulu__dh__dhou",
     "28_6_0": "Guninthamulu__dh__dhr",
+    "28_7_0": "Guninthamulu__dh__dhru",
     "28_4_0": "Guninthamulu__dh__dhu",
     "28_5_0": "Guninthamulu__dh__dhuu",
-    "18_1_0": "Guninthamulu__ga__ga",
+    "18_0_0": "Guninthamulu__ga__ga",
+    "18_1_0": "Guninthamulu__ga__gaa",
     "18_15_0": "Guninthamulu__ga__gaha",
     "18_10_0": "Guninthamulu__ga__gai",
     "18_14_0": "Guninthamulu__ga__gam",
@@ -343,7 +350,8 @@
     "18_7_0": "Guninthamulu__ga__gruu",
     "18_4_0": "Guninthamulu__ga__gu",
     "18_5_0": "Guninthamulu__ga__guu",
-    "19_1_0": "Guninthamulu__gha__gha",
+    "19_0_0": "Guninthamulu__gha__gha",
+    "19_1_0": "Guninthamulu__gha__ghaa",
     "19_15_0": "Guninthamulu__gha__ghaha",
     "19_10_0": "Guninthamulu__gha__ghai",
     "19_14_0": "Guninthamulu__gha__gham",
@@ -387,6 +395,7 @@
     "22_12_0": "Guninthamulu__ja__joo",
     "22_13_0": "Guninthamulu__ja__jou",
     "22_6_0": "Guninthamulu__ja__jr",
+    "22_7_0": "Guninthamulu__ja__jru",
     "22_4_0": "Guninthamulu__ja__ju",
     "22_5_0": "Guninthamulu__ja__juu",
     "23_0_0": "Guninthamulu__jh__jh",
@@ -402,9 +411,11 @@
     "23_12_0": "Guninthamulu__jh__jhoo",
     "23_13_0": "Guninthamulu__jh__jhou",
     "23_6_0": "Guninthamulu__jh__jhr",
+    "23_7_0": "Guninthamulu__jh__jhru",
     "23_4_0": "Guninthamulu__jh__jhu",
     "23_5_0": "Guninthamulu__jh__jhuu",
-    "16_1_0": "Guninthamulu__kha__ka",
+    "16_0_0": "Guninthamulu__kha__ka",
+    "16_1_0": "Guninthamulu__kha__kaa",
     "16_15_0": "Guninthamulu__kha__kaha",
     "16_10_0": "Guninthamulu__kha__kai",
     "16_14_0": "Guninthamulu__kha__kam",
@@ -419,7 +430,8 @@
     "16_7_0": "Guninthamulu__kha__kruu",
     "16_4_0": "Guninthamulu__kha__ku",
     "16_5_0": "Guninthamulu__kha__kuu",
-    "17_1_0": "Guninthamulu__khh__kha",
+    "17_0_0": "Guninthamulu__khh__kha",
+    "17_1_0": "Guninthamulu__khh__khaa",
     "17_15_0": "Guninthamulu__khh__khaha",
     "17_10_0": "Guninthamulu__khh__khai",
     "17_14_0": "Guninthamulu__khh__kham",
@@ -447,6 +459,7 @@
     "46_12_0": "Guninthamulu__ksh__kshoo",
     "46_13_0": "Guninthamulu__ksh__kshou",
     "46_6_0": "Guninthamulu__ksh__kshr",
+    "46_7_0": "Guninthamulu__ksh__kshru",
     "46_4_0": "Guninthamulu__ksh__kshu",
     "46_5_0": "Guninthamulu__ksh__kshuu",
     "39_0_0": "Guninthamulu__l__l",
@@ -462,6 +475,7 @@
     "39_12_0": "Guninthamulu__l__loo",
     "39_13_0": "Guninthamulu__l__lou",
     "39_6_0": "Guninthamulu__l__lr",
+    "39_7_0": "Guninthamulu__l__lru",
     "39_4_0": "Guninthamulu__l__lu",
     "39_5_0": "Guninthamulu__l__luu",
     "40_0_0": "Guninthamulu__ll__l",
@@ -477,9 +491,10 @@
     "40_12_0": "Guninthamulu__ll__loo",
     "40_13_0": "Guninthamulu__ll__lou",
     "40_6_0": "Guninthamulu__ll__lr",
+    "40_7_0": "Guninthamulu__ll__lru",
     "40_4_0": "Guninthamulu__ll__lu",
     "40_5_0": "Guninthamulu__ll__luu",
-    "35_14_0": "Guninthamulu__ma__m",
+    "35_0_0": "Guninthamulu__ma__m",
     "35_1_0": "Guninthamulu__ma__ma",
     "35_15_0": "Guninthamulu__ma__mah",
     "35_10_0": "Guninthamulu__ma__mai",
@@ -487,10 +502,12 @@
     "35_9_0": "Guninthamulu__ma__mee",
     "35_2_0": "Guninthamulu__ma__mi",
     "35_3_0": "Guninthamulu__ma__mii",
+    "35_14_0": "Guninthamulu__ma__mm",
     "35_11_0": "Guninthamulu__ma__mo",
     "35_12_0": "Guninthamulu__ma__moo",
     "35_13_0": "Guninthamulu__ma__mou",
     "35_6_0": "Guninthamulu__ma__mr",
+    "35_7_0": "Guninthamulu__ma__mru",
     "35_4_0": "Guninthamulu__ma__mu",
     "35_5_0": "Guninthamulu__ma__muu",
     "30_0_0": "Guninthamulu__na__n",
@@ -506,6 +523,7 @@
     "30_12_0": "Guninthamulu__na__noo",
     "30_13_0": "Guninthamulu__na__nou",
     "30_6_0": "Guninthamulu__na__nr",
+    "30_7_0": "Guninthamulu__na__nru",
     "30_4_0": "Guninthamulu__na__nu",
     "30_5_0": "Guninthamulu__na__nuu",
     "31_0_0": "Guninthamulu__pa__p",
@@ -521,6 +539,7 @@
     "31_12_0": "Guninthamulu__pa__poo",
     "31_13_0": "Guninthamulu__pa__pou",
     "31_6_0": "Guninthamulu__pa__pr",
+    "31_7_0": "Guninthamulu__pa__pru",
     "31_4_0": "Guninthamulu__pa__pu",
     "31_5_0": "Guninthamulu__pa__puu",
     "32_0_0": "Guninthamulu__pha__p",
@@ -536,9 +555,10 @@
     "32_12_0": "Guninthamulu__pha__poo",
     "32_13_0": "Guninthamulu__pha__pou",
     "32_6_0": "Guninthamulu__pha__pr",
+    "32_7_0": "Guninthamulu__pha__pru",
     "32_4_0": "Guninthamulu__pha__pu",
     "32_5_0": "Guninthamulu__pha__puu",
-    "37_6_0": "Guninthamulu__ra__r",
+    "37_0_0": "Guninthamulu__ra__r",
     "37_1_0": "Guninthamulu__ra__ra",
     "37_15_0": "Guninthamulu__ra__rah",
     "37_10_0": "Guninthamulu__ra__rai",
@@ -550,7 +570,10 @@
     "37_11_0": "Guninthamulu__ra__ro",
     "37_12_0": "Guninthamulu__ra__roo",
     "37_13_0": "Guninthamulu__ra__rou",
-    "37_7_0": "Guninthamulu__ra__ruu",
+    "37_6_0": "Guninthamulu__ra__rr",
+    "37_7_0": "Guninthamulu__ra__rru",
+    "37_4_0": "Guninthamulu__ra__ru",
+    "37_5_0": "Guninthamulu__ra__ruu",
     "44_0_0": "Guninthamulu__sa__s",
     "44_1_0": "Guninthamulu__sa__sa",
     "44_15_0": "Guninthamulu__sa__sah",
@@ -564,6 +587,7 @@
     "44_12_0": "Guninthamulu__sa__soo",
     "44_13_0": "Guninthamulu__sa__sou",
     "44_6_0": "Guninthamulu__sa__sr",
+    "44_7_0": "Guninthamulu__sa__sru",
     "44_4_0": "Guninthamulu__sa__su",
     "44_5_0": "Guninthamulu__sa__suu",
     "42_0_0": "Guninthamulu__sh__sh",
@@ -579,6 +603,7 @@
     "42_12_0": "Guninthamulu__sh__shoo",
     "42_13_0": "Guninthamulu__sh__shou",
     "42_6_0": "Guninthamulu__sh__shr",
+    "42_7_0": "Guninthamulu__sh__shru",
     "42_4_0": "Guninthamulu__sh__shu",
     "42_5_0": "Guninthamulu__sh__shuu",
     "43_0_0": "Guninthamulu__sha__sh",
@@ -594,9 +619,11 @@
     "43_12_0": "Guninthamulu__sha__shoo",
     "43_13_0": "Guninthamulu__sha__shou",
     "43_6_0": "Guninthamulu__sha__shr",
+    "43_7_0": "Guninthamulu__sha__shru",
     "43_4_0": "Guninthamulu__sha__shu",
     "43_5_0": "Guninthamulu__sha__shuu",
-    "25_1_0": "Guninthamulu__ta__ta",
+    "25_0_0": "Guninthamulu__ta__ta",
+    "25_1_0": "Guninthamulu__ta__taa",
     "25_15_0": "Guninthamulu__ta__taha",
     "25_10_0": "Guninthamulu__ta__tai",
     "25_14_0": "Guninthamulu__ta__tam",
@@ -624,9 +651,9 @@
     "26_12_0": "Guninthamulu__th__thoo",
     "26_13_0": "Guninthamulu__th__thow",
     "26_6_0": "Guninthamulu__th__thr",
+    "26_7_0": "Guninthamulu__th__thru",
     "26_4_0": "Guninthamulu__th__thu",
     "26_5_0": "Guninthamulu__th__thuu",
-    "25_0_0": "Guninthamulu__tt__t",
     "41_0_0": "Guninthamulu__va__v",
     "41_1_0": "Guninthamulu__va__va",
     "41_15_0": "Guninthamulu__va__vah",
@@ -640,6 +667,7 @@
     "41_12_0": "Guninthamulu__va__voo",
     "41_13_0": "Guninthamulu__va__vow",
     "41_6_0": "Guninthamulu__va__vr",
+    "41_7_0": "Guninthamulu__va__vru",
     "41_4_0": "Guninthamulu__va__vu",
     "41_5_0": "Guninthamulu__va__vuu",
     "36_0_0": "Guninthamulu__ya__y",
@@ -654,6 +682,7 @@
     "36_12_0": "Guninthamulu__ya__yoo",
     "36_13_0": "Guninthamulu__ya__you",
     "36_6_0": "Guninthamulu__ya__yr",
+    "36_7_0": "Guninthamulu__ya__yru",
     "36_4_0": "Guninthamulu__ya__yu",
     "36_5_0": "Guninthamulu__ya__yuu",
     "0_0_0": "achulu__a",
@@ -672,13 +701,7 @@
     "7_0_0": "achulu__ruu",
     "4_0_0": "achulu__u",
     "5_0_0": "achulu__uu",
-    "18_0_0": "hallulu__g",
-    "19_0_0": "hallulu__gh",
     "24_0_0": "hallulu__jna",
-    "16_0_0": "hallulu__ka",
-    "35_0_0": "hallulu__m",
-    "37_0_0": "hallulu__r",
-    "38_0_0": "hallulu__rr",
     "29_0_13": "othulu__an",
     "33_0_20": "othulu__b",
     "34_0_21": "othulu__bh",
@@ -716,9 +739,9 @@
     "Guninthamulu__RR__RRA": "38_1_0",
     "Guninthamulu__RR__RRI": "38_2_0",
     "Guninthamulu__RR__RRII": "38_3_0",
-    "Guninthamulu__RR__RRU": "38_6_0",
-    "Guninthamulu__RR__RRUU": "38_7_0",
-    "Guninthamulu__RR__rr": "38_6_0",
+    "Guninthamulu__RR__RRU": "38_4_0",
+    "Guninthamulu__RR__RRUU": "38_5_0",
+    "Guninthamulu__RR__rr": "38_0_0",
     "Guninthamulu__RR__rrah": "38_15_0",
     "Guninthamulu__RR__rrai": "38_10_0",
     "Guninthamulu__RR__rre": "38_8_0",
@@ -741,7 +764,7 @@
     "Guninthamulu__ana__anoo": "29_12_0",
     "Guninthamulu__ana__anou": "29_13_0",
     "Guninthamulu__ana__anr": "29_6_0",
-    "Guninthamulu__ana__anru": "29_6_0",
+    "Guninthamulu__ana__anru": "29_7_0",
     "Guninthamulu__ana__anu": "29_4_0",
     "Guninthamulu__ana__anuu": "29_5_0",
     "Guninthamulu__ba__b": "33_0_0",
@@ -789,7 +812,7 @@
     "Guninthamulu__ch__choo": "21_12_0",
     "Guninthamulu__ch__chou": "21_13_0",
     "Guninthamulu__ch__chr": "21_6_0",
-    "Guninthamulu__ch__chru": "21_6_0",
+    "Guninthamulu__ch__chru": "21_7_0",
     "Guninthamulu__ch__chu": "21_4_0",
     "Guninthamulu__ch__chuu": "21_5_0",
     "Guninthamulu__cha__ch": "20_0_0",
@@ -821,10 +844,10 @@
     "Guninthamulu__d__doo": "27_12_0",
     "Guninthamulu__d__dou": "27_13_0",
     "Guninthamulu__d__dr": "27_6_0",
-    "Guninthamulu__d__dru": "27_6_0",
+    "Guninthamulu__d__dru": "27_7_0",
     "Guninthamulu__d__du": "27_4_0",
     "Guninthamulu__d__duu": "27_5_0",
-    "Guninthamulu__da__da": "27_1_0",
+    "Guninthamulu__da__da": "27_0_0",
     "Guninthamulu__da__daa": "27_1_0",
     "Guninthamulu__da__dah": "27_15_0",
     "Guninthamulu__da__dai": "27_10_0",
@@ -853,7 +876,7 @@
     "Guninthamulu__dh__dhoo": "28_12_0",
     "Guninthamulu__dh__dhou": "28_13_0",
     "Guninthamulu__dh__dhr": "28_6_0",
-    "Guninthamulu__dh__dhru": "28_6_0",
+    "Guninthamulu__dh__dhru": "28_7_0",
     "Guninthamulu__dh__dhu": "28_4_0",
     "Guninthamulu__dh__dhuu": "28_5_0",
     "Guninthamulu__dha__dh": "28_0_0",
@@ -869,10 +892,10 @@
     "Guninthamulu__dha__dhoo": "28_12_0",
     "Guninthamulu__dha__dhou": "28_13_0",
     "Guninthamulu__dha__dhr": "28_6_0",
-    "Guninthamulu__dha__dhru": "28_6_0",
+    "Guninthamulu__dha__dhru": "28_7_0",
     "Guninthamulu__dha__dhu": "28_4_0",
     "Guninthamulu__dha__dhuu": "28_5_0",
-    "Guninthamulu__ga__ga": "18_1_0",
+    "Guninthamulu__ga__ga": "18_0_0",
     "Guninthamulu__ga__gaa": "18_1_0",
     "Guninthamulu__ga__gaha": "18_15_0",
     "Guninthamulu__ga__gai": "18_10_0",
@@ -888,7 +911,7 @@
     "Guninthamulu__ga__gruu": "18_7_0",
     "Guninthamulu__ga__gu": "18_4_0",
     "Guninthamulu__ga__guu": "18_5_0",
-    "Guninthamulu__gha__gha": "19_1_0",
+    "Guninthamulu__gha__gha": "19_0_0",
     "Guninthamulu__gha__ghaa": "19_1_0",
     "Guninthamulu__gha__ghaha": "19_15_0",
     "Guninthamulu__gha__ghai": "19_10_0",
@@ -933,7 +956,7 @@
     "Guninthamulu__ja__joo": "22_12_0",
     "Guninthamulu__ja__jou": "22_13_0",
     "Guninthamulu__ja__jr": "22_6_0",
-    "Guninthamulu__ja__jru": "22_6_0",
+    "Guninthamulu__ja__jru": "22_7_0",
     "Guninthamulu__ja__ju": "22_4_0",
     "Guninthamulu__ja__juu": "22_5_0",
     "Guninthamulu__jh__jh": "23_0_0",
@@ -949,10 +972,10 @@
     "Guninthamulu__jh__jhoo": "23_12_0",
     "Guninthamulu__jh__jhou": "23_13_0",
     "Guninthamulu__jh__jhr": "23_6_0",
-    "Guninthamulu__jh__jhru": "23_6_0",
+    "Guninthamulu__jh__jhru": "23_7_0",
     "Guninthamulu__jh__jhu": "23_4_0",
     "Guninthamulu__jh__jhuu": "23_5_0",
-    "Guninthamulu__kha__ka": "16_1_0",
+    "Guninthamulu__kha__ka": "16_0_0",
     "Guninthamulu__kha__kaa": "16_1_0",
     "Guninthamulu__kha__kaha": "16_15_0",
     "Guninthamulu__kha__kai": "16_10_0",
@@ -968,7 +991,7 @@
     "Guninthamulu__kha__kruu": "16_7_0",
     "Guninthamulu__kha__ku": "16_4_0",
     "Guninthamulu__kha__kuu": "16_5_0",
-    "Guninthamulu__khh__kha": "17_1_0",
+    "Guninthamulu__khh__kha": "17_0_0",
     "Guninthamulu__khh__khaa": "17_1_0",
     "Guninthamulu__khh__khaha": "17_15_0",
     "Guninthamulu__khh__khai": "17_10_0",
@@ -997,7 +1020,7 @@
     "Guninthamulu__ksh__kshoo": "46_12_0",
     "Guninthamulu__ksh__kshou": "46_13_0",
     "Guninthamulu__ksh__kshr": "46_6_0",
-    "Guninthamulu__ksh__kshru": "46_6_0",
+    "Guninthamulu__ksh__kshru": "46_7_0",
     "Guninthamulu__ksh__kshu": "46_4_0",
     "Guninthamulu__ksh__kshuu": "46_5_0",
     "Guninthamulu__l__l": "39_0_0",
@@ -1013,7 +1036,7 @@
     "Guninthamulu__l__loo": "39_12_0",
     "Guninthamulu__l__lou": "39_13_0",
     "Guninthamulu__l__lr": "39_6_0",
-    "Guninthamulu__l__lru": "39_6_0",
+    "Guninthamulu__l__lru": "39_7_0",
     "Guninthamulu__l__lu": "39_4_0",
     "Guninthamulu__l__luu": "39_5_0",
     "Guninthamulu__ll__l": "40_0_0",
@@ -1029,10 +1052,10 @@
     "Guninthamulu__ll__loo": "40_12_0",
     "Guninthamulu__ll__lou": "40_13_0",
     "Guninthamulu__ll__lr": "40_6_0",
-    "Guninthamulu__ll__lru": "40_6_0",
+    "Guninthamulu__ll__lru": "40_7_0",
     "Guninthamulu__ll__lu": "40_4_0",
     "Guninthamulu__ll__luu": "40_5_0",
-    "Guninthamulu__ma__m": "35_14_0",
+    "Guninthamulu__ma__m": "35_0_0",
     "Guninthamulu__ma__ma": "35_1_0",
     "Guninthamulu__ma__mah": "35_15_0",
     "Guninthamulu__ma__mai": "35_10_0",
@@ -1045,7 +1068,7 @@
     "Guninthamulu__ma__moo": "35_12_0",
     "Guninthamulu__ma__mou": "35_13_0",
     "Guninthamulu__ma__mr": "35_6_0",
-    "Guninthamulu__ma__mru": "35_6_0",
+    "Guninthamulu__ma__mru": "35_7_0",
     "Guninthamulu__ma__mu": "35_4_0",
     "Guninthamulu__ma__muu": "35_5_0",
     "Guninthamulu__na__n": "30_0_0",
@@ -1061,7 +1084,7 @@
     "Guninthamulu__na__noo": "30_12_0",
     "Guninthamulu__na__nou": "30_13_0",
     "Guninthamulu__na__nr": "30_6_0",
-    "Guninthamulu__na__nru": "30_6_0",
+    "Guninthamulu__na__nru": "30_7_0",
     "Guninthamulu__na__nu": "30_4_0",
     "Guninthamulu__na__nuu": "30_5_0",
     "Guninthamulu__pa__p": "31_0_0",
@@ -1077,7 +1100,7 @@
     "Guninthamulu__pa__poo": "31_12_0",
     "Guninthamulu__pa__pou": "31_13_0",
     "Guninthamulu__pa__pr": "31_6_0",
-    "Guninthamulu__pa__pru": "31_6_0",
+    "Guninthamulu__pa__pru": "31_7_0",
     "Guninthamulu__pa__pu": "31_4_0",
     "Guninthamulu__pa__puu": "31_5_0",
     "Guninthamulu__pha__p": "32_0_0",
@@ -1093,10 +1116,10 @@
     "Guninthamulu__pha__poo": "32_12_0",
     "Guninthamulu__pha__pou": "32_13_0",
     "Guninthamulu__pha__pr": "32_6_0",
-    "Guninthamulu__pha__pru": "32_6_0",
+    "Guninthamulu__pha__pru": "32_7_0",
     "Guninthamulu__pha__pu": "32_4_0",
     "Guninthamulu__pha__puu": "32_5_0",
-    "Guninthamulu__ra__r": "37_6_0",
+    "Guninthamulu__ra__r": "37_0_0",
     "Guninthamulu__ra__ra": "37_1_0",
     "Guninthamulu__ra__rah": "37_15_0",
     "Guninthamulu__ra__rai": "37_10_0",
@@ -1109,9 +1132,9 @@
     "Guninthamulu__ra__roo": "37_12_0",
     "Guninthamulu__ra__rou": "37_13_0",
     "Guninthamulu__ra__rr": "37_6_0",
-    "Guninthamulu__ra__rru": "37_6_0",
-    "Guninthamulu__ra__ru": "37_6_0",
-    "Guninthamulu__ra__ruu": "37_7_0",
+    "Guninthamulu__ra__rru": "37_7_0",
+    "Guninthamulu__ra__ru": "37_4_0",
+    "Guninthamulu__ra__ruu": "37_5_0",
     "Guninthamulu__sa__s": "44_0_0",
     "Guninthamulu__sa__sa": "44_1_0",
     "Guninthamulu__sa__sah": "44_15_0",
@@ -1125,7 +1148,7 @@
     "Guninthamulu__sa__soo": "44_12_0",
     "Guninthamulu__sa__sou": "44_13_0",
     "Guninthamulu__sa__sr": "44_6_0",
-    "Guninthamulu__sa__sru": "44_6_0",
+    "Guninthamulu__sa__sru": "44_7_0",
     "Guninthamulu__sa__su": "44_4_0",
     "Guninthamulu__sa__suu": "44_5_0",
     "Guninthamulu__sh__sh": "42_0_0",
@@ -1141,7 +1164,7 @@
     "Guninthamulu__sh__shoo": "42_12_0",
     "Guninthamulu__sh__shou": "42_13_0",
     "Guninthamulu__sh__shr": "42_6_0",
-    "Guninthamulu__sh__shru": "42_6_0",
+    "Guninthamulu__sh__shru": "42_7_0",
     "Guninthamulu__sh__shu": "42_4_0",
     "Guninthamulu__sh__shuu": "42_5_0",
     "Guninthamulu__sha__sh": "43_0_0",
@@ -1157,10 +1180,10 @@
     "Guninthamulu__sha__shoo": "43_12_0",
     "Guninthamulu__sha__shou": "43_13_0",
     "Guninthamulu__sha__shr": "43_6_0",
-    "Guninthamulu__sha__shru": "43_6_0",
+    "Guninthamulu__sha__shru": "43_7_0",
     "Guninthamulu__sha__shu": "43_4_0",
     "Guninthamulu__sha__shuu": "43_5_0",
-    "Guninthamulu__ta__ta": "25_1_0",
+    "Guninthamulu__ta__ta": "25_0_0",
     "Guninthamulu__ta__taa": "25_1_0",
     "Guninthamulu__ta__taha": "25_15_0",
     "Guninthamulu__ta__tai": "25_10_0",
@@ -1189,7 +1212,7 @@
     "Guninthamulu__th__thoo": "26_12_0",
     "Guninthamulu__th__thow": "26_13_0",
     "Guninthamulu__th__thr": "26_6_0",
-    "Guninthamulu__th__thru": "26_6_0",
+    "Guninthamulu__th__thru": "26_7_0",
     "Guninthamulu__th__thu": "26_4_0",
     "Guninthamulu__th__thuu": "26_5_0",
     "Guninthamulu__tha__th": "26_0_0",
@@ -1205,7 +1228,7 @@
     "Guninthamulu__tha__thoo": "26_12_0",
     "Guninthamulu__tha__thou": "26_13_0",
     "Guninthamulu__tha__thr": "26_6_0",
-    "Guninthamulu__tha__thru": "26_6_0",
+    "Guninthamulu__tha__thru": "26_7_0",
     "Guninthamulu__tha__thu": "26_4_0",
     "Guninthamulu__tha__thuu": "26_5_0",
     "Guninthamulu__tt__t": "25_0_0",
@@ -1221,7 +1244,7 @@
     "Guninthamulu__tt__too": "25_12_0",
     "Guninthamulu__tt__tou": "25_13_0",
     "Guninthamulu__tt__tr": "25_6_0",
-    "Guninthamulu__tt__tru": "25_6_0",
+    "Guninthamulu__tt__tru": "25_7_0",
     "Guninthamulu__tt__tu": "25_4_0",
     "Guninthamulu__tt__tuu": "25_5_0",
     "Guninthamulu__va__v": "41_0_0",
@@ -1237,7 +1260,7 @@
     "Guninthamulu__va__voo": "41_12_0",
     "Guninthamulu__va__vow": "41_13_0",
     "Guninthamulu__va__vr": "41_6_0",
-    "Guninthamulu__va__vru": "41_6_0",
+    "Guninthamulu__va__vru": "41_7_0",
     "Guninthamulu__va__vu": "41_4_0",
     "Guninthamulu__va__vuu": "41_5_0",
     "Guninthamulu__ya__y": "36_0_0",
@@ -1252,7 +1275,7 @@
     "Guninthamulu__ya__yoo": "36_12_0",
     "Guninthamulu__ya__you": "36_13_0",
     "Guninthamulu__ya__yr": "36_6_0",
-    "Guninthamulu__ya__yru": "36_6_0",
+    "Guninthamulu__ya__yru": "36_7_0",
     "Guninthamulu__ya__yu": "36_4_0",
     "Guninthamulu__ya__yuu": "36_5_0",
     "achulu__a": "0_0_0",
@@ -1366,7 +1389,17 @@
     ],
     [
       38,
-      7,
+      4,
+      0
+    ],
+    [
+      38,
+      5,
+      0
+    ],
+    [
+      38,
+      0,
       0
     ],
     [
@@ -1410,6 +1443,11 @@
       0
     ],
     [
+      38,
+      7,
+      0
+    ],
+    [
       29,
       0,
       0
@@ -1472,6 +1510,11 @@
     [
       29,
       6,
+      0
+    ],
+    [
+      29,
+      7,
       0
     ],
     [
@@ -1711,6 +1754,11 @@
     ],
     [
       21,
+      7,
+      0
+    ],
+    [
+      21,
       4,
       0
     ],
@@ -1866,6 +1914,11 @@
     ],
     [
       27,
+      7,
+      0
+    ],
+    [
+      27,
       4,
       0
     ],
@@ -1875,83 +1928,88 @@
       0
     ],
     [
-      27,
+      28,
+      0,
+      0
+    ],
+    [
+      28,
+      1,
+      0
+    ],
+    [
+      28,
+      15,
+      0
+    ],
+    [
+      28,
+      10,
+      0
+    ],
+    [
+      28,
+      8,
+      0
+    ],
+    [
+      28,
+      9,
+      0
+    ],
+    [
+      28,
+      2,
+      0
+    ],
+    [
+      28,
+      3,
+      0
+    ],
+    [
+      28,
+      14,
+      0
+    ],
+    [
+      28,
+      11,
+      0
+    ],
+    [
+      28,
+      12,
+      0
+    ],
+    [
+      28,
+      13,
+      0
+    ],
+    [
+      28,
+      6,
+      0
+    ],
+    [
+      28,
       7,
       0
     ],
     [
       28,
-      0,
-      0
-    ],
-    [
-      28,
-      1,
-      0
-    ],
-    [
-      28,
-      15,
-      0
-    ],
-    [
-      28,
-      10,
-      0
-    ],
-    [
-      28,
-      8,
-      0
-    ],
-    [
-      28,
-      9,
-      0
-    ],
-    [
-      28,
-      2,
-      0
-    ],
-    [
-      28,
-      3,
-      0
-    ],
-    [
-      28,
-      14,
-      0
-    ],
-    [
-      28,
-      11,
-      0
-    ],
-    [
-      28,
-      12,
-      0
-    ],
-    [
-      28,
-      13,
-      0
-    ],
-    [
-      28,
-      6,
-      0
-    ],
-    [
-      28,
       4,
       0
     ],
     [
       28,
       5,
+      0
+    ],
+    [
+      18,
+      0,
       0
     ],
     [
@@ -2027,6 +2085,11 @@
     [
       18,
       5,
+      0
+    ],
+    [
+      19,
+      0,
       0
     ],
     [
@@ -2251,6 +2314,11 @@
     ],
     [
       22,
+      7,
+      0
+    ],
+    [
+      22,
       4,
       0
     ],
@@ -2326,6 +2394,11 @@
     ],
     [
       23,
+      7,
+      0
+    ],
+    [
+      23,
       4,
       0
     ],
@@ -2336,6 +2409,11 @@
     ],
     [
       16,
+      0,
+      0
+    ],
+    [
+      16,
       1,
       0
     ],
@@ -2411,6 +2489,11 @@
     ],
     [
       17,
+      0,
+      0
+    ],
+    [
+      17,
       1,
       0
     ],
@@ -2551,6 +2634,11 @@
     ],
     [
       46,
+      7,
+      0
+    ],
+    [
+      46,
       4,
       0
     ],
@@ -2626,6 +2714,11 @@
     ],
     [
       39,
+      7,
+      0
+    ],
+    [
+      39,
       4,
       0
     ],
@@ -2701,6 +2794,11 @@
     ],
     [
       40,
+      7,
+      0
+    ],
+    [
+      40,
       4,
       0
     ],
@@ -2711,7 +2809,7 @@
     ],
     [
       35,
-      14,
+      0,
       0
     ],
     [
@@ -2751,6 +2849,11 @@
     ],
     [
       35,
+      14,
+      0
+    ],
+    [
+      35,
       11,
       0
     ],
@@ -2767,6 +2870,11 @@
     [
       35,
       6,
+      0
+    ],
+    [
+      35,
+      7,
       0
     ],
     [
@@ -2846,6 +2954,11 @@
     ],
     [
       30,
+      7,
+      0
+    ],
+    [
+      30,
       4,
       0
     ],
@@ -2921,6 +3034,11 @@
     ],
     [
       31,
+      7,
+      0
+    ],
+    [
+      31,
       4,
       0
     ],
@@ -2996,6 +3114,11 @@
     ],
     [
       32,
+      7,
+      0
+    ],
+    [
+      32,
       4,
       0
     ],
@@ -3006,7 +3129,7 @@
     ],
     [
       37,
-      6,
+      0,
       0
     ],
     [
@@ -3062,6 +3185,11 @@
     [
       37,
       13,
+      0
+    ],
+    [
+      37,
+      6,
       0
     ],
     [
@@ -3070,6 +3198,16 @@
       0
     ],
     [
+      37,
+      4,
+      0
+    ],
+    [
+      37,
+      5,
+      0
+    ],
+    [
       44,
       0,
       0
@@ -3132,6 +3270,11 @@
     [
       44,
       6,
+      0
+    ],
+    [
+      44,
+      7,
       0
     ],
     [
@@ -3211,6 +3354,11 @@
     ],
     [
       42,
+      7,
+      0
+    ],
+    [
+      42,
       4,
       0
     ],
@@ -3286,12 +3434,22 @@
     ],
     [
       43,
+      7,
+      0
+    ],
+    [
+      43,
       4,
       0
     ],
     [
       43,
       5,
+      0
+    ],
+    [
+      25,
+      0,
       0
     ],
     [
@@ -3436,17 +3594,17 @@
     ],
     [
       26,
+      7,
+      0
+    ],
+    [
+      26,
       4,
       0
     ],
     [
       26,
       5,
-      0
-    ],
-    [
-      25,
-      0,
       0
     ],
     [
@@ -3516,6 +3674,11 @@
     ],
     [
       41,
+      7,
+      0
+    ],
+    [
+      41,
       4,
       0
     ],
@@ -3582,6 +3745,11 @@
     [
       36,
       6,
+      0
+    ],
+    [
+      36,
+      7,
       0
     ],
     [
@@ -3671,41 +3839,11 @@
     ],
     [
       5,
-      0,
-      0
-    ],
-    [
-      18,
-      0,
-      0
-    ],
-    [
-      19,
       0,
       0
     ],
     [
       24,
-      0,
-      0
-    ],
-    [
-      16,
-      0,
-      0
-    ],
-    [
-      35,
-      0,
-      0
-    ],
-    [
-      37,
-      0,
-      0
-    ],
-    [
-      38,
       0,
       0
     ],

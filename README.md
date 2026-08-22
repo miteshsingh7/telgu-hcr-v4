@@ -67,34 +67,37 @@ where $\mathcal{V}$ is the grammar of valid triples observed in the dataset.
 ```bash
 python -m venv .venv
 source .venv/bin/activate  # or .venv\Scripts\activate on Windows
-pip install -r requirements.txt
+pip install -e .
 ```
 
 ### 1. Generate Frozen Dataset Splits
 ```bash
-python src/data/split.py --data_dir "path/to/Test1" --output_dir "outputs"
+python -m src.data.split --data_dir "path/to/Test1" --output_dir "outputs"
 ```
 
 ### 2. Run Test Suite
 ```bash
-python tests/test_preprocessing.py
-python tests/test_decomposition.py
-python tests/test_model.py
-python tests/test_checkpointing.py
+# Run full test suite via pytest or python -m
+pytest
+# Or individually:
+python -m tests.test_preprocessing
+python -m tests.test_decomposition
+python -m tests.test_model
+python -m tests.test_checkpointing
 ```
 
 ### 3. Train Multi-Head Model
 ```bash
 # Two-phase training: Phase 1 frozen warmup (5 epochs) + Phase 2 fine-tuning (45 epochs)
-python src/train.py --config configs/multitask_effnetv2.yaml --variant B0
+python -m src.train --config configs/multitask_effnetv2.yaml --variant B0
 
 # To resume interrupted training from latest checkpoint:
-python src/train.py --resume
+python -m src.train --resume
 ```
 
 ### 4. Evaluate Test Set
 ```bash
-python src/evaluate.py --checkpoint_dir checkpoints --checkpoint_tag best_model
+python -m src.evaluate --checkpoint_dir checkpoints --checkpoint_tag best_model
 ```
 
 ### 5. Launch Streamlit Web App
