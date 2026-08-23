@@ -23,13 +23,10 @@ from src.data.known_duplicates import (
     is_known_duplicate_pair
 )
 
-# Initial Reference Primitives (Used for consistent ordering)
 CANONICAL_BASE_LETTERS: List[str] = [
-    "none",   # For standalone vattu characters
-    # Achulu (Vowels) - 16
+    "none",
     "అ", "ఆ", "ఇ", "ఈ", "ఉ", "ఊ", "ఋ", "ౠ",
     "ఎ", "ఏ", "ఐ", "ఒ", "ఓ", "ఔ", "అం", "అః",
-    # Hallulu (Consonants) - 35
     "క", "ఖ", "గ", "ఘ", "ఙ",
     "చ", "ఛ", "జ", "ఝ", "ఞ",
     "ట", "ఠ", "డ", "ఢ", "ణ",
@@ -40,22 +37,22 @@ CANONICAL_BASE_LETTERS: List[str] = [
 ]
 
 CANONICAL_VOWEL_MODIFIERS: List[str] = [
-    "none",   # తలకట్టు / అ (క)
-    "aa",     # దీర్ఘం ా (కా)
-    "i",      # గుడి ి (కి)
-    "ii",     # గుడిదీర్ఘం ీ (కీ)
-    "u",      # కొమ్ము ు (కు)
-    "uu",     # కొమ్ముదీర్ఘం ూ (కూ)
-    "ru",     # వట్రుసుడి ృ (కృ)
-    "ruu",    # వట్రుసుడి దీర్ఘం ౄ (కౄ)
-    "e",      # ఎత్వం ె (కె)
-    "ee",     # ఏత్వం ే (కే)
-    "ai",     # ఐత్వం ై (కై)
-    "o",      # ఒత్వం ొ (కొ)
-    "oo",     # ఓత్వం ో (కో)
-    "au",     # ఔత్వం ౌ (కౌ)
-    "am",     # సున్నా ం (కం)
-    "ah",     # విసర్గ ః (కః)
+    "none",
+    "aa",
+    "i",
+    "ii",
+    "u",
+    "uu",
+    "ru",
+    "ruu",
+    "e",
+    "ee",
+    "ai",
+    "o",
+    "oo",
+    "au",
+    "am",
+    "ah",
 ]
 
 CANONICAL_CONJUNCT_MODIFIERS: List[str] = [
@@ -95,10 +92,8 @@ VOWEL_ALIASES: Dict[str, str] = {
     "o": "ఒ", "oo": "ఓ", "au": "ఔ", "ao": "ఔ", "am": "అం", "ah": "అః"
 }
 
-# Backward compatibility alias dictionary
 CONSONANT_ALIASES = {**HALLULU_CONSONANT_MAP, **GUNINTHAM_CONSONANT_MAP}
 VATTU_ALIASES = {k: k for k in CANONICAL_CONJUNCT_MODIFIERS}
-# Additional known Othulu directory-name aliases
 VATTU_ALIASES["ks"] = "ksh"
 
 
@@ -119,11 +114,9 @@ def parse_gunintham_modifier(c_key: str, v_key: str) -> str:
     c = c_key.lower()
     v = v_key.lower()
     
-    # 1. Visarga (ah)
     if v.endswith('aha') or v.endswith('ah') or v in ('gaha', 'ghaha', 'kaha', 'khaha', 'taha', 'rrah', 'anah', 'bah', 'bhah', 'chah', 'dah', 'dhah', 'hah', 'jah', 'jhah', 'kshah', 'lah', 'llah', 'mah', 'nah', 'pah', 'phah', 'rah', 'sah', 'shah', 'thah', 'vah', 'yah', 'zh'):
         return 'ah'
         
-    # 2. Sunna (am)
     if v.endswith('am') or (v.endswith('m') and v not in ('m', 'rm', 'rrm')) or v in (
         'anm', 'bm', 'bhm', 'chm', 'dm', 'dhm', 'gm', 'ghm', 'hm', 'jm', 'jhm', 
         'km', 'khm', 'ksham', 'lm', 'llm', 'mm', 'nm', 'pm', 'phm', 'rm', 'rrm', 
@@ -131,7 +124,6 @@ def parse_gunintham_modifier(c_key: str, v_key: str) -> str:
     ):
         return 'am'
         
-    # 3. Autwam (au)
     if v.endswith('au') or v.endswith('ou') or v.endswith('ow') or v in (
         'anou', 'rrow', 'chow', 'how', 'thow', 'vow', 'you', 'tou', 'kou', 'khou', 
         'gou', 'ghou', 'jou', 'jhou', 'dou', 'dhou', 'pou', 'mou', 'nou', 'lou', 
@@ -139,11 +131,9 @@ def parse_gunintham_modifier(c_key: str, v_key: str) -> str:
     ):
         return 'au'
         
-    # 4. Aitwam (ai)
     if v.endswith('ai') or v in ('anai', 'rrai'):
         return 'ai'
         
-    # Explicit folder maps for consonants with irregular naming patterns
     if c == 'rr':
         rr_map = {'rr': 'none', 'rra': 'aa', 'rri': 'i', 'rrii': 'ii', 'rru': 'u', 'rruu': 'uu', 'r': 'ru', 'rrr': 'ruu', 'rre': 'e', 'rree': 'ee', 'rrai': 'ai', 'rro': 'o', 'rroo': 'oo', 'rrow': 'au', 'rrm': 'am', 'rrah': 'ah'}
         if v in rr_map:
@@ -159,7 +149,6 @@ def parse_gunintham_modifier(c_key: str, v_key: str) -> str:
         if v in cha_map:
             return cha_map[v]
         
-    # 5. Vatrusudi Dirgham (ruu)
     if v in ('rrr', 'rruu', 'druu', 'dhruu', 'gruu', 'ghruu', 'hruu', 'jruu', 'jhruu', 'kruu', 'khruu', 'kshruu', 'lruu', 'llruu', 'mruu', 'nruu', 'pruu', 'phruu', 'sruu', 'shruu', 'truu', 'thruu', 'vruu', 'yruu', 'bruu', 'bhruu', 'chruu'):
         return 'ruu'
     if c in ('an', 'ana', 'ch', 'dh', 'dha', 'ja', 'jh', 'ksh', 'l', 'll', 'ma', 'na', 'pa', 'pha', 'sa', 'sh', 'sha', 'th', 'tha', 'tt', 'va', 'ya') and v in ('anru', 'chru', 'dhru', 'jru', 'jhru', 'kshru', 'lru', 'llru', 'mru', 'nru', 'pru', 'phru', 'sru', 'shru', 'thru', 'tru', 'vru', 'yru'):
@@ -169,7 +158,6 @@ def parse_gunintham_modifier(c_key: str, v_key: str) -> str:
     if v.endswith('ruu'):
         return 'ruu'
         
-    # 6. Vatrusudi (ru)
     if v in (
         'r', 'anr', 'chr', 'dr', 'dhr', 'jr', 'jhr', 'kshr', 
         'lr', 'mr', 'nr', 'pr', 'sr', 'shr', 'tr', 'thr', 'vr', 'yr', 
@@ -183,39 +171,30 @@ def parse_gunintham_modifier(c_key: str, v_key: str) -> str:
     if v.endswith('ru') and v not in ('anu', 'chu', 'kshu'):
         return 'ru'
         
-    # 7. Gudi Dirgham (ii)
     if v.endswith('ii') or v in ('rrii', 'anii'):
         return 'ii'
         
-    # 8. Gudi (i)
     if v.endswith('i') or v in ('rri', 'ani'):
         return 'i'
         
-    # 9. Kommu Dirgham (uu)
     if v.endswith('uu') or v in ('rruu', 'anuu', 'chuu', 'kshuu', 'buu', 'bhuu', 'duu', 'guu', 'ghuu', 'huu', 'juu', 'jhuu', 'kuu', 'khuu', 'luu', 'muu', 'nuu', 'puu', 'ruu', 'suu', 'shuu', 'tuu', 'vuu', 'yuu'):
         return 'uu'
         
-    # 10. Kommu (u)
     if v.endswith('u') or v in ('rru', 'anu', 'chu', 'kshu', 'bu', 'bhu', 'du', 'gu', 'ghu', 'hu', 'ju', 'jhu', 'ku', 'khu', 'lu', 'mu', 'nu', 'pu', 'ru', 'su', 'shu', 'tu', 'vu', 'yu'):
         return 'u'
         
-    # 11. Etwam Dirgham (ee)
     if v.endswith('ee') or v in ('rree', 'anee'):
         return 'ee'
         
-    # 12. Etwam (e)
     if v.endswith('e') or v in ('rre', 'ane'):
         return 'e'
         
-    # 13. Otwam Dirgham (oo)
     if v.endswith('oo') or v in ('rroo', 'anoo', 'yoo'):
         return 'oo'
         
-    # 14. Otwam (o)
     if v.endswith('o') or v in ('rro', 'ano'):
         return 'o'
         
-    # 15. Base Talakattu ('none') vs Dirgham ('aa')
     double_a_bases = {'ga': ('ga', 'gaa'), 'gha': ('gha', 'ghaa'), 'kha': ('ka', 'kaa'), 'khh': ('kha', 'khaa'), 'ta': ('ta', 'taa'), 'da': ('da', 'daa')}
     if c in double_a_bases:
         base_v, dirgham_v = double_a_bases[c]
@@ -224,7 +203,6 @@ def parse_gunintham_modifier(c_key: str, v_key: str) -> str:
         if v == dirgham_v:
             return 'aa'
             
-    # Folders where shorter name is 'none' and longer name with 'a' is 'aa'
     if v in ('b', 'bh', 'ch', 'd', 'dh', 'h', 'j', 'jh', 'k', 'kh', 'ksh', 'l', 'm', 'n', 'p', 'r', 'rr', 's', 'sh', 't', 'th', 'v', 'y', 'an'):
         return 'none'
         
@@ -307,7 +285,6 @@ def build_and_validate_label_maps(class_names: List[str],
         mod_set.add(mod)
         vattu_set.add(vattu)
         
-    # Derive canonical sorted lists (preserve standard ordering for known primitives)
     base_letters = [b for b in CANONICAL_BASE_LETTERS if b in base_set]
     base_letters += sorted(list(base_set - set(base_letters)))
     
@@ -339,7 +316,6 @@ def build_and_validate_label_maps(class_names: List[str],
             valid_triples_set.add((b_idx, m_idx, v_idx))
             valid_triples.append([b_idx, m_idx, v_idx])
             
-    # Validate that all collisions are known and confirmed true duplicate pairs
     for key, classes in combination_to_all_classes.items():
         if len(classes) > 1:
             for i in range(len(classes)):
@@ -351,7 +327,6 @@ def build_and_validate_label_maps(class_names: List[str],
                             f"  Classes: {classes}\n"
                             f"  Pair ({c1}, {c2}) is NOT listed in CONFIRMED_DUPLICATE_CLASSES!"
                         )
-            # Use deterministic canonical class name
             canonical_name = get_canonical_class_name(classes[0])
             combination_to_class[key] = canonical_name
         else:
@@ -407,7 +382,6 @@ def recombine_prediction(base_probs: np.ndarray,
     mod_probs = np.asarray(mod_probs, dtype=np.float64)
     vattu_probs = np.asarray(vattu_probs, dtype=np.float64)
     
-    # Clip probabilities for stable log calculation
     eps = 1e-12
     p_b_safe = np.clip(base_probs, eps, 1.0)
     p_m_safe = np.clip(mod_probs, eps, 1.0)
@@ -423,7 +397,6 @@ def recombine_prediction(base_probs: np.ndarray,
     vowel_modifiers = label_maps["vowel_modifiers"]
     conjunct_modifiers = label_maps["conjunct_modifiers"]
     
-    # Greedy Check
     b_star = int(np.argmax(base_probs))
     m_star = int(np.argmax(mod_probs))
     v_star = int(np.argmax(vattu_probs))
@@ -435,7 +408,6 @@ def recombine_prediction(base_probs: np.ndarray,
         confidence = float(base_probs[b_star] * mod_probs[m_star] * vattu_probs[v_star])
         is_fallback = False
     else:
-        # Constrained Maximum Likelihood Decoding over all valid triples
         best_score = -np.inf
         best_triple = valid_triples[0]
         for b, m, v in valid_triples:
@@ -448,7 +420,6 @@ def recombine_prediction(base_probs: np.ndarray,
         confidence = float(np.exp(best_score))
         is_fallback = True
         
-    # Top-5 joint scoring across all valid triples (normalized over valid subspace)
     all_scores = []
     total_valid_mass = 0.0
     for b, m, v in valid_triples:

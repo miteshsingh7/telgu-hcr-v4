@@ -15,7 +15,6 @@ def test_cutmix_probabilistic_gating():
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp_path = Path(tmpdir)
         
-        # Create a few dummy image files
         img_paths = []
         for i in range(16):
             img_file = tmp_path / f"img_{i}.png"
@@ -41,7 +40,7 @@ def test_cutmix_probabilistic_gating():
         }
         
         label_smoothing = 0.1
-        expected_unmixed_max = 1.0 - label_smoothing + (label_smoothing / 4.0)  # ~0.925
+        expected_unmixed_max = 1.0 - label_smoothing + (label_smoothing / 4.0)
         
         ds, _, _ = create_telugu_dataset(
             csv_path_or_df=df,
@@ -55,7 +54,6 @@ def test_cutmix_probabilistic_gating():
             shuffle_buffer=100
         )
         
-        # Repeat to draw many batches
         ds_repeated = ds.repeat()
         
         unmixed_count = 0
@@ -66,7 +64,6 @@ def test_cutmix_probabilistic_gating():
             b_labels = targets["base_output"]
             max_probs = tf.reduce_max(b_labels, axis=-1).numpy()
             
-            # An unmixed batch has all max probabilities equal to expected_unmixed_max
             is_unmixed = np.allclose(max_probs, expected_unmixed_max, atol=1e-3)
             if is_unmixed:
                 unmixed_count += 1
@@ -75,7 +72,6 @@ def test_cutmix_probabilistic_gating():
                 
         print(f"CutMix Gating Test: {unmixed_count} unmixed, {mixed_count} mixed out of {total_batches} batches.")
         
-        # Confirm that some but not all batches are unmixed (roughly 50/50)
         assert unmixed_count > 10, f"Expected > 10 unmixed batches, got {unmixed_count}"
         assert mixed_count > 10, f"Expected > 10 mixed batches, got {mixed_count}"
 

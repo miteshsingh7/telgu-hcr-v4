@@ -60,7 +60,6 @@ def evaluate_test_set(test_csv: str = "outputs/test.csv",
     total_test_samples = len(df_test)
     logger.info(f"Total test samples: {total_test_samples:,}")
     
-    # 1. Build Model Architecture
     logger.info(f"Instantiating EfficientNetV2-{variant}...")
     model = build_multitask_effnetv2(
         variant=variant,
@@ -71,13 +70,11 @@ def evaluate_test_set(test_csv: str = "outputs/test.csv",
         backbone_trainable=False
     )
     
-    # 2. Restore Checkpoint Weights
     ckpt_manager = FullStateCheckpointManager(checkpoint_dir=checkpoint_dir)
     dummy_opt = tf.keras.optimizers.AdamW()
     restored_epoch, meta = ckpt_manager.restore_state(model, dummy_opt, checkpoint_path_or_tag=checkpoint_tag)
     logger.info(f"Loaded checkpoint '{checkpoint_tag}' from epoch {restored_epoch}.")
     
-    # 3. Create Evaluation Dataset
     test_ds, test_steps, _ = create_telugu_dataset(
         csv_path_or_df=df_test,
         label_maps_or_path=label_maps,
@@ -89,7 +86,6 @@ def evaluate_test_set(test_csv: str = "outputs/test.csv",
         label_smoothing=0.0
     )
     
-    # 4. Run Model Predictions
     logger.info("Executing batched inference across test set...")
     all_base_probs = []
     all_mod_probs = []
@@ -106,14 +102,12 @@ def evaluate_test_set(test_csv: str = "outputs/test.csv",
     mod_probs_arr = np.concatenate(all_mod_probs, axis=0)[:total_test_samples]
     vattu_probs_arr = np.concatenate(all_vattu_probs, axis=0)[:total_test_samples]
     
-    # 5. Extract Ground Truths
     true_base = df_test["base_idx"].values
     true_mod = df_test["modifier_idx"].values
     true_vattu = df_test["vattu_idx"].values
     true_classes = df_test["class_name"].values
     true_combs = [class_to_comb.get(c, c) for c in true_classes]
     
-    # 6. Per-Head Metrics
     pred_base = np.argmax(base_probs_arr, axis=1)
     pred_mod = np.argmax(mod_probs_arr, axis=1)
     pred_vattu = np.argmax(vattu_probs_arr, axis=1)
@@ -127,16 +121,12 @@ def evaluate_test_set(test_csv: str = "outputs/test.csv",
     acc_vattu = float(accuracy_score(true_vattu, pred_vattu))
     recall_vattu = float(recall_score(true_vattu, pred_vattu, average="macro", zero_division=0))
     
-    # 7. Baseline Comparisons ('Always None')
-    # modifier 'none' index
     none_mod_idx = label_maps["mod_map"].get("none", 0)
     baseline_mod_acc = float(np.mean(true_mod == none_mod_idx))
     
-    # vattu 'none' index
     none_vattu_idx = label_maps["vattu_map"].get("none", 0)
     baseline_vattu_acc = float(np.mean(true_vattu == none_vattu_idx))
     
-    # 8. Recombination & 630-Way Constrained MLE Evaluation
     logger.info("Recombining multi-head predictions with Constrained Maximum-Likelihood Decoding...")
     top1_hits = 0
     top5_hits = 0
@@ -154,11 +144,9 @@ def evaluate_test_set(test_csv: str = "outputs/test.csv",
             
         equiv_classes = get_equivalent_classes(true_classes[i])
         
-        # Check top-1
         if rec["predicted_class"] in equiv_classes or class_to_comb.get(rec["predicted_class"]) == true_combs[i]:
             top1_hits += 1
             
-        # Check top-5
         top_5_classes = {item["class_name"] for item in rec["top_5"]}
         top_5_combs = {class_to_comb.get(item["class_name"], item["class_name"]) for item in rec["top_5"]}
         
@@ -169,7 +157,6 @@ def evaluate_test_set(test_csv: str = "outputs/test.csv",
     recombined_top5_acc = float(top5_hits / total_test_samples)
     fallback_rate = float(fallback_count / total_test_samples)
     
-    # 9. Format Report
     report = {
         "test_samples": total_test_samples,
         "restored_epoch": restored_epoch,
@@ -200,7 +187,6 @@ def evaluate_test_set(test_csv: str = "outputs/test.csv",
         }
     }
     
-    # Print Executive Summary
     logger.info("=" * 70)
     logger.info("EVALUATION RESULTS SUMMARY:")
     logger.info(f"  Base Akshara Head:     Top-1 Acc = {acc_base:.2%}, Macro-Recall = {recall_base:.2%}")
@@ -211,7 +197,6 @@ def evaluate_test_set(test_csv: str = "outputs/test.csv",
     logger.info(f"  Constrained Fallback Rate:   {fallback_rate:.2%} of predictions")
     logger.info("=" * 70)
     
-    # Save Report
     out_p = Path(output_report_path)
     out_p.parent.mkdir(parents=True, exist_ok=True)
     with open(out_p, "w", encoding="utf-8") as f:

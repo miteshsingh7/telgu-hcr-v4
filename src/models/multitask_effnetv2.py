@@ -42,7 +42,6 @@ def build_multitask_effnetv2(variant: str = "B0",
     """
     inputs = layers.Input(shape=input_shape, name="image_input")
     
-    # 1. ImageNet-pretrained Backbone
     variant_clean = variant.strip().upper()
     if variant_clean in ("B0", "V2B0", "EFFICIENTNETV2B0"):
         backbone = EfficientNetV2B0(
@@ -63,23 +62,20 @@ def build_multitask_effnetv2(variant: str = "B0",
         
     backbone.trainable = backbone_trainable
     
-    # 2. Global Pooling & Shared Feature Vector
     features = backbone.output
     pooled = layers.GlobalAveragePooling2D(name="backbone_gap")(features)
     pooled = layers.BatchNormalization(name="backbone_bn")(pooled)
     pooled = layers.Dropout(dropout_rate, name="backbone_dropout")(pooled)
     
-    # 3. Head 1: Base Akshara
     base_h = layers.Dense(256, activation="relu", name="base_dense")(pooled)
     base_h = layers.Dropout(dropout_rate, name="base_dropout")(base_h)
     base_out = layers.Dense(
         num_base,
         activation="softmax",
-        dtype="float32",  # Explicit float32 for mixed_float16 numerical stability
+        dtype="float32",
         name="base_output"
     )(base_h)
     
-    # 4. Head 2: Vowel Modifier
     mod_h = layers.Dense(128, activation="relu", name="modifier_dense")(pooled)
     mod_h = layers.Dropout(dropout_rate, name="modifier_dropout")(mod_h)
     mod_out = layers.Dense(
@@ -89,7 +85,6 @@ def build_multitask_effnetv2(variant: str = "B0",
         name="modifier_output"
     )(mod_h)
     
-    # 5. Head 3: Subscript Conjunct / Vattu
     vattu_h = layers.Dense(128, activation="relu", name="vattu_dense")(pooled)
     vattu_h = layers.Dropout(dropout_rate, name="vattu_dropout")(vattu_h)
     vattu_out = layers.Dense(

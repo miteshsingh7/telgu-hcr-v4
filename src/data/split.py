@@ -90,7 +90,6 @@ def create_frozen_splits(dataset_root: str,
     records, class_names = collect_dataset_images(dataset_root, relative_paths=relative_paths)
     print(f"Found {len(records):,} total images across {len(class_names)} classes.")
     
-    # 1. Build and freeze label maps empirically
     label_maps_path = out_dir / "label_maps.json"
     label_maps = build_and_validate_label_maps(class_names, output_path=str(label_maps_path))
     print(f"Saved label maps to {label_maps_path}")
@@ -99,7 +98,6 @@ def create_frozen_splits(dataset_root: str,
           f"{label_maps['num_vattu_classes']} vattu primitives.")
     print(f"Unique structural compound combinations: {label_maps['num_unique_combinations']} (across {len(class_names)} folders).")
     
-    # 2. Enrich records with decomposed indices
     df = pd.DataFrame(records)
     base_map = label_maps["base_map"]
     mod_map = label_maps["mod_map"]
@@ -124,8 +122,6 @@ def create_frozen_splits(dataset_root: str,
     df["modifier_idx"] = mod_indices
     df["vattu_idx"] = vattu_indices
     
-    # 3. Stratified Split per flat class_name
-    # Handle rare classes with >= 2 samples
     train_dfs = []
     val_dfs = []
     test_dfs = []
@@ -135,10 +131,8 @@ def create_frozen_splits(dataset_root: str,
     for cname, group in df.groupby("class_name"):
         n = len(group)
         if n < 3:
-            # If extremely few samples, assign to train
             train_dfs.append(group)
         else:
-            # Split group
             shuffled = group.sample(frac=1.0, random_state=seed)
             n_test = max(1, int(round(n * test_ratio)))
             n_val = max(1, int(round(n * val_ratio)))
@@ -158,7 +152,6 @@ def create_frozen_splits(dataset_root: str,
     val_df = pd.concat(val_dfs, ignore_index=True).sample(frac=1.0, random_state=seed).reset_index(drop=True)
     test_df = pd.concat(test_dfs, ignore_index=True).sample(frac=1.0, random_state=seed).reset_index(drop=True)
     
-    # Save CSVs
     train_path = out_dir / "train.csv"
     val_path = out_dir / "val.csv"
     test_path = out_dir / "test.csv"

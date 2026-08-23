@@ -18,12 +18,9 @@ def compress_image(image_path: Path, output_path: Path, max_dim: int = 1200, qua
     """Resizes and compresses a single image file."""
     try:
         with Image.open(image_path) as img:
-            # Handle EXIF orientation
             img = ImageOps.exif_transpose(img)
             
-            # Convert RGBA/P to RGB if saving as JPEG
             if img.mode in ("RGBA", "P"):
-                # Convert with white background
                 bg = Image.new("RGB", img.size, (255, 255, 255))
                 if img.mode == "RGBA":
                     bg.paste(img, mask=img.split()[3])
@@ -33,7 +30,6 @@ def compress_image(image_path: Path, output_path: Path, max_dim: int = 1200, qua
             elif img.mode != "RGB":
                 img = img.convert("RGB")
             
-            # Downscale if larger than max_dim
             w, h = img.size
             if max(w, h) > max_dim:
                 if w > h:
@@ -44,10 +40,7 @@ def compress_image(image_path: Path, output_path: Path, max_dim: int = 1200, qua
                     new_w = int(w * (max_dim / h))
                 img = img.resize((new_w, new_h), Image.Resampling.LANCZOS)
             
-            # Ensure parent output directory exists
             output_path.parent.mkdir(parents=True, exist_ok=True)
-            
-            # Save compressed JPEG
             img.save(output_path, format="JPEG", quality=quality, optimize=True)
             
             orig_size = image_path.stat().st_size / 1024

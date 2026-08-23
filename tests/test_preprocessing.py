@@ -28,9 +28,7 @@ def test_pad_to_square():
     rect_img = tf.ones((60, 100, 1), dtype=tf.float32) * 128.0
     padded = pad_to_square(rect_img, pad_value=255.0)
     assert padded.shape == (100, 100, 1)
-    # Check that top/bottom borders were padded with 255.0
     assert float(padded[0, 50, 0]) == 255.0
-    # Check that center retained original value
     assert float(padded[50, 50, 0]) == 128.0
 
 
@@ -41,7 +39,6 @@ def test_preprocess_numpy_array():
     
     assert processed.shape == (128, 128, 3)
     assert processed.dtype == tf.float32
-    # Pixel values are within valid preprocessed range
     assert tf.reduce_min(processed) >= 0.0 - 1e-4
     assert tf.reduce_max(processed) <= 255.0 + 1e-4
 
@@ -56,7 +53,6 @@ def test_preprocess_encoded_bytes():
     processed = preprocess_image(raw_bytes, img_size=IMAGE_SIZE)
     assert processed.shape == (IMAGE_SIZE, IMAGE_SIZE, NUM_CHANNELS)
     assert processed.dtype == tf.float32
-    # Pure white image should normalize to BACKGROUND_FILL_VALUE (255.0)
     assert np.allclose(processed.numpy(), BACKGROUND_FILL_VALUE, atol=0.1)
 
 

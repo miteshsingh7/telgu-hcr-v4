@@ -64,7 +64,6 @@ class TimingExtrapolationCallback(tf.keras.callbacks.Callback):
         avg_sec = np.mean(self.epoch_times[-self.timing_epochs:])
         logger.info(f"Epoch {epoch + 1} completed in {duration:.1f}s (rolling avg: {avg_sec:.1f}s/epoch)")
         
-        # Extrapolate when sufficient epochs are measured
         if len(self.epoch_times) == self.timing_epochs:
             total_epochs = self.total_warmup + self.total_finetune
             remaining_epochs = max(0, total_epochs - (epoch + 1))
@@ -110,7 +109,6 @@ class FullStateCheckpointCallback(tf.keras.callbacks.Callback):
                 self.best_val = current_metric
                 is_best = True
                 
-        # Save state atomically
         self.manager.save_state(
             model=self.model,
             optimizer=self.model.optimizer,
@@ -141,10 +139,8 @@ def create_lr_schedule(base_lr: float,
         def __call__(self, step):
             step_f = tf.cast(step, tf.float32)
             
-            # Linear Warmup
             warmup_lr = self.base_lr * (step_f / tf.maximum(1.0, self.warmup_steps))
             
-            # Cosine Decay
             decay_step = tf.maximum(0.0, step_f - self.warmup_steps)
             cosine_decay = 0.5 * (1.0 + tf.cos(np.pi * tf.minimum(decay_step, self.decay_steps) / tf.maximum(1.0, self.decay_steps)))
             decayed_lr = (self.base_lr - self.min_lr) * cosine_decay + self.min_lr
@@ -187,19 +183,16 @@ def run_training(config_path: str,
     finetune_epochs = custom_epochs or t_cfg["finetune_epochs"]
     total_epochs = warmup_epochs + finetune_epochs
     
-    # 1. Mixed Precision Setup
     if t_cfg.get("mixed_precision", True):
         logger.info("Enabling mixed_float16 global policy.")
         tf.keras.mixed_precision.set_global_policy("mixed_float16")
         
-    # 2. Load Label Maps
     label_maps = load_label_maps(d_cfg["label_maps"])
     num_base = label_maps["num_base_classes"]
     num_mod = label_maps["num_modifier_classes"]
     num_vattu = label_maps["num_vattu_classes"]
     logger.info(f"Loaded label maps: {num_base} base, {num_mod} modifier, {num_vattu} vattu classes.")
     
-    # 3. Create Datasets
     resolved_root = resolve_dataset_root([effective_data_root] if effective_data_root else None)
     logger.info(f"Dataset root resolved to: {resolved_root}")
     logger.info(f"Building training dataset from {d_cfg['train_csv']}...")
@@ -234,7 +227,6 @@ def run_training(config_path: str,
     )
     logger.info(f"Dataset ready: {train_steps} train steps/epoch, {val_steps} val steps/epoch (batch={batch_size}).")
     
-    # 4. Instantiate Checkpoint Manager
     checkpoint_dir = Path(t_cfg.get("checkpoint_dir", "checkpoints"))
     ckpt_manager = FullStateCheckpointManager(
         checkpoint_dir=checkpoint_dir,
@@ -243,15 +235,11 @@ def run_training(config_path: str,
         mode="min"
     )
     
-    # Check if resuming directly into Phase 2 by inspecting the ACTUAL
-    # checkpoint that will be restored (not hardcoded best_model).
     resuming_phase2 = False
     if resume:
-        # Resolve which checkpoint directory to inspect
         if resume_path:
             resume_meta_path = checkpoint_dir / resume_path / "state.json"
         else:
-            # Default: ckpt_manager will pick the latest epoch checkpoint
             epoch_dirs = sorted(
                 [d for d in checkpoint_dir.iterdir() if d.is_dir() and d.name.startswith("epoch_")],
                 key=lambda d: int(d.name.split("_")[-1]) if d.name.split("_")[-1].isdigit() else -1,
@@ -268,7 +256,6 @@ def run_training(config_path: str,
             except Exception:
                 pass
 
-    # 5. Build Model
     logger.info(f"Instantiating EfficientNetV2-{variant} multi-head model (backbone_trainable={resuming_phase2})...")
     model = build_multitask_effnetv2(
         variant=variant,
@@ -277,11 +264,10 @@ def run_training(config_path: str,
         num_vattu=num_vattu,
         input_shape=(img_size, img_size, 3),
         weights=m_cfg.get("weights", "imagenet"),
-        backbone_trainable=resuming_phase2,  # Start frozen unless resuming Phase 2
+        backbone_trainable=resuming_phase2,
         dropout_rate=m_cfg.get("dropout_rate", 0.3)
     )
     
-    # 6. Build LR Schedule & Optimizer
     lr_schedule = create_lr_schedule(
         base_lr=t_cfg.get("learning_rate", 1e-4),
         min_lr=t_cfg.get("min_learning_rate", 1e-6),
@@ -298,7 +284,6 @@ def run_training(config_path: str,
         ema_momentum=t_cfg.get("ema_momentum", 0.999)
     )
     
-    # 7. Compile Model with Weighted Losses
     losses = {
         "base_output": WeightedCategoricalCrossentropy(class_weights=class_weights["base_output"]),
         "modifier_output": WeightedCategoricalCrossentropy(class_weights=class_weights["modifier_output"]),
@@ -317,13 +302,11 @@ def run_training(config_path: str,
         }
     )
     
-    # 8. Resume Checkpoint if Requested
     start_epoch = 0
     if resume:
         start_epoch, meta = ckpt_manager.restore_state(model, optimizer, checkpoint_path_or_tag=resume_path)
         logger.info(f"Resumed from epoch {start_epoch} (initial val_loss: {meta.get('monitored_value')})")
         
-    # 9. Callbacks
     timing_cb = TimingExtrapolationCallback(
         total_warmup_epochs=warmup_epochs,
         total_finetune_epochs=finetune_epochs,
@@ -334,13 +317,12 @@ def run_training(config_path: str,
     early_stopping = tf.keras.callbacks.EarlyStopping(
         monitor="val_loss",
         patience=t_cfg.get("early_stopping_patience", 10),
-        restore_best_weights=False,  # Managed cleanly by FullStateCheckpointManager
+        restore_best_weights=False,
         verbose=1
     )
     
     callbacks = [timing_cb, ckpt_cb, early_stopping]
     
-    # 10. Phase 1: Warmup with Frozen Backbone
     if start_epoch < warmup_epochs:
         logger.info(f"=== Phase 1: Warmup (Epochs {start_epoch + 1} -> {warmup_epochs}) [Backbone Frozen] ===")
         model.fit(
@@ -354,14 +336,11 @@ def run_training(config_path: str,
         )
         start_epoch = warmup_epochs
         
-    # 11. Phase 2: Unfreeze Backbone and Fine-Tune
     logger.info(f"=== Phase 2: Fine-Tuning (Epochs {start_epoch + 1} -> {total_epochs}) [Backbone Unfrozen] ===")
     
-    # Unfreeze backbone layers
     for layer in model.layers:
         layer.trainable = True
         
-    # Recreate fresh optimizer instance for the full set of trainable variables (Keras 3 requirement)
     phase2_optimizer = tf.keras.optimizers.AdamW(
         learning_rate=lr_schedule,
         weight_decay=t_cfg.get("weight_decay", 1e-4),
@@ -370,25 +349,14 @@ def run_training(config_path: str,
         ema_momentum=t_cfg.get("ema_momentum", 0.999)
     )
     
-    # Pre-build Phase 2 optimizer on all variables and maintain step progress in lr schedule
     phase2_optimizer.build(model.trainable_variables)
     if hasattr(phase2_optimizer, "iterations"):
         phase2_optimizer.iterations.assign(start_epoch * train_steps)
 
-    # If we are resuming directly into an already-in-progress Phase 2 (not the natural
-    # Phase 1 -> Phase 2 transition within this same run), the earlier `optimizer` object
-    # was already restored via ckpt_manager.restore_state() and holds the real Adam
-    # moment/variance buffers and EMA shadow weights accumulated so far. Transfer those
-    # into the fresh phase2_optimizer instead of leaving it cold-started at zero -- a
-    # cold-started optimizer mid-fine-tune causes a real (if usually recoverable)
-    # instability spike right after every resume.
     if resuming_phase2 and resume:
         if len(optimizer.variables) == len(phase2_optimizer.variables):
             transferred = 0
             for old_var, new_var in zip(optimizer.variables, phase2_optimizer.variables):
-                # Skip the iterations counter — we already set it correctly
-                # at line 371 for the LR schedule. The restored value would
-                # overwrite that with the old optimizer's stale step count.
                 if 'iteration' in getattr(old_var, 'name', '').lower():
                     continue
                 new_var.assign(old_var)
@@ -407,7 +375,6 @@ def run_training(config_path: str,
                 f"after resume."
             )
         
-    # Recompile after modifying layer trainability
     model.compile(
         optimizer=phase2_optimizer,
         loss=losses,
@@ -429,7 +396,6 @@ def run_training(config_path: str,
         callbacks=callbacks
     )
     
-    # 12. Finalize EMA weights for final model checkpoint
     if hasattr(phase2_optimizer, "finalize_variable_values") and t_cfg.get("use_ema", True):
         logger.info("Finalizing EMA shadow weights into model parameters...")
         phase2_optimizer.finalize_variable_values(model.trainable_variables)

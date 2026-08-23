@@ -15,6 +15,7 @@ from typing import Dict, Any, Optional, Tuple, List
 import streamlit as st
 import numpy as np
 import pandas as pd
+import cv2
 from PIL import Image
 import tensorflow as tf
 
@@ -35,27 +36,26 @@ except ImportError:
     CANVAS_AVAILABLE = False
 
 
-# Telugu Matra & Vattu Display Constants
 MATRA_UNICODE = {
     "none": "",
-    "aa": "\u0C3E",    # ా
-    "i": "\u0C3F",     # ి
-    "ii": "\u0C40",    # ీ
-    "u": "\u0C41",     # ు
-    "uu": "\u0C42",    # ూ
-    "ru": "\u0C43",    # ృ
-    "ruu": "\u0C44",   # ౄ
-    "e": "\u0C46",     # ె
-    "ee": "\u0C47",    # ే
-    "ai": "\u0C48",    # ై
-    "o": "\u0C4A",     # ొ
-    "oo": "\u0C4B",    # ో
-    "au": "\u0C4C",    # ౌ
-    "am": "\u0C02",    # ం
-    "ah": "\u0C03"     # ః
+    "aa": "\u0C3E",
+    "i": "\u0C3F",
+    "ii": "\u0C40",
+    "u": "\u0C41",
+    "uu": "\u0C42",
+    "ru": "\u0C43",
+    "ruu": "\u0C44",
+    "e": "\u0C46",
+    "ee": "\u0C47",
+    "ai": "\u0C48",
+    "o": "\u0C4A",
+    "oo": "\u0C4B",
+    "au": "\u0C4C",
+    "am": "\u0C02",
+    "ah": "\u0C03"
 }
 
-VIRAMA = "\u0C4D" # ్
+VIRAMA = "\u0C4D"
 VATTU_CONSONANT = {
     "k": "క", "kh": "ఖ", "g": "గ", "gh": "ఘ", "gna": "ఙ",
     "c": "చ", "ch": "ఛ", "j": "జ", "jh": "ఝ", "jna": "ఞ",
@@ -394,7 +394,6 @@ def crop_to_content(img: Any, pad: int = 20) -> Any:
         return img
         
     if img_arr.ndim == 3 and img_arr.shape[-1] == 4:
-        # Detect dark non-transparent stroke pixels
         mask = (img_arr[..., 3] > 20) & ((img_arr[..., 0] < 240) | (img_arr[..., 1] < 240) | (img_arr[..., 2] < 240))
     elif img_arr.ndim == 3 and img_arr.shape[-1] >= 3:
         mask = (img_arr[..., 0] < 240) | (img_arr[..., 1] < 240) | (img_arr[..., 2] < 240)
@@ -414,7 +413,6 @@ def crop_to_content(img: Any, pad: int = 20) -> Any:
     w_box = x_max - x_min + 1
     max_box = max(h_box, w_box)
     
-    # 15% proportional margin to match empirical 0.78 dataset fill ratio
     pad = max(10, int(max_box * 0.15))
     
     h, w = img_arr.shape[:2]
@@ -453,7 +451,6 @@ def main():
     if "last_results" not in st.session_state:
         st.session_state.last_results = None
 
-    # 1. Top Navbar
     st.markdown(textwrap.dedent("""
     <div class="top-nav-bar">
         <div class="top-nav-left">
@@ -468,12 +465,9 @@ def main():
     
     model, label_maps = load_system_assets()
     
-    # 2. Side-by-Side 2-Column Layout
     col_left, col_right = st.columns([1.1, 1], gap="large")
     
-    # --- LEFT COLUMN: Tools + Canvas/Upload + Predict ---
     with col_left:
-        # Input Mode Selector
         input_mode = st.radio(
             "Input Mode",
             ["✍️ Draw on Canvas", "📁 Upload Image (JPEG/PNG)"],
@@ -484,7 +478,6 @@ def main():
         image_to_process = None
         
         if input_mode == "✍️ Draw on Canvas":
-            # Tools Bar
             c_slider, c_clear = st.columns([2.5, 1], vertical_alignment="center")
             with c_slider:
                 brush_size = st.slider("Brush Size", min_value=6, max_value=32, value=16, step=2)
@@ -494,7 +487,6 @@ def main():
                     st.session_state.last_results = None
                     st.rerun()
                     
-            # Canvas (Aspect square 450x450)
             if CANVAS_AVAILABLE:
                 canvas_result = st_canvas(
                     fill_color="rgba(255, 255, 255, 0.0)",
@@ -509,11 +501,16 @@ def main():
                 if canvas_result.image_data is not None:
                     img_array = canvas_result.image_data.astype(np.uint8)
                     if np.mean(img_array[..., :3]) < 254.0:
-                        image_to_process = img_array
+                        blurred_canvas = img_array.copy()
+                        blurred_canvas[..., :3] = cv2.GaussianBlur(blurred_canvas[..., :3], (0, 0), sigmaX=3.0)
+                        image_to_process = blurred_canvas
+
+                if image_to_process is not None:
+                    with st.expander("🔍 Debug: Raw canvas capture (pre-crop)", expanded=False):
+                        st.image(image_to_process, caption=f"shape={image_to_process.shape}, dtype={image_to_process.dtype}")
             else:
                 st.info("Canvas component not installed. Please use the image upload option.")
         else:
-            # Upload Image Mode
             uploaded_file = st.file_uploader(
                 "Upload a Telugu handwritten character image", 
                 type=["png", "jpg", "jpeg", "bmp", "webp"]
@@ -523,11 +520,9 @@ def main():
                 image_to_process = np.array(pil_img)
                 st.image(pil_img, caption="Uploaded Character", width=300)
             else:
-                # Clear stale predictions when uploaded file is removed
                 if st.session_state.last_results is not None:
                     st.session_state.last_results = None
 
-        # Predict Button
         predict_clicked = st.button("Predict", type="primary", use_container_width=True)
         
         if predict_clicked:
@@ -542,12 +537,24 @@ def main():
             else:
                 st.warning("Please draw a character or upload an image first.")
                 
-    # --- RIGHT COLUMN: Top Predictions (3 Stacked Horizontal Cards) ---
     with col_right:
         st.markdown('<div class="predictions-heading">Top Predictions</div>', unsafe_allow_html=True)
         
         if st.session_state.last_results is not None:
             rec_result, preprocessed_img = st.session_state.last_results
+
+            with st.expander("🔍 Debug: What the model actually sees", expanded=True):
+                debug_img = np.clip(preprocessed_img[..., 0], 0, 255).astype(np.uint8)
+                st.image(debug_img, caption="Post-crop, post-preprocess (128x128)", width=256)
+                st.write({
+                    "shape": preprocessed_img.shape,
+                    "dtype": str(preprocessed_img.dtype),
+                    "min": float(preprocessed_img.min()),
+                    "max": float(preprocessed_img.max()),
+                    "mean": float(preprocessed_img.mean()),
+                    "pct_pixels_below_240": float((preprocessed_img[..., 0] < 240).mean() * 100),
+                    "laplacian_variance": float(cv2.Laplacian(preprocessed_img[..., 0].astype(np.float64), cv2.CV_64F).var()),
+                })
             top_candidates = rec_result["top_5"][:3]
             
             cards_html = ['<div class="predictions-vertical-stack">']
@@ -590,7 +597,6 @@ def main():
             st.markdown("\n".join(cards_html), unsafe_allow_html=True)
             
         else:
-            # Default placeholder cards matching the 2-column reference design
             st.markdown(textwrap.dedent("""
             <div class="predictions-vertical-stack">
                 <div class="pred-card-row primary">
@@ -620,7 +626,6 @@ def main():
             </div>
             """).strip(), unsafe_allow_html=True)
             
-    # 3. Bottom Footer
     st.markdown(textwrap.dedent("""
     <div class="bottom-footer">
         <span>Model v1.2.0 • Trained on 50k+ Telugu glyphs</span>

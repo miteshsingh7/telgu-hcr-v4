@@ -71,7 +71,6 @@ def test_one_batch_overfit_with_mixed_precision_and_ema():
       3. EMA variable tracking works properly without shape/type mismatch
       4. Total loss decreases to near zero (< 0.05)
     """
-    # 1. Enable mixed precision
     try:
         tf.keras.mixed_precision.set_global_policy("mixed_float16")
     except Exception as e:
@@ -82,7 +81,6 @@ def test_one_batch_overfit_with_mixed_precision_and_ema():
     num_vattu = 4
     batch_size = 8
     
-    # Fixed synthetic dataset batch
     np.random.seed(42)
     tf.random.set_seed(42)
     
@@ -101,7 +99,6 @@ def test_one_batch_overfit_with_mixed_precision_and_ema():
         "vattu_output": y_v
     }
     
-    # Instantiate model with dropout=0.0 for deterministic overfit verification
     model = build_multitask_effnetv2(
         variant="B0",
         num_base=num_base,
@@ -112,7 +109,6 @@ def test_one_batch_overfit_with_mixed_precision_and_ema():
         dropout_rate=0.0
     )
     
-    # Optimizer with AdamW + EMA + global_clipnorm
     optimizer = tf.keras.optimizers.AdamW(
         learning_rate=1e-3,
         weight_decay=1e-4,
@@ -165,18 +161,15 @@ def test_one_batch_overfit_with_mixed_precision_and_ema():
     
     print(f"  Overfit Check Results: Min Loss = {min_loss:.4f}, Base Acc = {final_b_acc:.2%}, Mod Acc = {final_m_acc:.2%}, Vattu Acc = {final_v_acc:.2%}")
     
-    # Assertions
     assert min_loss < 0.05, f"Expected min loss < 0.05, got {min_loss}"
     assert final_b_acc >= 0.9, f"Expected base accuracy >= 90%, got {final_b_acc}"
     assert final_m_acc >= 0.9, f"Expected modifier accuracy >= 90%, got {final_m_acc}"
     assert final_v_acc >= 0.9, f"Expected vattu accuracy >= 90%, got {final_v_acc}"
     
-    # Test EMA weight finalization
     if hasattr(optimizer, "finalize_variable_values"):
         optimizer.finalize_variable_values(model.trainable_variables)
     print("EMA shadow weights verified successfully!")
     
-    # Reset global policy back to float32
     tf.keras.mixed_precision.set_global_policy("float32")
 
 

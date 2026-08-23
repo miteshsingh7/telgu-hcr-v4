@@ -76,11 +76,9 @@ class FullStateCheckpointManager:
         tmp_dir.mkdir(parents=True, exist_ok=True)
         
         try:
-            # 1. Save model weights
             weights_path = tmp_dir / "model.weights.h5"
             model.save_weights(str(weights_path))
             
-            # 2. Extract and save optimizer state (including iterations counter)
             opt_vars = optimizer.variables
             opt_var_values = [v.numpy() for v in opt_vars]
             opt_state = {
@@ -92,7 +90,6 @@ class FullStateCheckpointManager:
             with open(tmp_dir / "optimizer_state.pkl", "wb") as f:
                 pickle.dump(opt_state, f)
                 
-            # 3. Save training metadata JSON
             current_metric_val = metrics.get(self.monitor, None)
             state_meta = {
                 "epoch": epoch,
@@ -105,13 +102,11 @@ class FullStateCheckpointManager:
             with open(tmp_dir / "state.json", "w", encoding="utf-8") as f:
                 json.dump(state_meta, f, indent=2)
                 
-            # 4. Atomic directory swap for epoch checkpoint
             if target_dir.exists():
                 shutil.rmtree(target_dir)
             tmp_dir.rename(target_dir)
             logger.info(f"Successfully saved checkpoint to: {target_dir}")
             
-            # 5. If is_best, also copy atomically to best_model
             if is_best:
                 best_dir = self.checkpoint_dir / "best_model"
                 tmp_best = self.checkpoint_dir / f".tmp_best_{os.getpid()}"
@@ -121,17 +116,13 @@ class FullStateCheckpointManager:
                 if backup_best.exists():
                     shutil.rmtree(backup_best)
                 shutil.copytree(target_dir, tmp_best)
-                # Swap: move old best to backup first, then promote new best.
-                # This eliminates the window where no best_model exists.
                 if best_dir.exists():
                     best_dir.rename(backup_best)
                 tmp_best.rename(best_dir)
-                # Clean up backup only after new best is safely in place
                 if backup_best.exists():
                     shutil.rmtree(backup_best)
                 logger.info(f"Updated best_model checkpoint: {self.monitor} = {current_metric_val}")
                 
-            # 6. Manage max_to_keep
             if self.max_to_keep > 0:
                 def _get_epoch_num(d):
                     try:
@@ -146,7 +137,6 @@ class FullStateCheckpointManager:
                     for old_dir in all_epoch_dirs[:-self.max_to_keep]:
                         shutil.rmtree(old_dir)
             
-            # Update best metric
             if current_metric_val is not None and self._is_better(current_metric_val):
                 self.best_metric = current_metric_val
                 
@@ -181,7 +171,6 @@ class FullStateCheckpointManager:
                 return -1
                 
         if checkpoint_path_or_tag is None:
-            # Find latest checkpoint
             epoch_dirs = sorted([
                 d for d in self.checkpoint_dir.iterdir() 
                 if d.is_dir() and d.name.startswith("epoch_")
@@ -205,25 +194,21 @@ class FullStateCheckpointManager:
             
         logger.info(f"Restoring training state from: {target_dir}")
         
-        # 1. Load metadata
         meta_path = target_dir / "state.json"
         if not meta_path.exists():
             raise FileNotFoundError(f"State metadata '{meta_path}' missing in checkpoint.")
         with open(meta_path, "r", encoding="utf-8") as f:
             state_meta = json.load(f)
             
-        # 2. Restore model weights
         weights_path = target_dir / "model.weights.h5"
         if not weights_path.exists():
             raise FileNotFoundError(f"Weights file '{weights_path}' missing in checkpoint.")
         model.load_weights(str(weights_path))
         logger.info("  Restored model weights successfully.")
         
-        # 3. Restore optimizer state
         opt_path = target_dir / "optimizer_state.pkl"
         if opt_path.exists():
             try:
-                # Ensure optimizer variable slots are built against model trainable variables
                 if hasattr(optimizer, "build") and not getattr(optimizer, "built", False):
                     try:
                         optimizer.build(model.trainable_variables)
@@ -233,15 +218,12 @@ class FullStateCheckpointManager:
                 with open(opt_path, "rb") as f:
                     opt_state = pickle.load(f)
                     
-                # Restore iterations counter
                 saved_iters = opt_state.get("iterations", 0)
                 if hasattr(optimizer, "iterations"):
                     optimizer.iterations.assign(saved_iters)
                     
-                # Restore optimizer variables (moments, EMA shadow weights)
                 saved_var_values = opt_state.get("variable_values", [])
                 if saved_var_values:
-                    # If optimizer variables length matches, assign directly
                     if len(optimizer.variables) == len(saved_var_values):
                         for var, val in zip(optimizer.variables, saved_var_values):
                             var.assign(val)

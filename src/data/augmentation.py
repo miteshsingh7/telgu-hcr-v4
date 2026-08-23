@@ -80,35 +80,28 @@ def apply_cutmix(images: tf.Tensor,
     h = tf.cast(tf.shape(images)[1], tf.float32)
     w = tf.cast(tf.shape(images)[2], tf.float32)
     
-    # 1. Sample lambda from Beta(alpha, alpha)
     lam = _sample_beta_distribution(alpha, [1])[0]
     
-    # 2. Compute cut bounding box dimensions
     cut_ratio = tf.sqrt(1.0 - lam)
     cut_w = tf.cast(w * cut_ratio, tf.int32)
     cut_h = tf.cast(h * cut_ratio, tf.int32)
     
-    # 3. Sample random bounding box center
     cx = tf.random.uniform([], minval=0, maxval=tf.cast(w, tf.int32), dtype=tf.int32)
     cy = tf.random.uniform([], minval=0, maxval=tf.cast(h, tf.int32), dtype=tf.int32)
     
-    # 4. Clamp bounding box coordinates
     x1 = tf.clip_by_value(cx - cut_w // 2, 0, tf.cast(w, tf.int32))
     y1 = tf.clip_by_value(cy - cut_h // 2, 0, tf.cast(h, tf.int32))
     x2 = tf.clip_by_value(cx + cut_w // 2, 0, tf.cast(w, tf.int32))
     y2 = tf.clip_by_value(cy + cut_h // 2, 0, tf.cast(h, tf.int32))
     
-    # 5. Compute exact adjusted lambda based on actual cut area
     actual_cut_area = tf.cast((x2 - x1) * (y2 - y1), tf.float32)
     total_area = h * w
     lam_adjusted_f32 = 1.0 - (actual_cut_area / (total_area + 1e-8))
     lam_adjusted = tf.cast(lam_adjusted_f32, base_labels.dtype)
     
-    # 6. Shuffle indices across batch
     indices = tf.random.shuffle(tf.range(batch_size))
     shuffled_images = tf.gather(images, indices)
     
-    # 7. Construct spatial mask matching images.dtype
     y_coords = tf.range(tf.cast(h, tf.int32))[:, None]
     x_coords = tf.range(tf.cast(w, tf.int32))[None, :]
     in_box = (y_coords >= y1) & (y_coords < y2) & (x_coords >= x1) & (x_coords < x2)
@@ -118,7 +111,6 @@ def apply_cutmix(images: tf.Tensor,
     one_img = tf.cast(1.0, images.dtype)
     mixed_images = images * mask + shuffled_images * (one_img - mask)
     
-    # 8. Mix all three label heads simultaneously with the exact same adjusted lambda
     shuffled_base = tf.gather(base_labels, indices)
     shuffled_mod = tf.gather(mod_labels, indices)
     shuffled_vattu = tf.gather(vattu_labels, indices)

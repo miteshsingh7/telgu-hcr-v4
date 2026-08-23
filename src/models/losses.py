@@ -30,15 +30,12 @@ def compute_normalized_class_weights(class_counts: np.ndarray,
     total_samples = np.sum(counts)
     num_classes = len(counts)
     
-    # Avoid zero division
     safe_counts = np.maximum(counts, 1.0)
     weights = total_samples / (num_classes * safe_counts)
     
-    # Normalize so expectation under empirical distribution is 1.0
     mean_w = np.sum(weights * counts) / total_samples
     normalized_weights = weights / (mean_w + 1e-8)
     
-    # Clip extreme weights to prevent gradient destabilization
     clipped = np.clip(normalized_weights, clip_min, clip_max).astype(np.float32)
     return clipped
 
@@ -72,25 +69,20 @@ class WeightedCategoricalCrossentropy(tf.keras.losses.Loss):
         
         num_classes = tf.cast(tf.shape(y_true)[-1], tf.float32)
         
-        # Apply label smoothing if configured and not already smoothed
         if self.label_smoothing > 0.0:
             y_true = y_true * (1.0 - self.label_smoothing) + (self.label_smoothing / num_classes)
             
         if self.from_logits:
             y_pred = tf.nn.softmax(y_pred, axis=-1)
             
-        # Safe log
         eps = tf.keras.backend.epsilon()
         y_pred_safe = tf.clip_by_value(y_pred, eps, 1.0 - eps)
         
-        # Per-sample, per-class cross entropy
         ce = -y_true * tf.math.log(y_pred_safe)
         
         if self.class_weights is not None:
-            # Broadcast weights across batch
             ce = ce * self.class_weights
             
-        # Sum across class dimension -> (Batch,)
         sample_loss = tf.reduce_sum(ce, axis=-1)
         return tf.reduce_mean(sample_loss)
 
